@@ -13,3 +13,4 @@ path_to_file TEXT NOT NULL,
 description TEXT NOT NULL,
 special_needs TEXT NOT NULL
  );
+ -- changeset volkov:2

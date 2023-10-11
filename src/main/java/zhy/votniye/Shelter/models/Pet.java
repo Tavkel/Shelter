@@ -2,6 +2,9 @@ package zhy.votniye.Shelter.models;
 
 import jakarta.persistence.*;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 @Entity
 @Table(name = "pet")
 public class Pet {
@@ -12,7 +15,7 @@ public class Pet {
     private String breed;
     private Float weight;
     private int age;
-    @Lob
+
     private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;
@@ -23,7 +26,6 @@ public class Pet {
 //    @JoinColumn(name = "owner_id")
 //    private Owner owner;
 //
-//    private String status;
 //
 //    public Owner getOwner() {
 //        return owner;
@@ -99,5 +101,20 @@ public class Pet {
 
     public void setSpecialNeeds(String specialNeeds) {
         this.specialNeeds = specialNeeds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return age == pet.age && Objects.equals(name, pet.name) && Objects.equals(breed, pet.breed) && Objects.equals(weight, pet.weight) && Arrays.equals(photo, pet.photo) && Objects.equals(pathToFile, pet.pathToFile) && Objects.equals(description, pet.description) && Objects.equals(specialNeeds, pet.specialNeeds);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(name, breed, weight, age, pathToFile, description, specialNeeds);
+        result = 31 * result + Arrays.hashCode(photo);
+        return result;
     }
 }
