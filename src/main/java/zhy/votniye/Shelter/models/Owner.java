@@ -1,7 +1,9 @@
 package zhy.votniye.Shelter.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,9 @@ public class Owner {
     private String lastName;
     @Column(name = "middle_name")
     private String middleName;
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<Pet> pets;
 
     public Owner() {
     }

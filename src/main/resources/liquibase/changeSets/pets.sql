@@ -14,3 +14,4 @@ description TEXT NOT NULL,
 special_needs TEXT NOT NULL
  );
 ALTER TABLE pet ADD CONSTRAINT pet_pk PRIMARY KEY (id);
+ALTER TABLE pet ADD owner_id BIGINT;
