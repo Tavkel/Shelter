@@ -1,13 +1,16 @@
 package zhy.votniye.Shelter.models;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-@Entity
+//@Entity
 public class AdoptionRequest {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long ownerID;
     private long petId;

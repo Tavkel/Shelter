@@ -15,3 +15,6 @@ special_needs TEXT NOT NULL
  );
 ALTER TABLE pet ADD CONSTRAINT pet_pk PRIMARY KEY (id);
 ALTER TABLE pet ADD owner_id BIGINT;
+
+-- changeset tav:4
+alter table pet add constraint "FK_pet_owner" foreign key (owner_id) references owner(id);
