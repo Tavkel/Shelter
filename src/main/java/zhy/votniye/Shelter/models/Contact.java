@@ -8,13 +8,13 @@ import java.util.Objects;
 public class Contact {
     @Id
     private long id;
-    private String phone;
+    private int phone;
     @Column(name = "telegram_chat_id")
     private long telegramChatId;
     private String email;
     private String address;
     private String comment;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     @JoinColumn(name = "id")
     private Owner owner;
@@ -30,11 +30,11 @@ public class Contact {
         this.id = id;
     }
 
-    public String getPhone() {
+    public int getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(int phone) {
         this.phone = phone;
     }
 
