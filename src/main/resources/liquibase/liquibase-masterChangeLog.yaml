@@ -1,3 +1,7 @@
 databaseChangeLog:
     - include:
           file: liquibase/changeSets/pets.sql
+    - include:
+          file: liquibase/changeSets/owners.sql
+    - include:
+        file: liquibase/changeSets/contacts.sql
