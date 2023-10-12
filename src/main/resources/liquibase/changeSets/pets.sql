@@ -13,4 +13,8 @@ path_to_file TEXT NOT NULL,
 description TEXT NOT NULL,
 special_needs TEXT NOT NULL
  );
- -- changeset volkov:2
+ALTER TABLE pet ADD CONSTRAINT pet_pk PRIMARY KEY (id);
+ALTER TABLE pet ADD owner_id BIGINT;
+
+-- changeset tav:4
+alter table pet add constraint "FK_pet_owner" foreign key (owner_id) references owner(id);
