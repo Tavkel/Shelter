@@ -36,14 +36,15 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     @PostConstruct
     public void init() {
-        telegramBot.setUpdatesListener(this);
         singleArgCommands = Commands.getSingleArgCommandsMap();
         doubleArgCommands = Commands.getDoubleArgCommandsMap();
         callbacks = Commands.getCallbacks();
+        telegramBot.setUpdatesListener(this);
     }
 
     @Override
     public int process(List<Update> updates) {
+
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
@@ -54,7 +55,11 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     throw new RuntimeException(e); //todo handle exceptions
                 }
             } else if (update.callbackQuery() != null) {
-                processCallback(update.callbackQuery());
+                try {
+                    processCallback(update.callbackQuery());
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
 
@@ -62,10 +67,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private void processMessage(Message message) throws
-            IllegalArgumentException,
-            InvocationTargetException,
-            IllegalAccessException {
+    private void processMessage(Message message) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         Pattern patternDouble = Pattern.compile("(^/[\\w?]+)(\\s)(.+)");
         Matcher matcher = patternDouble.matcher(message.text());
         if (matcher.matches()) {
@@ -88,11 +90,14 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 return;
             }
         }
-        throw new IllegalArgumentException("command not found");
+        singleArgCommands.get("/start").invoke(botService, message.chat().id());
     }
 
-    private void processCallback(CallbackQuery callback) {
-
+    private void processCallback(CallbackQuery callback) throws InvocationTargetException, IllegalAccessException {
+        if (callbacks.containsKey(callback.data())) {
+            var method = callbacks.get(callback.data());
+            method.invoke(botService, callback.message());
+        }
     }
 
     private static class Commands {
@@ -114,7 +119,13 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         }
 
         private static Map<String, Method> getCallbacks() {
-            return null;
+            Map<String, Method> result;
+            try {
+                result = Map.of("about_shelter", TgBotServiceImpl.class.getMethod("about", Message.class));
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+            return result;
         }
     }
 }
