@@ -9,18 +9,22 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.helpers.TgSession;
+import zhy.votniye.Shelter.helpers.TgSessionTypes;
 import zhy.votniye.Shelter.models.Owner;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
-import java.util.EnumSet;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
 public class TgBotServiceImpl implements TgBotService {
     private final Logger logger = LoggerFactory.getLogger(TgBotServiceImpl.class);
     private final TelegramBot telegramBot;
+
+    private ArrayList<TgSession> sessions;
 
     public TgBotServiceImpl(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -142,6 +146,18 @@ public class TgBotServiceImpl implements TgBotService {
 
     }
 
+    @Override
+    public void leaveContact(Message message) {
+        cleanUpButtons(message);
+        TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
+        sessions.add(session);
+
+    }
+
+    public void leaveContactStep(Message message, ) {
+
+    }
+
     private void cleanUpButtons(Message message) {
         EditMessageReplyMarkup edit = new EditMessageReplyMarkup(
                 message.chat().id(),
@@ -162,6 +178,11 @@ public class TgBotServiceImpl implements TgBotService {
             result.addRow(b.getButton());
         }
         return result;
+    }
+
+    @Override
+    public List<Long> getSessionIds() {
+        return sessions.stream().map(TgSession::getChatId).toList();
     }
 
     private static class ResponseMessages {
@@ -246,5 +267,9 @@ public class TgBotServiceImpl implements TgBotService {
         private InlineKeyboardButton getButton() {
             return this.button;
         }
+    }
+
+    private enum LeaveContactSteps {
+        FIO, PHONE, ADDRESS, EMAIL, COMMENT, FINISH;
     }
 }

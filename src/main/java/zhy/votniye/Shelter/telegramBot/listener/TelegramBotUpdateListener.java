@@ -47,6 +47,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
+            if (botService.getSessionIds().contains(update.message().chat().id()) {
+
+            }
+
             if (update.message() != null) {
                 try {
                     processMessage(update.message());
