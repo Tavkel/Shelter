@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
---changeset volkov:3
+-- changeset volkov:3
 
 CREATE TABLE contact (
 id BIGINT NOT NULL,
