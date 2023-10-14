@@ -1,10 +1,11 @@
-package zhy.votniye.Shelter.DTO;
+package zhy.votniye.Shelter.models.DTO;
 
-import jakarta.persistence.ManyToOne;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class PetDTO {
 
-    private Long petIdDTO;
+    private Long petId;
     private String name;
     private String breed;
     private Float weight;
@@ -13,15 +14,15 @@ public class PetDTO {
     private String filePathPetPhoto;
     private String description;
     private String specialNeeds;
-    private OwnerDTO ownerDTO;
+
 
 //    private status;
 
 
-    public PetDTO(Long petIdDTO, String name, String breed, Float weight,
+    public PetDTO(Long petId, String name, String breed, Float weight,
                   int age, byte[] photo, String filePathPetPhoto,
                   String description, String specialNeeds, OwnerDTO ownerDTO) {
-        this.petIdDTO = petIdDTO;
+        this.petId = petId;
         this.name = name;
         this.breed = breed;
         this.weight = weight;
@@ -30,15 +31,18 @@ public class PetDTO {
         this.filePathPetPhoto = filePathPetPhoto;
         this.description = description;
         this.specialNeeds = specialNeeds;
-        this.ownerDTO = ownerDTO;
+
     }
 
-    public Long getPetIdDTO() {
-        return petIdDTO;
+    public PetDTO(){
+
+    }
+    public Long getPetId() {
+        return petId;
     }
 
-    public void setPetIdDTO(Long petIdDTO) {
-        this.petIdDTO = petIdDTO;
+    public void setPetId(Long petId) {
+        this.petId = petId;
     }
 
     public String getName() {
@@ -105,11 +109,21 @@ public class PetDTO {
         this.specialNeeds = specialNeeds;
     }
 
-    public OwnerDTO getOwnerDTO() {
-        return ownerDTO;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PetDTO petDTO = (PetDTO) o;
+        return age == petDTO.age && Objects.equals(petId, petDTO.petId) && Objects.equals(name, petDTO.name)
+                && Objects.equals(breed, petDTO.breed) && Objects.equals(weight, petDTO.weight)
+                && Arrays.equals(photo, petDTO.photo) && Objects.equals(filePathPetPhoto, petDTO.filePathPetPhoto)
+                && Objects.equals(description, petDTO.description) && Objects.equals(specialNeeds, petDTO.specialNeeds);
     }
 
-    public void setOwnerDTO(OwnerDTO ownerDTO) {
-        this.ownerDTO = ownerDTO;
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(petId, name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
+        result = 31 * result + Arrays.hashCode(photo);
+        return result;
     }
 }

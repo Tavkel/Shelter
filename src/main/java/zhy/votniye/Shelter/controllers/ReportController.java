@@ -1,6 +1,9 @@
 package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.models.Owner;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/report")
@@ -32,5 +35,10 @@ public class ReportController {
     @DeleteMapping("/{id}")
     public Report delete(@PathVariable long id){
         return reportService.delete(id);
+    }
+
+    @GetMapping
+    public Collection<Owner> readAllReportsByOwner(){
+        return reportService.readAllReportsByOwner();
     }
 }

@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ControllerExceptionHendler {
+public class ControllerExceptionHandle {
 
-    Logger logger = LoggerFactory.getLogger(ControllerExceptionHendler.class);
+    Logger logger = LoggerFactory.getLogger(ControllerExceptionHandle.class);
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handlerException(Exception ex) {
+    public ResponseEntity<String> handleException(Exception ex) {
 
         logger.warn(ex.getMessage());
 
@@ -21,7 +21,7 @@ public class ControllerExceptionHendler {
     }
 
     @ExceptionHandler(PetException.class)
-    public ResponseEntity<String> handlerPetException(PetException ex) {
+    public ResponseEntity<String> handlePetException(PetException ex) {
 
         logger.warn(ex.getMessage());
 
@@ -29,7 +29,7 @@ public class ControllerExceptionHendler {
     }
 
     @ExceptionHandler(OwnerException.class)
-    public ResponseEntity<String> handlerOwnerException(OwnerException ex) {
+    public ResponseEntity<String> handleOwnerException(OwnerException ex) {
 
         logger.warn(ex.getMessage());
 
@@ -37,7 +37,7 @@ public class ControllerExceptionHendler {
     }
 
     @ExceptionHandler(ContactException.class)
-    public ResponseEntity<String> handlerContactException(ContactException ex) {
+    public ResponseEntity<String> handleContactException(ContactException ex) {
 
         logger.warn(ex.getMessage);
 
@@ -45,7 +45,7 @@ public class ControllerExceptionHendler {
     }
 
     @ExceptionHandler(AdoptionRequestEception.class)
-    public ResponseEntity<String> handlerAdoptionRequestEception(AdoptionRequestEception ex) {
+    public ResponseEntity<String> handleAdoptionRequestEception(AdoptionRequestEception ex) {
 
         logger.warn(ex.getMessage);
 
@@ -53,7 +53,7 @@ public class ControllerExceptionHendler {
     }
 
     @ExceptionHandler(ReportException.class)
-    public ResponseEntity<String> handlerReportException(ReportException ex) {
+    public ResponseEntity<String> handleReportException(ReportException ex) {
 
         logger.warn(ex.getMessage);
 

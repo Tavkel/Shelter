@@ -3,7 +3,7 @@ package zhy.votniye.Shelter.controllers;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/pet")
+@RequestMapping("/owner")
 public class OwnerController {
 
     public final OwnerService ownerService;
