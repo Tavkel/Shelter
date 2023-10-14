@@ -2,8 +2,6 @@ package zhy.votniye.Shelter.service.impliments;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import zhy.votniye.Shelter.exception.ReportAlreadyAddException;
-import zhy.votniye.Shelter.models.Report;
 import zhy.votniye.Shelter.models.Report;
 import zhy.votniye.Shelter.repository.ReportRepository;
 import zhy.votniye.Shelter.service.interfaces.ReportService;

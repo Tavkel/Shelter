@@ -9,9 +9,11 @@ public interface ReportService {
 
     Report read(Long id);
 
-    Report update(Long id);
+
+    Report update(Report report);
 
     Report delete(Long id);
 
-    List<Report> readALl();
+    List<Report> readAll();
+
 }
