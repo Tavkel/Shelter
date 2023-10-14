@@ -40,7 +40,7 @@ public class OwnerServiceImpl implements OwnerService {
         logger.info("The read method was called with the data " + id);
         Optional<Owner> owner = ownerRepository.findById(id);
         if (owner.isEmpty()) {
-            throw new NoSuchElementException("Pet not found");
+            throw new NoSuchElementException("Owner not found");
         }
         logger.info("The read method returned the owner from the database" + owner.get());
         return owner.get();
@@ -50,7 +50,7 @@ public class OwnerServiceImpl implements OwnerService {
     public Owner update(Owner owner) {
         logger.info("The update method was called with the data " + owner);
         if (ownerRepository.findById(owner.getId()).isEmpty()) {
-            throw new NoSuchElementException("Pet not found");
+            throw new NoSuchElementException("Owner not found");
         }
         logger.info("The update method returned the owner from the database" + owner);
         return ownerRepository.save(owner);
@@ -61,7 +61,7 @@ public class OwnerServiceImpl implements OwnerService {
         logger.info("The delete method was called with the data " + id);
         Optional<Owner> owner = ownerRepository.findById(id);
         if (owner.isEmpty()) {
-            throw new NoSuchElementException("Pet not found");
+            throw new NoSuchElementException("Owner not found");
         }
         logger.info("The  method returned the owner from the database" + owner.get());
         return null;

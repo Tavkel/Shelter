@@ -9,7 +9,7 @@ public interface ContactService {
 
     Contact read(Long id);
 
-    Contact update(Long id);
+    Contact update(Contact contact);
 
     Contact delete(Long id);
 
