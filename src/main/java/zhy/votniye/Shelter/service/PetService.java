@@ -9,7 +9,7 @@ public interface PetService {
 
     Pet read(Long id);
 
-    Pet update(Long id);
+    Pet update(Pet pet);
 
     Pet delete(Long id);
 
