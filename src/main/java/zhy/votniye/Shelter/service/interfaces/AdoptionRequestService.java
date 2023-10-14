@@ -9,7 +9,7 @@ public interface AdoptionRequestService {
 
     AdoptionRequest read(Long id);
 
-    AdoptionRequest update(Long id);
+    AdoptionRequest update(AdoptionRequest adoption);
 
     AdoptionRequest delete(Long id);
 
