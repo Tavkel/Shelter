@@ -1,23 +1,24 @@
 package zhy.votniye.Shelter.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-//@Entity
+@Entity
+@Table(name = "adoption_requests")
 public class AdoptionRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "owner_id")
     private long ownerID;
+    @Column(name = "pet_id")
     private long petId;
     private byte[] photo;
+    @Column(name = "path_to_file")
     private String pathToFile;
+    @Column(name = "additional_info")
     private String additionalInfo;
-    private String status;
 
     public AdoptionRequest() {
     }
@@ -70,13 +71,9 @@ public class AdoptionRequest {
         this.additionalInfo = additionalInfo;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -85,13 +82,12 @@ public class AdoptionRequest {
         return ownerID == that.ownerID && petId == that.petId
                 && Arrays.equals(photo, that.photo)
                 && Objects.equals(pathToFile, that.pathToFile)
-                && Objects.equals(additionalInfo, that.additionalInfo)
-                && Objects.equals(status, that.status);
+                && Objects.equals(additionalInfo, that.additionalInfo);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(ownerID, petId, pathToFile, additionalInfo, status);
+        int result = Objects.hash(ownerID, petId, pathToFile, additionalInfo);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
