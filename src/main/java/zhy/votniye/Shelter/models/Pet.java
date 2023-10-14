@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "pet")
 public class Pet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String breed;
@@ -22,18 +22,18 @@ public class Pet {
     private String description;
     @Column(name = "special_needs")
     private String specialNeeds;
-//    @ManyToOne
-//    @JoinColumn(name = "owner_id")
-//    private Owner owner;
-//
-//
-//    public Owner getOwner() {
-//        return owner;
-//    }
-//
-//    public void setOwner(Owner owner) {
-//        this.owner = owner;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
 
 
     public Pet() {
