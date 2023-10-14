@@ -1,6 +1,5 @@
 package zhy.votniye.Shelter.telegramBot.listener;
 
-import com.pengrad.telegrambot.Callback;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
@@ -121,7 +120,11 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         private static Map<String, Method> getCallbacks() {
             Map<String, Method> result;
             try {
-                result = Map.of("about_shelter", TgBotServiceImpl.class.getMethod("about", Message.class));
+                result = Map.of("about_shelter", TgBotServiceImpl.class.getMethod("about", Message.class),
+                        "general_info", TgBotServiceImpl.class.getMethod("aboutGeneral", Message.class),
+                        "contacts", TgBotServiceImpl.class.getMethod("aboutContacts", Message.class),
+                        "drive_permit", TgBotServiceImpl.class.getMethod("aboutEntryPermit", Message.class),
+                        "rules_on_territory", TgBotServiceImpl.class.getMethod("aboutRulesOnTerritory", Message.class));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }

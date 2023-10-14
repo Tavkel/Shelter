@@ -38,6 +38,7 @@ public class TgBotServiceImpl implements TgBotService {
             logger.warn("sayHello(). Failed to send response");
         }
     }
+
     //endregion
     //region double arg commands
     //endregion
@@ -45,10 +46,45 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public void about(Message message) {
         SendMessage response = ResponseMessages.getAboutMessage(message.chat().id());
-        EditMessageReplyMarkup edit = new EditMessageReplyMarkup(message.chat().id(), message.messageId()).replyMarkup(new InlineKeyboardMarkup());
-        telegramBot.execute(edit);
+        cleanUpButtons(message);
         telegramBot.execute(response);
     }
+
+    @Override
+    public void aboutGeneral(Message message) {
+        SendMessage response = ResponseMessages.getAboutGeneralMessage(message.chat().id());
+        //cleanUpButtons(message);
+        telegramBot.execute(response);
+    }
+
+    @Override
+    public void aboutContacts(Message message) {
+        SendMessage response = ResponseMessages.getAboutContactsMessage(message.chat().id());
+        //cleanUpButtons(message);
+        telegramBot.execute(response);
+    }
+
+    @Override
+    public void aboutEntryPermit(Message message) {
+        SendMessage response = ResponseMessages.getAboutEntryPermitMessage(message.chat().id());
+        //cleanUpButtons(message);
+        telegramBot.execute(response);
+    }
+
+    @Override
+    public void aboutRulesOnTerritory(Message message) {
+        SendMessage response = ResponseMessages.getAboutRulesOnTerritoryMessage(message.chat().id());
+        //cleanUpButtons(message);
+        telegramBot.execute(response);
+    }
+
+    private void cleanUpButtons(Message message) {
+        EditMessageReplyMarkup edit = new EditMessageReplyMarkup(
+                message.chat().id(),
+                message.messageId()).replyMarkup(new InlineKeyboardMarkup());
+        telegramBot.execute(edit);
+    }
+
     //endregion
     private void sendMessage() {
     }
@@ -84,6 +120,7 @@ public class TgBotServiceImpl implements TgBotService {
                 return result.replyMarkup(keyboard);
             }
         }
+
         private static SendMessage getAboutMessage(long chatId) {
             var result = new SendMessage(chatId, "What exactly I should tell you about our shelter?");
             var keyboard = new InlineKeyboardMarkup(Buttons.ABOUT_GENERAL_BUTTON)
@@ -91,6 +128,24 @@ public class TgBotServiceImpl implements TgBotService {
                     .addRow(Buttons.ABOUT_PERMIT_BUTTON)
                     .addRow(Buttons.ABOUT_RULES_ON_TERRITORY);
             return result.replyMarkup(keyboard);
+        }
+
+        private static SendMessage getAboutGeneralMessage(long chatId) {
+            return new SendMessage(chatId, "General info on the shelter. Address, working hours, etc");
+        }
+
+        private static SendMessage getAboutContactsMessage(long chatId) {
+            return new SendMessage(chatId, "Contacts, phones, tg, whatsapp, link to web").
+                    disableWebPagePreview(true);
+        }
+
+        private static SendMessage getAboutEntryPermitMessage(long chatId) {
+            return new SendMessage(chatId, "You need to request permit to enter shelter's territory. " +
+                    "You can do it by calling following number: +*(***)***-**-**");
+        }
+
+        private static SendMessage getAboutRulesOnTerritoryMessage(long chatId) {
+            return new SendMessage(chatId, "Keep quiet, no running, no smoking, etc, etc");
         }
     }
 
