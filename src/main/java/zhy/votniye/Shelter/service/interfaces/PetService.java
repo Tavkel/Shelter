@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.service;
+package zhy.votniye.Shelter.service.interfaces;
 
 import zhy.votniye.Shelter.models.Pet;
 

@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.service;
+package zhy.votniye.Shelter.service.interfaces;
 
 import zhy.votniye.Shelter.models.Owner;
 
@@ -9,7 +9,7 @@ public interface OwnerService {
 
     Owner read(Long id);
 
-    Owner update(Long id);
+    Owner update(Owner owner);
 
     Owner delete(Long id);
 

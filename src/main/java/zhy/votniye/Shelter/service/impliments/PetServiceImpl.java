@@ -3,16 +3,13 @@ package zhy.votniye.Shelter.service.impliments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.PetException;
+import zhy.votniye.Shelter.exception.PetAlreadyAddException;
 import zhy.votniye.Shelter.models.Pet;
 import zhy.votniye.Shelter.repository.PetRepository;
-import zhy.votniye.Shelter.service.PetService;
+import zhy.votniye.Shelter.service.interfaces.PetService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @Service
 public class PetServiceImpl implements PetService {
@@ -32,7 +29,7 @@ public class PetServiceImpl implements PetService {
                         , pet.getWeight()
                         , pet.getAge())
                 .isPresent()) {
-            throw new PetException("The database already has this pet");
+            throw new PetAlreadyAddException("The database already has this pet");
         }
         logger.info(pet + " - added to the database");
         return petRepository.save(pet);
@@ -43,7 +40,7 @@ public class PetServiceImpl implements PetService {
         logger.info("The read method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new PetException("There is no such pet in the database");
+            throw new PetAlreadyAddException("There is no such pet in the database");
         }
         logger.info("The read method returned the pet from the database" + pet.get());
         return pet.get();
@@ -53,7 +50,7 @@ public class PetServiceImpl implements PetService {
     public Pet update(Pet pet) {
         logger.info("The update method was called with the data " + pet);
         if (petRepository.findById(pet.getId()).isEmpty()) {
-            throw new PetException("There is no such pet in the database");
+            throw new PetAlreadyAddException("There is no such pet in the database");
         }
         logger.info("The update method returned the pet from the database" + pet);
         return petRepository.save(pet);
@@ -64,7 +61,7 @@ public class PetServiceImpl implements PetService {
         logger.info("The delete method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new PetException("There is no such pet in the database");
+            throw new PetAlreadyAddException("There is no such pet in the database");
         }
         logger.info("The  method returned the pet from the database" + pet.get());
         return null;
