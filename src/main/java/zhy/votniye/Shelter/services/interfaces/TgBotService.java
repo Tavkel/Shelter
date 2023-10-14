@@ -14,4 +14,6 @@ public interface TgBotService {
     void aboutEntryPermit(Message message);
 
     void aboutRulesOnTerritory(Message message);
+
+    void backToMain(Message message);
 }
