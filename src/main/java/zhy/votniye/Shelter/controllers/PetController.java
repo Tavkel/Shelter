@@ -4,6 +4,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import zhy.votniye.Shelter.mapper.PetMapper;
+import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.models.Pet;
 
 import java.io.IOException;
@@ -15,30 +17,41 @@ public class PetController {
 
     public final PetService petService;
 
-    private final int maxFileSizeInKb = 300;
+    public final PetMapper petMapper;
 
-    public PetController(PetService petService){
+    public PetController(PetService petService, PetMapper petMapper ){
+
         this.petService=petService;
+        this.petMapper=petMapper;
     }
 
     @PostMapping
-    public Pet create(@RequestBody Pet pet) {
-        return petService.create(pet);
+    public PetDTO create(@RequestBody PetDTO petDTO) {
+
+        var pet = petMapper.toPet(petDTO);
+
+        return petMapper.fromPet(petService.create(pet));
     }
 
     @GetMapping("/{id}")
-    public Pet read(@PathVariable long id){
-        return petService.read(id);
+    public PetDTO read(@PathVariable long petId){
+
+        return petMapper.fromPet(petService.read(petId));
     }
 
     @PutMapping
-    public Pet update(@RequestBody Pet pet){
-        return petService.update(pet);
+    public PetDTO update(@RequestBody PetDTO petDTO) {
+
+        var pet = petMapper.toPet(petDTO);
+
+        return petMapper.fromPet(petService.update(pet));
+
     }
 
     @DeleteMapping("/{id}")
-    public Pet delete(@PathVariable long id){
-        return petService.delete(id);
+    public PetDTO delete(@PathVariable long petId){
+
+        return petMapper.fromPet(petService.delete(petId));
     }
 
     @GetMapping

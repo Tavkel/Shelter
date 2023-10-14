@@ -8,66 +8,69 @@ public class AdoptionRequestDTO {
     private Long id;
     private Long ownerId;
     private Long petId;
-    private byte[] photoAdoptionRequestDTO;
-    private String pathToFilePhotoAdoptionRequestDTO;
+    private byte[] photoAdoptionRequest;
+    private String pathToFilePhotoAdoptionRequest;
     private String additionalInfo;
+    private String status;
+
 
 //    private status;
 
 
     public AdoptionRequestDTO(Long idAdoptionRequestDTO, Long ownerIdDTO,
-                              Long petIdDTO, byte[] photoAdoptionRequestDTO,
-                              String pathToFilePhotoAdoptionRequestDTO, String additionalInfo) {
+                              Long petIdDTO, byte[] photoAdoptionRequest,
+                              String pathToFilePhotoAdoptionRequest, String additionalInfo, String status) {
         this.id = idAdoptionRequestDTO;
         this.ownerId = ownerIdDTO;
         this.petId = petIdDTO;
-        this.photoAdoptionRequestDTO = photoAdoptionRequestDTO;
-        this.pathToFilePhotoAdoptionRequestDTO = pathToFilePhotoAdoptionRequestDTO;
+        this.photoAdoptionRequest = photoAdoptionRequest;
+        this.pathToFilePhotoAdoptionRequest = pathToFilePhotoAdoptionRequest;
         this.additionalInfo = additionalInfo;
+        this.status = status;
     }
 
     public AdoptionRequestDTO(){
 
     }
 
-    public Long getIdAdoptionRequestDTO() {
+    public Long getId() {
         return id;
     }
 
-    public void setIdAdoptionRequestDTO(Long idAdoptionRequestDTO) {
+    public void setId(Long idAdoptionRequestDTO) {
         this.id = idAdoptionRequestDTO;
     }
 
-    public Long getOwnerIdDTO() {
+    public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerIdDTO(Long ownerIdDTO) {
+    public void setOwnerId(Long ownerIdDTO) {
         this.ownerId = ownerIdDTO;
     }
 
-    public Long getPetIdDTO() {
+    public Long getPetId() {
         return petId;
     }
 
-    public void setPetIdDTO(Long petIdDTO) {
+    public void setPetId(Long petIdDTO) {
         this.petId = petIdDTO;
     }
 
-    public byte[] getPhotoAdoptionRequestDTO() {
-        return photoAdoptionRequestDTO;
+    public byte[] getPhotoAdoptionRequest() {
+        return photoAdoptionRequest;
     }
 
-    public void setPhotoAdoptionRequestDTO(byte[] photoAdoptionRequestDTO) {
-        this.photoAdoptionRequestDTO = photoAdoptionRequestDTO;
+    public void setPhotoAdoptionRequest(byte[] photoAdoptionRequest) {
+        this.photoAdoptionRequest = photoAdoptionRequest;
     }
 
-    public String getPathToFilePhotoAdoptionRequestDTO() {
-        return pathToFilePhotoAdoptionRequestDTO;
+    public String getPathToFilePhotoAdoptionRequest() {
+        return pathToFilePhotoAdoptionRequest;
     }
 
-    public void setPathToFilePhotoAdoptionRequestDTO(String pathToFilePhotoAdoptionRequestDTO) {
-        this.pathToFilePhotoAdoptionRequestDTO = pathToFilePhotoAdoptionRequestDTO;
+    public void setPathToFilePhotoAdoptionRequest(String pathToFilePhotoAdoptionRequest) {
+        this.pathToFilePhotoAdoptionRequest = pathToFilePhotoAdoptionRequest;
     }
 
     public String getAdditionalInfo() {
@@ -78,21 +81,32 @@ public class AdoptionRequestDTO {
         this.additionalInfo = additionalInfo;
     }
 
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdoptionRequestDTO that = (AdoptionRequestDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(ownerId, that.ownerId)
-                && Objects.equals(petId, that.petId) && Arrays.equals(photoAdoptionRequestDTO,
-                that.photoAdoptionRequestDTO) && Objects.equals(pathToFilePhotoAdoptionRequestDTO,
-                that.pathToFilePhotoAdoptionRequestDTO) && Objects.equals(additionalInfo, that.additionalInfo);
+                && Objects.equals(petId, that.petId) && Arrays.equals(photoAdoptionRequest,
+                that.photoAdoptionRequest) && Objects.equals(pathToFilePhotoAdoptionRequest,
+                that.pathToFilePhotoAdoptionRequest) && Objects.equals(additionalInfo, that.additionalInfo)
+                && Objects.equals(status,that.status);
+
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, ownerId, petId, pathToFilePhotoAdoptionRequestDTO, additionalInfo);
-        result = 31 * result + Arrays.hashCode(photoAdoptionRequestDTO);
+        int result = Objects.hash(id, ownerId, petId, pathToFilePhotoAdoptionRequest, additionalInfo, status);
+        result = 31 * result + Arrays.hashCode(photoAdoptionRequest);
         return result;
     }
 }

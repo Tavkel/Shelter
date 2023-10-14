@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ControllerExceptionHandle {
+public class ControllerExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(ControllerExceptionHandle.class);
+    Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {

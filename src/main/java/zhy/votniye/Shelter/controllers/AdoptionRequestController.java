@@ -1,37 +1,50 @@
 package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.mapper.AdoptionRequestMapper;
+import zhy.votniye.Shelter.models.DTO.AdoptionRequestDTO;
 
 @RestController
 @RequestMapping("/adoptionRequest")
 public class AdoptionRequestController {
 
     public final AdoptionRequestService adoptionRequestService;
+    public final AdoptionRequestMapper adoptionRequestMapper;
 
-    private final int maxFileSizeInKb = 300;
 
-    public AdoptionRequestController(AdoptionRequestService adoptionRequestService){
+
+
+    public AdoptionRequestController(AdoptionRequestService adoptionRequestService,
+                                     AdoptionRequestMapper adoptionRequestMapper){
         this.adoptionRequestService=adoptionRequestService;
+        this.adoptionRequestMapper=adoptionRequestMapper;
     }
 
     @PostMapping
-    public AdoptionRequest create(@RequestBody AdoptionRequest adoptionRequest){
-        return adoptionRequestService.create(adoptionRequest);
+    public AdoptionRequestDTO create(@RequestBody AdoptionRequestDTO adoptionRequestDTO){
+
+        var adoptionRequest = adoptionRequestMapper.toAdoptionRequest(adoptionRequestDTO);
+
+        return adoptionRequestMapper.fromAdoptionRequest(adoptionRequestService.create(adoptionRequest));
     }
 
     @GetMapping("/{id}")
-    public AdoptionRequest read(@PathVariable long id){
-        return adoptionRequestService.read(id);
+    public AdoptionRequestDTO read(@PathVariable long id){
+
+        return adoptionRequestMapper.fromAdoptionRequest(adoptionRequestService.read(id));
     }
 
     @PutMapping
-    public AdoptionRequest update(AdoptionRequest adoptionRequest){
-        return adoptionRequestService.update(adoptionRequest);
+    public AdoptionRequestDTO update(AdoptionRequestDTO adoptionRequestDTO){
+
+        var adoptionRequest = adoptionRequestMapper.toAdoptionRequest(adoptionRequestDTO);
+
+        return adoptionRequestMapper.fromAdoptionRequest(adoptionRequestService.update(adoptionRequest));
     }
 
     @DeleteMapping("/{id}")
-    public AdoptionRequest delete(@PathVariable long id){
-        return adoptionRequestService.delete(id);
+    public AdoptionRequestDTO delete(@PathVariable long id){
+        return adoptionRequestMapper.fromAdoptionRequest(adoptionRequestService.delete(id));
     }
 
 

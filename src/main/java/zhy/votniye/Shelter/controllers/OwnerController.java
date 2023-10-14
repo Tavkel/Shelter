@@ -1,6 +1,9 @@
 package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.mapper.OwnerMapper;
+import zhy.votniye.Shelter.mapper.PetMapper;
+import zhy.votniye.Shelter.models.DTO.OwnerDTO;
 
 @RestController
 @RequestMapping("/owner")
@@ -8,27 +11,38 @@ public class OwnerController {
 
     public final OwnerService ownerService;
 
-    public OwnerController(OwnerService ownerService){
+    public final OwnerMapper ownerMapper;
+
+    public OwnerController(OwnerService ownerService, OwnerMapper ownerMapper) {
         this.ownerService=ownerService;
+        this.ownerMapper=ownerMapper;
     }
 
     @PostMapping
-    public Owner create(@RequestBody Owner owner){
-        return ownerService.create(owner);
+    public OwnerDTO create(@RequestBody OwnerDTO ownerDTO) {
+
+        var owner = ownerMapper.toOwner(ownerDTO);
+
+        return ownerMapper.fromOwner(ownerService.create(owner));
     }
 
     @GetMapping("/{id}")
-    public Owner read(@PathVariable long id){
-        return ownerService.read(id);
+    public OwnerDTO read(@PathVariable long ownerId){
+
+        return ownerMapper.fromOwner(ownerService.read(ownerId));
     }
 
     @PutMapping
-    public Owner update(Owner owner){
-        return ownerService.update(owner);
+    public OwnerDTO update(OwnerDTO ownerDTO){
+
+        var owner = ownerMapper.toOwner(ownerDTO);
+
+        return ownerMapper.fromOwner(ownerService.update(owner));
     }
 
     @DeleteMapping("/{id}")
-    public Owner delete(@PathVariable long id){
-        return ownerService.delete(id);
+    public OwnerDTO delete(@PathVariable long ownerId){
+
+        return ownerMapper.fromOwner(ownerService.delete(ownerId));
     }
 }
