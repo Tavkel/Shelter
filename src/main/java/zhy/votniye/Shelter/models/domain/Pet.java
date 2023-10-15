@@ -1,14 +1,14 @@
 package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
+import zhy.votniye.Shelter.models.enums.Gender;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.TimeZone;
 
 @Entity
 @Table(name = "pet")
@@ -17,12 +17,16 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Gender gender;
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
     private byte[] photo;
+    private Status.PetStatus status;
+
     @Column(name = "path_to_file")
     private String pathToFile;
+
     private String description;
     @Column(name = "special_needs")
     private String specialNeeds;
@@ -31,6 +35,7 @@ public class Pet {
     private Owner owner;
 
     public Pet() {
+        status = Status.PetStatus.AVAILABLE;
     }
 
     public Long getId() {
@@ -110,6 +115,22 @@ public class Pet {
         this.owner = owner;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public Status.PetStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status.PetStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -131,4 +152,5 @@ public class Pet {
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
+
 }

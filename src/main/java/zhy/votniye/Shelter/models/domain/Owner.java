@@ -2,7 +2,7 @@ package zhy.votniye.Shelter.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import zhy.votniye.Shelter.models.Status;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.util.List;
 import java.util.Objects;
