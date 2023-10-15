@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.helpers.TgSession;
 import zhy.votniye.Shelter.helpers.TgSessionTypes;
 import zhy.votniye.Shelter.models.domain.Owner;
+import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.util.*;
@@ -181,9 +182,7 @@ public class TgBotServiceImpl implements TgBotService {
     private InlineKeyboardMarkup assembleKeyboard(EnumSet<Button> flags) {
         InlineKeyboardMarkup result = new InlineKeyboardMarkup();
 
-        var flagsOrdered = flags.stream().sorted().toList();
-
-        for (var b : flagsOrdered) {
+        for (var b : flags) {
             result.addRow(b.getButton());
         }
         return result;

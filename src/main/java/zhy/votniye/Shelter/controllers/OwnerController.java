@@ -22,7 +22,7 @@ public class OwnerController {
         return fromOwner(ownerService.create(owner));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{ownerId}")
     public OwnerDTO read(@PathVariable long ownerId){
         return fromOwner(ownerService.read(ownerId));
     }
@@ -33,7 +33,7 @@ public class OwnerController {
         return fromOwner(ownerService.update(owner));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ownerId}")
     public OwnerDTO delete(@PathVariable long ownerId){
         return fromOwner(ownerService.delete(ownerId));
     }

@@ -1,5 +1,7 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import zhy.votniye.Shelter.models.Status;
+
 import java.util.Objects;
 
 public class OwnerDTO {
@@ -11,12 +13,15 @@ public class OwnerDTO {
     private String middleName;
     private ContactDTO contactDTO;
 
-    public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName, ContactDTO contactDTO) {
+    private Status.OwnerStatus status;
+
+    public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName, ContactDTO contactDTO, Status.OwnerStatus status) {
         this.ownerId = ownerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.contactDTO = contactDTO;
+        this.status = status;
     }
 
     public OwnerDTO(){
@@ -61,6 +66,14 @@ public class OwnerDTO {
 
     public void setContactDTO(ContactDTO contactDTO) {
         this.contactDTO = contactDTO;
+    }
+
+    public Status.OwnerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status.OwnerStatus status) {
+        this.status = status;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class PetController {
         return fromPet(petService.create(pet));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{petId}")
     public PetDTO read(@PathVariable long petId) {
         return fromPet(petService.read(petId));
     }
@@ -43,7 +43,7 @@ public class PetController {
         return fromPet(petService.update(pet));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{petId}")
     public PetDTO delete(@PathVariable long petId) {
         return fromPet(petService.delete(petId));
     }
