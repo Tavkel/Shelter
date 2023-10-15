@@ -18,3 +18,8 @@ ALTER TABLE pet ADD owner_id BIGINT;
 
 -- changeset tav:4
 alter table pet add constraint "FK_pet_owner" foreign key (owner_id) references owner(id);
+
+-- changeset volkov:7
+ALTER TABLE pet DROP COLUMN age;
+ALTER TABLE pet ADD
+date_of_birth TIMESTAMP WITH TIME ZONE NOT NULL;

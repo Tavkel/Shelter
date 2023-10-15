@@ -1,27 +1,35 @@
 package zhy.votniye.Shelter.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
-//@Entity
+
+@Entity
+@Table(name = "reports")
 public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "owner_id")
     private long ownerID;
+    @Column(name = "pet_id")
     private long petId;
+
     private byte[] photo;
+    @Column(name = "path_to_file")
     private String pathToFile;
+    @Column(name = "feeding_report")
     private String feedingReport;
+    @Column(name = "general_report")
     private String generalReport;
+    @Column(name = "behavior_report")
     private String behaviorReport;
-    private Date date;
+    private LocalDateTime date;
 
     public Report() {
 
@@ -91,11 +99,11 @@ public class Report {
         this.behaviorReport = behaviorReport;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -120,3 +128,7 @@ public class Report {
         return result;
     }
 }
+
+
+
+

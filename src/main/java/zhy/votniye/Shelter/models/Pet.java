@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class Pet {
     private String name;
     private String breed;
     private Float weight;
-    private int age;
+    private LocalDateTime dateOfBirth;
 
     private byte[] photo;
     @Column(name = "path_to_file")
@@ -71,12 +72,12 @@ public class Pet {
         this.weight = weight;
     }
 
-    public int getAge() {
-        return age;
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public void setAge(int age) {
-        this.age = age;
+            this.dateOfBirth = dateOfBirth;
     }
 
     public String getPathToFile() {
@@ -108,12 +109,12 @@ public class Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-        return age == pet.age && Objects.equals(name, pet.name) && Objects.equals(breed, pet.breed) && Objects.equals(weight, pet.weight) && Arrays.equals(photo, pet.photo) && Objects.equals(pathToFile, pet.pathToFile) && Objects.equals(description, pet.description) && Objects.equals(specialNeeds, pet.specialNeeds);
+            return dateOfBirth == pet.dateOfBirth && Objects.equals(name, pet.name) && Objects.equals(breed, pet.breed) && Objects.equals(weight, pet.weight) && Arrays.equals(photo, pet.photo) && Objects.equals(pathToFile, pet.pathToFile) && Objects.equals(description, pet.description) && Objects.equals(specialNeeds, pet.specialNeeds);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, age, pathToFile, description, specialNeeds);
+        int result = Objects.hash(name, breed, weight, dateOfBirth, pathToFile, description, specialNeeds);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
