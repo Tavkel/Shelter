@@ -13,7 +13,7 @@ public class ReportMapper {
 
 
         report.setId(reportDTO.getReportId());
-        report.setOwnerID(reportDTO.getOwnerId());
+        report.setOwnerId(reportDTO.getOwnerId());
         report.setPetId(reportDTO.getPetId());
         report.setPathToFile(reportDTO.getPathToFileReportPhoto());
         report.setFeedingReport(reportDTO.getFeedingReport());
@@ -31,13 +31,13 @@ public class ReportMapper {
         ReportDTO reportDTO = new ReportDTO();
 
         reportDTO.setReportId(report.getId());
-        reportDTO.setOwnerId(report.getOwnerID());
+        reportDTO.setOwnerId(report.getOwnerId());
         reportDTO.setPetId(report.getPetId());
         reportDTO.setPathToFileReportPhoto(report.getPathToFile());
         reportDTO.setFeedingReport(report.getFeedingReport());
         reportDTO.setGeneralReport(report.getGeneralReport());
         reportDTO.setBehaviorReport(report.getBehaviorReport());
-        reportDTO.setReportDate(report.getDate());
+        reportDTO.setReportDate(report.getDateOfReport());
 
         return reportDTO;
     }

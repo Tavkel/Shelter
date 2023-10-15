@@ -33,7 +33,7 @@ public class Report {
     private LocalDateTime dateOfReport;
 
     public Report() {
-        this.date = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.dateOfReport = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public long getId() {

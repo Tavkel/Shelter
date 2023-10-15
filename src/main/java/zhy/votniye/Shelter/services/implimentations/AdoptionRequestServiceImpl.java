@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.services.implimentations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.models.domain.AdoptionRequest;
 import zhy.votniye.Shelter.repository.AdoptionRequestRepository;
 import zhy.votniye.Shelter.services.interfaces.AdoptionRequestService;
