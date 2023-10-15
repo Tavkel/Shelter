@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Contact {
     @Id
     private long id;
-    private int phone;
+    private long phone;
     @Column(name = "telegram_chat_id")
     private long telegramChatId;
     private String email;
@@ -30,7 +30,7 @@ public class Contact {
         this.id = id;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
