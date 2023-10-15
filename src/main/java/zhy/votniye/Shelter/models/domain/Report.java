@@ -17,11 +17,11 @@ public class Report {
     private long id;
 
     @Column(name = "owner_id")
-    private long ownerID;
+    private long ownerId;
     @Column(name = "pet_id")
     private long petId;
-    private byte[] photo;
 
+    private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;
     @Column(name = "feeding_report")
@@ -30,10 +30,10 @@ public class Report {
     private String generalReport;
     @Column(name = "behavior_report")
     private String behaviorReport;
-    private LocalDateTime date;
+    private LocalDateTime dateOfReport;
 
     public Report() {
-        this.date = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.dateOfReport = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public long getId() {
@@ -44,12 +44,12 @@ public class Report {
         this.id = id;
     }
 
-    public long getOwnerID() {
-        return ownerID;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwnerID(long ownerID) {
-        this.ownerID = ownerID;
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public long getPetId() {
@@ -100,8 +100,8 @@ public class Report {
         this.behaviorReport = behaviorReport;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getDateOfReport() {
+        return dateOfReport;
     }
 
     @Override
@@ -109,18 +109,18 @@ public class Report {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Report report = (Report) o;
-        return ownerID == report.ownerID && petId == report.petId
+        return ownerId == report.ownerId && petId == report.petId
                 && Arrays.equals(photo, report.photo)
                 && Objects.equals(pathToFile, report.pathToFile)
                 && Objects.equals(feedingReport, report.feedingReport)
                 && Objects.equals(generalReport, report.generalReport)
                 && Objects.equals(behaviorReport, report.behaviorReport)
-                && Objects.equals(date, report.date);
+                && Objects.equals(dateOfReport, report.dateOfReport);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(ownerID, petId, pathToFile, feedingReport, generalReport, behaviorReport, date);
+        int result = Objects.hash(ownerId, petId, pathToFile, feedingReport, generalReport, behaviorReport, dateOfReport);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
