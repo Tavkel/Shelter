@@ -74,7 +74,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public List<Pet> readAllPagination(Integer pageNumber, Integer pageSize) {
+    public List<Pet> readAllPagination(Integer pageNumber) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
         return petRepository.findAll(pageRequest).getContent();
     }

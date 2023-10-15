@@ -76,7 +76,7 @@ public class Pet {
         return dateOfBirth;
     }
 
-    public void setAge(int age) {
+    public void setAge(LocalDateTime dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
     }
 
@@ -109,7 +109,13 @@ public class Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-            return dateOfBirth == pet.dateOfBirth && Objects.equals(name, pet.name) && Objects.equals(breed, pet.breed) && Objects.equals(weight, pet.weight) && Arrays.equals(photo, pet.photo) && Objects.equals(pathToFile, pet.pathToFile) && Objects.equals(description, pet.description) && Objects.equals(specialNeeds, pet.specialNeeds);
+            return dateOfBirth == pet.dateOfBirth && Objects.equals(name, pet.name)
+                    && Objects.equals(breed, pet.breed)
+                    && Objects.equals(weight, pet.weight)
+                    && Arrays.equals(photo, pet.photo)
+                    && Objects.equals(pathToFile, pet.pathToFile)
+                    && Objects.equals(description, pet.description)
+                    && Objects.equals(specialNeeds, pet.specialNeeds);
     }
 
     @Override

@@ -15,5 +15,5 @@ public interface PetService {
 
     List<Pet> readAll();
 
-    List<Pet> readAllPagination(Integer pageNumber, Integer pageSize);
+    List<Pet> readAllPagination(Integer pageNumber);
 }
