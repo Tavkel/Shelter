@@ -69,7 +69,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public List<Pet> readAll() {
-      logger.info("The ReadAll method is called");
+        logger.info("The ReadAll method is called");
         return petRepository.findAll();
     }
 
