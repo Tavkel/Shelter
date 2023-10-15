@@ -47,8 +47,9 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
-            if (botService.getSessionIds().contains(update.message().chat().id()) {
-
+            if (update.message() != null && botService.getSessionIds().contains(update.message().chat().id())) {
+                botService.getSession(update.message().chat().id()).setData(update.message().text());
+                return;
             }
 
             if (update.message() != null) {
@@ -91,7 +92,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 return;
             }
         }
-        singleArgCommands.get("/start").invoke(botService, message.chat().id());
+        //singleArgCommands.get("/start").invoke(botService, message.chat().id());
     }
 
     private void processCallback(CallbackQuery callback) throws InvocationTargetException, IllegalAccessException {
@@ -127,7 +128,8 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                         "contacts", TgBotService.class.getMethod("aboutContacts", Message.class),
                         "drive_permit", TgBotService.class.getMethod("aboutEntryPermit", Message.class),
                         "rules_on_territory", TgBotService.class.getMethod("aboutRulesOnTerritory", Message.class),
-                        "back_to_main", TgBotService.class.getMethod("backToMain", Message.class));
+                        "back_to_main", TgBotService.class.getMethod("backToMain", Message.class),
+                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }

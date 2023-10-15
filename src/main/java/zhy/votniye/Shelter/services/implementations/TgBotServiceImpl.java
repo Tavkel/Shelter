@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.helpers.TgSession;
 import zhy.votniye.Shelter.helpers.TgSessionTypes;
@@ -15,16 +16,16 @@ import zhy.votniye.Shelter.models.Owner;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Service
 public class TgBotServiceImpl implements TgBotService {
+    @Autowired
+    private ContactService contactService;
     private final Logger logger = LoggerFactory.getLogger(TgBotServiceImpl.class);
     private final TelegramBot telegramBot;
 
-    private ArrayList<TgSession> sessions;
+    private final ArrayList<TgSession> sessions = new ArrayList<>();
 
     public TgBotServiceImpl(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -149,13 +150,21 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public void leaveContact(Message message) {
         cleanUpButtons(message);
+        SendMessage response = new SendMessage(message.chat().id(), "i need your fio");
+        telegramBot.execute(response);
         TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
-        sessions.add(session);
 
+        session.setContactService(contactService);
+        sessions.add(session);
     }
 
-    public void leaveContactStep(Message message, ) {
-
+    @Override
+    public void leaveContactStep(long chatId, int step) {
+        if(step == 6){
+            return;
+        }
+        SendMessage sendMessage = new SendMessage(chatId, "and now i need " + LeaveContactSteps.values()[step-1]);//todo rework
+        telegramBot.execute(sendMessage);
     }
 
     private void cleanUpButtons(Message message) {
@@ -183,6 +192,11 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public List<Long> getSessionIds() {
         return sessions.stream().map(TgSession::getChatId).toList();
+    }
+
+    @Override
+    public TgSession getSession(long chatId) {
+        return sessions.stream().filter(s -> s.getChatId() == chatId).findFirst().get();
     }
 
     private static class ResponseMessages {
@@ -268,8 +282,11 @@ public class TgBotServiceImpl implements TgBotService {
             return this.button;
         }
     }
-
     private enum LeaveContactSteps {
-        FIO, PHONE, ADDRESS, EMAIL, COMMENT, FINISH;
+        FIO (1), PHONE(2), ADDRESS(3), EMAIL(4), COMMENT(5), FINISH(6);
+        private final int num;
+        LeaveContactSteps(int step){
+            num = step;
+        }
     }
 }
