@@ -1,6 +1,6 @@
-package zhy.votniye.Shelter.service.interfaces;
+package zhy.votniye.Shelter.services.interfaces;
 
-import zhy.votniye.Shelter.models.Pet;
+import zhy.votniye.Shelter.models.domain.Pet;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface PetService {
 
     List<Pet> readAll();
 
-    List<Pet> readAllPagination(Integer pageNumber, Integer pageSize);
+    List<Pet> readAllPagination(int pageNumber);
 }

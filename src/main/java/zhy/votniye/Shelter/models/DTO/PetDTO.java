@@ -1,5 +1,6 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class PetDTO {
     private String breed;
     private Float weight;
     private int age;
+    private LocalDateTime dateOfBirth;
     private byte[] photo;
     private String filePathPetPhoto;
     private String description;
@@ -17,7 +19,6 @@ public class PetDTO {
 
 
 //    private status;
-
 
     public PetDTO(Long petId, String name, String breed, Float weight,
                   int age, byte[] photo, String filePathPetPhoto,
@@ -37,10 +38,10 @@ public class PetDTO {
     public PetDTO(){
 
     }
+
     public Long getPetId() {
         return petId;
     }
-
     public void setPetId(Long petId) {
         this.petId = petId;
     }
@@ -75,6 +76,14 @@ public class PetDTO {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public LocalDateTime getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public byte[] getPhoto() {

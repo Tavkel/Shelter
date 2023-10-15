@@ -1,10 +1,10 @@
-package zhy.votniye.Shelter.models;
+package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 
@@ -15,12 +15,13 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "owner_id")
     private long ownerID;
     @Column(name = "pet_id")
     private long petId;
-
     private byte[] photo;
+
     @Column(name = "path_to_file")
     private String pathToFile;
     @Column(name = "feeding_report")
@@ -32,7 +33,7 @@ public class Report {
     private LocalDateTime date;
 
     public Report() {
-
+        this.date = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
 
     public long getId() {
@@ -101,10 +102,6 @@ public class Report {
 
     public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     @Override

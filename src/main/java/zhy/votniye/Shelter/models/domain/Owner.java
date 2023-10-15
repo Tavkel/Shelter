@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.models;
+package zhy.votniye.Shelter.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

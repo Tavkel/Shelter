@@ -1,7 +1,7 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 public class ReportDTO {
@@ -14,11 +14,12 @@ public class ReportDTO {
     private String feedingReport;
     private String generalReport;
     private String behaviorReport;
-    private Date reportDate;
+
+    private LocalDateTime reportDate;
 
     public ReportDTO(Long reportId, Long ownerId, Long petId,
                      byte[] reportPhoto, String pathToFileReportPhoto, String feedingReport,
-                     String generalReport, String behaviorReport, Date reportDate) {
+                     String generalReport, String behaviorReport, LocalDateTime reportDate) {
         this.reportId = reportId;
         this.ownerId = ownerId;
         this.petId = petId;
@@ -98,11 +99,11 @@ public class ReportDTO {
         this.behaviorReport = behaviorReport;
     }
 
-    public Date getReportDate() {
+    public LocalDateTime getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(LocalDateTime reportDate) {
         this.reportDate = reportDate;
     }
 

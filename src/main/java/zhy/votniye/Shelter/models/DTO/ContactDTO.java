@@ -5,7 +5,7 @@ import java.util.Objects;
 public class ContactDTO {
 
     private Long contactId;
-    private int phone;
+    private long phone;
 
 //    private whatsapp;
 
@@ -17,7 +17,7 @@ public class ContactDTO {
     private String address;
     private String comment;
 
-    public ContactDTO(Long contactId, int phone, String email, String address, String comment) {
+    public ContactDTO(Long contactId, long phone, String email, String address, String comment) {
         this.contactId = contactId;
         this.phone = phone;
         this.email = email;
@@ -37,11 +37,11 @@ public class ContactDTO {
         this.contactId = contactId;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 

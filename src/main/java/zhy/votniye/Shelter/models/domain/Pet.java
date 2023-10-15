@@ -1,10 +1,14 @@
-package zhy.votniye.Shelter.models;
+package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.TimeZone;
 
 @Entity
 @Table(name = "pet")
@@ -16,7 +20,6 @@ public class Pet {
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
-
     private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;
@@ -26,16 +29,6 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
-
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
 
     public Pet() {
     }
@@ -76,8 +69,13 @@ public class Pet {
         return dateOfBirth;
     }
 
-    public void setAge(int age) {
-            this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public int getAge() {
+        Period age = Period.between(dateOfBirth.toLocalDate(), LocalDate.now());
+        return age.getYears();
     }
 
     public String getPathToFile() {
@@ -104,12 +102,27 @@ public class Pet {
         this.specialNeeds = specialNeeds;
     }
 
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-            return dateOfBirth == pet.dateOfBirth && Objects.equals(name, pet.name) && Objects.equals(breed, pet.breed) && Objects.equals(weight, pet.weight) && Arrays.equals(photo, pet.photo) && Objects.equals(pathToFile, pet.pathToFile) && Objects.equals(description, pet.description) && Objects.equals(specialNeeds, pet.specialNeeds);
+        return Objects.equals(dateOfBirth, pet.dateOfBirth)
+                && Objects.equals(name, pet.name)
+                && Objects.equals(breed, pet.breed)
+                && Objects.equals(weight, pet.weight)
+                && Arrays.equals(photo, pet.photo)
+                && Objects.equals(pathToFile, pet.pathToFile)
+                && Objects.equals(description, pet.description)
+                && Objects.equals(specialNeeds, pet.specialNeeds);
     }
 
     @Override

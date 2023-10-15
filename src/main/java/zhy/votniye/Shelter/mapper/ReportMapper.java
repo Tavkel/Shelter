@@ -1,12 +1,10 @@
 package zhy.votniye.Shelter.mapper;
 
-import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
-import zhy.votniye.Shelter.models.Pet;
-import zhy.votniye.Shelter.models.Report;
+import zhy.votniye.Shelter.models.domain.Report;
 
 public class ReportMapper {
-    public Report toReport(ReportDTO reportDTO) {
+    public static Report toReport(ReportDTO reportDTO) {
         if (reportDTO == null) {
             return null;
         }
@@ -21,12 +19,11 @@ public class ReportMapper {
         report.setFeedingReport(reportDTO.getFeedingReport());
         report.setGeneralReport(reportDTO.getGeneralReport());
         report.setBehaviorReport(reportDTO.getBehaviorReport());
-        report.setDate(reportDTO.getReportDate());
 
         return report;
     }
 
-    public ReportDTO fromReport(Report report) {
+    public static ReportDTO fromReport(Report report) {
         if (report == null) {
             return null;
         }
@@ -41,7 +38,6 @@ public class ReportMapper {
         reportDTO.setGeneralReport(report.getGeneralReport());
         reportDTO.setBehaviorReport(report.getBehaviorReport());
         reportDTO.setReportDate(report.getDate());
-
 
         return reportDTO;
     }
