@@ -16,3 +16,8 @@ CONSTRAINT "FK_reports_owner" FOREIGN KEY (owner_id) REFERENCES owner(id),
 CONSTRAINT "FK_reports_pet" FOREIGN KEY (pet_id) REFERENCES pet(id),
 date TIMESTAMP NOT NULL
 );
+
+-- changeset volkov:9
+ALTER TABLE public.reports
+ALTER COLUMN "date" TYPE timestamp with time zone USING "date"::timestamp with time zone;
+;

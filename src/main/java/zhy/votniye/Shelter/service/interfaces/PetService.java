@@ -14,4 +14,6 @@ public interface PetService {
     Pet delete(Long id);
 
     List<Pet> readAll();
+
+    List<Pet> readAllPagination(Integer pageNumber, Integer pageSize);
 }

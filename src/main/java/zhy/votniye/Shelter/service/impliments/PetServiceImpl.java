@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.service.impliments;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.exception.PetAlreadyAddException;
 import zhy.votniye.Shelter.models.Pet;
@@ -23,11 +24,10 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet create(Pet pet) {
         logger.info("The create method was called with the data " + pet);
-        if (petRepository.findByNameAndBreedAndWeightAndAge(
+        if (petRepository.findByNameAndBreedAndWeight(
                         pet.getName()
                         , pet.getBreed()
-                        , pet.getWeight()
-                        , pet.getAge())
+                        , pet.getWeight())
                 .isPresent()) {
             throw new PetAlreadyAddException("The database already has this pet");
         }
@@ -71,5 +71,11 @@ public class PetServiceImpl implements PetService {
     public List<Pet> readAll() {
       logger.info("The ReadAll method is called");
         return petRepository.findAll();
+    }
+
+    @Override
+    public List<Pet> readAllPagination(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
+        return petRepository.findAll(pageRequest).getContent();
     }
 }

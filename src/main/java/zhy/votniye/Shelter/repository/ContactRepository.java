@@ -6,5 +6,5 @@ import zhy.votniye.Shelter.models.Contact;
 import java.util.Optional;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    Optional<Contact> findByPhoneAndTelegramChatId(int phone, long chatId);
+    Optional<Contact> findByPhoneAndTelegramChatId(long phone, long chatId);
 }

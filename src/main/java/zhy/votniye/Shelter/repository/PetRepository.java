@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
-    Optional<Pet> findByNameAndBreedAndWeightAndAge(
-            String name,String breed, float weight,int age);
+    Optional<Pet> findByNameAndBreedAndWeight(
+            String name,String breed, float weight);
 }

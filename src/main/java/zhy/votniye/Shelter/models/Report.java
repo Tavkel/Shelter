@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class Report {
     private String generalReport;
     @Column(name = "behavior_report")
     private String behaviorReport;
-    private Date date;
+    private LocalDateTime date;
 
     public Report() {
 
@@ -98,11 +99,11 @@ public class Report {
         this.behaviorReport = behaviorReport;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
