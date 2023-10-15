@@ -1,12 +1,12 @@
-package zhy.votniye.Shelter.service.impliments;
+package zhy.votniye.Shelter.services.implimentations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.OwnerAlreadyAddException;
-import zhy.votniye.Shelter.models.Owner;
+import zhy.votniye.Shelter.exception.OwnerAlreadyExistsException;
+import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.repository.OwnerRepository;
-import zhy.votniye.Shelter.service.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +29,7 @@ public class OwnerServiceImpl implements OwnerService {
                 ,owner.getLastName()
                 ,owner.getMiddleName())
                 .isPresent()) {
-            throw new OwnerAlreadyAddException("The database already has this owner");
+            throw new OwnerAlreadyExistsException("The database already has this owner");
         }
         logger.info(owner + " - added to the database");
         return ownerRepository.save(owner);

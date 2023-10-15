@@ -1,18 +1,15 @@
 package zhy.votniye.Shelter.mapper;
 
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
-import zhy.votniye.Shelter.models.DTO.PetDTO;
-import zhy.votniye.Shelter.models.Owner;
-import zhy.votniye.Shelter.models.Pet;
+import zhy.votniye.Shelter.models.domain.Owner;
 
 public class OwnerMapper {
-    public Owner toOwner(OwnerDTO ownerDTO) {
+    public static Owner toOwner(OwnerDTO ownerDTO) {
         if (ownerDTO == null) {
             return null;
         }
 
         Owner owner = new Owner();
-
 
         owner.setId(ownerDTO.getOwnerId());
         owner.setFirstName(ownerDTO.getFirstName());
@@ -23,7 +20,7 @@ public class OwnerMapper {
         return owner;
     }
 
-    public OwnerDTO fromOwner(Owner owner) {
+    public static OwnerDTO fromOwner(Owner owner) {
         if (owner == null) {
             return null;
         }
