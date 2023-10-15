@@ -1,6 +1,6 @@
-package zhy.votniye.Shelter.service.interfaces;
+package zhy.votniye.Shelter.services.interfaces;
 
-import zhy.votniye.Shelter.models.Owner;
+import zhy.votniye.Shelter.models.domain.Owner;
 
 import java.util.List;
 

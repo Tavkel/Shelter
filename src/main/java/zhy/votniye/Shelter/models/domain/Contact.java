@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.models;
+package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
 
@@ -34,7 +34,7 @@ public class Contact {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 

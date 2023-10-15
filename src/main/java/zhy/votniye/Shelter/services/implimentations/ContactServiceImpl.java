@@ -1,12 +1,11 @@
-package zhy.votniye.Shelter.service.impliments;
+package zhy.votniye.Shelter.services.implimentations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.ContactAlreadyAddException;
-import zhy.votniye.Shelter.models.Contact;
+import zhy.votniye.Shelter.exception.ContactAlreadyExistsException;
+import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.repository.ContactRepository;
-import zhy.votniye.Shelter.service.interfaces.ContactService;
+import zhy.votniye.Shelter.services.interfaces.ContactService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,7 +25,7 @@ public class ContactServiceImpl implements ContactService {
         logger.info("The create method was called with the data " + contact);
         if (contactRepository.findByPhoneAndTelegramChatId(contact.getPhone(),contact.getTelegramChatId())
                 .isPresent()) {
-            throw new ContactAlreadyAddException("The database already has this contact");
+            throw new ContactAlreadyExistsException("The database already has this contact");
         }
         logger.info(contact + " - added to the database");
         return contactRepository.save(contact);
