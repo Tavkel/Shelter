@@ -26,7 +26,7 @@ public class ReportController {
         return fromReport(reportService.create(report));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{reportId}")
     public ReportDTO read(@PathVariable long reportId){
         return fromReport(reportService.read(reportId));
     }
@@ -38,7 +38,7 @@ public class ReportController {
         return fromReport(reportService.update(report));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{reportId}")
     public ReportDTO delete(@PathVariable long reportId){
         return fromReport(reportService.delete(reportId));
     }

@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.services.implimentations;
+package zhy.votniye.Shelter.services.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

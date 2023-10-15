@@ -1,8 +1,7 @@
 package zhy.votniye.Shelter.helpers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import zhy.votniye.Shelter.services.implementations.ContactService;
+import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.time.LocalDateTime;

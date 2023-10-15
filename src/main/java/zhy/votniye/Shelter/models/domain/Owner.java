@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import zhy.votniye.Shelter.models.Status;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +18,12 @@ public class Owner {
     private String lastName;
     @Column(name = "middle_name")
     private String middleName;
+    private Status.OwnerStatus status;
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Pet> pets;
-
     public Owner() {
+        status = Status.OwnerStatus.AWAITING_CONFIRMATION;
     }
 
     public long getId() {
@@ -54,6 +56,14 @@ public class Owner {
 
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
+    }
+
+    public Status.OwnerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status.OwnerStatus status) {
+        this.status = status;
     }
 
     @Override

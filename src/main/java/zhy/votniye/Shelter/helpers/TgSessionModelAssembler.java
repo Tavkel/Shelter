@@ -23,7 +23,7 @@ public class TgSessionModelAssembler {
                 owner.setMiddleName(fio[2]);
                 return false;
             case 2:
-                contact.setPhone(Integer.parseInt(data.replaceAll("\\D", "")));
+                contact.setPhone(Long.parseLong(data.replaceAll("\\D", "")));
                 return false;
             case 3:
                 contact.setAddress(data);

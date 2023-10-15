@@ -23,7 +23,7 @@ public class ContactController {
         return fromContact(contactService.create(contact));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{contactId}")
     public ContactDTO read(@PathVariable long contactId){
         return fromContact(contactService.read(contactId));
     }
@@ -36,7 +36,7 @@ public class ContactController {
         return fromContact(contactService.update(contact));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{contactId}")
     public ContactDTO delete(@PathVariable long contactId){
         return fromContact(contactService.delete(contactId));
     }
