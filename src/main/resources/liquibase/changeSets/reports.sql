@@ -9,15 +9,11 @@ pet_id BIGINT NOT NULL,
 photo BYTEA NOT NULL,
 path_to_file TEXT NOT NULL,
 feeding_report TEXT NOT NULL,
+date_of_report TIMESTAMP WITH TIME ZONE NOT NULL,
 general_report TEXT NOT NULL,
 behavior_report TEXT NOT NULL,
 CONSTRAINT reports_pk PRIMARY KEY (id),
 CONSTRAINT "FK_reports_owner" FOREIGN KEY (owner_id) REFERENCES owner(id),
-CONSTRAINT "FK_reports_pet" FOREIGN KEY (pet_id) REFERENCES pet(id),
-date TIMESTAMP NOT NULL
+CONSTRAINT "FK_reports_pet" FOREIGN KEY (pet_id) REFERENCES pet(id)
 );
 
--- changeset volkov:9
-ALTER TABLE public.reports
-ALTER COLUMN "date" TYPE timestamp with time zone USING "date"::timestamp with time zone;
-;
