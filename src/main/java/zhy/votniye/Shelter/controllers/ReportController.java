@@ -43,7 +43,7 @@ public class ReportController {
         return fromReport(reportService.delete(reportId));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/owner")
     public Collection<Report> readAllReportsByOwner(@RequestParam long ownerId){
         return reportService.readAllReportsByOwner(ownerId);
     }
