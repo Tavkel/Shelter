@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.helpers.TgSession;
 import zhy.votniye.Shelter.helpers.TgSessionTypes;
-import zhy.votniye.Shelter.models.Owner;
+import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.util.*;

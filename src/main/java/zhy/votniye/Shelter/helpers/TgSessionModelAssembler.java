@@ -1,7 +1,7 @@
 package zhy.votniye.Shelter.helpers;
 
-import zhy.votniye.Shelter.models.Contact;
-import zhy.votniye.Shelter.models.Owner;
+import zhy.votniye.Shelter.models.domain.Contact;
+import zhy.votniye.Shelter.models.domain.Owner;
 
 import java.util.Collection;
 import java.util.Optional;
