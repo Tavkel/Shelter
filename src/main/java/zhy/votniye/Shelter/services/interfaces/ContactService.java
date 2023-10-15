@@ -1,6 +1,6 @@
-package zhy.votniye.Shelter.service.interfaces;
+package zhy.votniye.Shelter.services.interfaces;
 
-import zhy.votniye.Shelter.models.Contact;
+import zhy.votniye.Shelter.models.domain.Contact;
 
 import java.util.List;
 

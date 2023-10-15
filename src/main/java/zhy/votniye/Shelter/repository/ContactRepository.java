@@ -1,7 +1,7 @@
 package zhy.votniye.Shelter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import zhy.votniye.Shelter.models.Contact;
+import zhy.votniye.Shelter.models.domain.Contact;
 
 import java.util.Optional;
 

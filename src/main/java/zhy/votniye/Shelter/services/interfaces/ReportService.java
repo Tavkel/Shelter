@@ -1,6 +1,6 @@
-package zhy.votniye.Shelter.service.interfaces;
+package zhy.votniye.Shelter.services.interfaces;
 
-import zhy.votniye.Shelter.models.Report;
+import zhy.votniye.Shelter.models.domain.Report;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public interface ReportService {
 
     Report delete(Long id);
 
-    List<Report> readAll();
+    List<Report> readAllReportsByOwner(long ownerId);
 
 }
