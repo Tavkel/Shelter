@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.services.implimentations.PetServiceImpl;
 
-@Service
+
 public class PhotoCompression {
 
-    private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(PhotoCompression.class);
 
     public byte[] generatePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);
