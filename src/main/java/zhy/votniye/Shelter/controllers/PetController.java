@@ -1,5 +1,6 @@
 package zhy.votniye.Shelter.controllers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ import static zhy.votniye.Shelter.mapper.PetMapper.*;
 public class PetController {
 
     public final PetService petService;
+    @Value("${upload-file-size-limit}")
+    private int fileSizeLimit;
 
     public PetController(PetService petService) {
         this.petService = petService;
@@ -62,16 +65,15 @@ public class PetController {
         return new ResponseEntity<>(petService.readAllPagination(pageNum), HttpStatus.OK);
     }
 
-//    @PostMapping(value = "/{petId}",
-//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<String> uploadPhoto(@PathVariable Long petId, @RequestParam MultipartFile photo)
-//            throws IOException {
-//
-//        if (photo.getSize() > 1024 * maxFileSizeInKb) {
-//            return ResponseEntity.badRequest().body("picture size is big");
-//        }
-//        petService.uploadPhoto(petId, photo);
-//        return ResponseEntity.ok().body("picture was saved");
-//    }
+    @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadPetPhoto(@PathVariable long petId,
+                                               @RequestParam MultipartFile file) throws IOException {
+        if (file.getSize() > fileSizeLimit * 1024L) {
+            return new ResponseEntity<>("File too big.", HttpStatus.BAD_REQUEST);
+        }
+
+        petService.savePetPhoto(petId, file);
+        return new ResponseEntity<>("File saved", HttpStatus.OK);
+    }
 }
 

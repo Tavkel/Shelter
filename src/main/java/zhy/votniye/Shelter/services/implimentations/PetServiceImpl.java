@@ -2,29 +2,42 @@ package zhy.votniye.Shelter.services.implimentations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
+import zhy.votniye.Shelter.helpers.PhotoCompression;
 import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.repository.PetRepository;
 import zhy.votniye.Shelter.services.interfaces.PetService;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class PetServiceImpl implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
     private final PetRepository petRepository;
 
-    private final PetServiceImpl petServiceImpl;
+    private final PhotoCompression photoCompression;
 
-    public PetServiceImpl(PetRepository petRepository,PetServiceImpl petServiceImpl) {
+    private final String petPhotoNotFoundMessage = "Pet does not have an photo.";
+
+    private final String petPhotoDirectory;
+
+    public PetServiceImpl(PetRepository petRepository,PhotoCompression photoCompression,
+                          @Value("petPhoto-directory") String petPhotoDirectory) {
         this.petRepository = petRepository;
-        this.petServiceImpl=petServiceImpl;
+        this.photoCompression = photoCompression;
+        this.petPhotoDirectory = petPhotoDirectory;
+
     }
 
     @Override
@@ -86,28 +99,65 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    public Pet getPetPhotoPreview(long id) {
+        read(id);
+        logger.debug(String.format("Getting photo for pet %d", id));
+        return petRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(petPhotoNotFoundMessage));
+    }
+
+    @Override
     public void savePetPhoto(long id, MultipartFile file) throws IOException {
         logger.debug(String.format("Attempting to create a record for photo for pet %d", id));
-
+        Pet pet;
         try {
-            Pet pet = petServiceImpl.read(id);
+             pet = getPetPhotoPreview(id);
         } catch (NoSuchElementException ex) {
-            if (!ex.getMessage().equals(avatarNotFoundMessage)) {
+            if (!ex.getMessage().equals(petPhotoNotFoundMessage)) {
                 logger.warn(String.format("Encountered an error while creating a preview for photo for pet %d", id));
                 logger.warn(ex.getMessage());
                 throw ex;
             }
-            Pet pet = new Pet();
+            pet = new Pet();
             pet.setId(id);
 
         }
 
         logger.debug("Attempting to write original image to file");
-        var filePath = writeAvatarToFile(studentId, file);
-        avatarSetUp(file, avatar, filePath);
+        var pathToFile = writePetPhotoToFile(id, file);
+        avatarSetUp(file, pet, pathToFile);
 
         petRepository.saveAndFlush(pet);
-        logger.debug("Avatar saved");
+        logger.debug("PetPhoto saved");
+    }
+
+    private void avatarSetUp(MultipartFile file, Pet pet, Path filePath) throws IOException{
+        logger.debug("Setting up avatar properties");
+        pet.setPathToFile(filePath.toString());
+        pet.setPhoto(photoCompression.generatePreview(filePath));
+        logger.debug("PetPhoto properties set");
+    }
+
+    private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
+        Path filePath = Path.of(petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+
+        try (InputStream is = file.getInputStream();
+             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+             BufferedInputStream bis = new BufferedInputStream(is, 1024);
+             BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            bis.transferTo(bos);
+        }
+        logger.debug(String.format("PetPhoto successfully written to file %s", filePath));
+        return filePath;
+    }
+    private String getExtension(String fileName) {
+        if (fileName == null) return "";
+        int lastDot = fileName.lastIndexOf(".");
+        if (lastDot == -1) return "";
+        return fileName.substring(lastDot);
     }
 
 
