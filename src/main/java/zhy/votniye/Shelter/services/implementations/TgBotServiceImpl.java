@@ -9,6 +9,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.helpers.TgSession;
 import zhy.votniye.Shelter.helpers.TgSessionTypes;
@@ -16,6 +17,8 @@ import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -151,7 +154,7 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public void leaveContact(Message message) {
         cleanUpButtons(message);
-        SendMessage response = new SendMessage(message.chat().id(), "i need your fio");
+        SendMessage response = new SendMessage(message.chat().id(), "First I need your last name");
         telegramBot.execute(response);
         TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
 
@@ -161,10 +164,21 @@ public class TgBotServiceImpl implements TgBotService {
 
     @Override
     public void leaveContactStep(long chatId, int step) {
-        if(step == 6){
+        if (step == 8) {
+            var toRemove = sessions.stream().filter(s -> s.getChatId() == chatId).findFirst().get();
+            toRemove.destroy();
+            sessions.remove(toRemove);
+            SendMessage sendMessage = new SendMessage(chatId, "Alright! All data written!");
+            telegramBot.execute(sendMessage);
             return;
         }
-        SendMessage sendMessage = new SendMessage(chatId, "and now i need " + LeaveContactSteps.values()[step-1]);//todo rework
+        SendMessage sendMessage = new SendMessage(chatId, "and now i need " + LeaveContactSteps.values()[step - 1]);//todo rework
+        telegramBot.execute(sendMessage);
+    }
+
+    @Override
+    public void dataIngestSessionFailure(long chatId, int step) {
+        SendMessage sendMessage = new SendMessage(chatId, "Failed to process data " + LeaveContactSteps.values()[step - 1]);
         telegramBot.execute(sendMessage);
     }
 
@@ -177,6 +191,21 @@ public class TgBotServiceImpl implements TgBotService {
 
     //endregion
     private void sendMessage() {
+    }
+
+    @Scheduled(cron = "0 0/1 * * * *")
+    private void searchAndDestroySessions() {
+        sessions.forEach(session -> {
+            var lastUpdate = session.getLastUpdate();
+            var timePassed = Duration.between(lastUpdate, LocalDateTime.now()).toMinutesPart();
+
+            if (timePassed > 2) {
+                var chatId = session.getChatId();
+                session.destroy();
+                sessions.remove(session);
+                telegramBot.execute(new SendMessage(chatId, "..."));
+            }
+        });
     }
 
     private InlineKeyboardMarkup assembleKeyboard(EnumSet<Button> flags) {
@@ -281,10 +310,12 @@ public class TgBotServiceImpl implements TgBotService {
             return this.button;
         }
     }
+
     private enum LeaveContactSteps {
-        FIO (1), PHONE(2), ADDRESS(3), EMAIL(4), COMMENT(5), FINISH(6);
+        LAST_NAME(1), FIRST_NAME(2), MIDDLE_NAME(3), PHONE(4), ADDRESS(5), EMAIL(6), COMMENT(7), FINISH(8), FAILURE(9);
         private final int num;
-        LeaveContactSteps(int step){
+
+        LeaveContactSteps(int step) {
             num = step;
         }
     }

@@ -70,6 +70,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     }
 
     private void processMessage(Message message) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+        if(message.text() == null) return;
         Pattern patternDouble = Pattern.compile("(^/[\\w?]+)(\\s)(.+)");
         Matcher matcher = patternDouble.matcher(message.text());
         if (matcher.matches()) {

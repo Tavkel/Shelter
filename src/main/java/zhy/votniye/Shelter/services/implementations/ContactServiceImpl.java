@@ -3,10 +3,10 @@ package zhy.votniye.Shelter.services.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.ContactAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.repository.ContactRepository;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,20 +15,21 @@ import java.util.Optional;
 public class ContactServiceImpl implements ContactService {
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
+    private final OwnerService ownerService;
 
-    public ContactServiceImpl(ContactRepository contactRepository) {
+    public ContactServiceImpl(ContactRepository contactRepository, OwnerService ownerService) {
         this.contactRepository = contactRepository;
-
+        this.ownerService = ownerService;
     }
 
     @Override
     public Contact create(Contact contact) {
-        logger.info("The create method was called with the data " + contact);
-        if (contactRepository.findByPhoneAndTelegramChatId(contact.getPhone(),contact.getTelegramChatId())
-                .isPresent()) {
-            throw new ContactAlreadyExistsException("The database already has this contact");
+        if (contact.getOwner().getId() == 0) {
+            var o = ownerService.create(contact.getOwner());
+            contact.setId(o.getId());
+
+            contact.setOwner(null);
         }
-        logger.info(contact + " - added to the database");
         return contactRepository.save(contact);
     }
 
@@ -46,7 +47,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact update(Contact contact) {
         logger.info("The update method was called with the data " + contact);
-        if (contactRepository.findById(contact.getId()).isEmpty()) {
+        if (contactRepository.findById(contact.getOwner().getId()).isEmpty()) {
             throw new NoSuchElementException("Contact not found");
         }
         logger.info("The update method returned the contact from the database" + contact);

@@ -39,18 +39,39 @@ public class TgSession implements Runnable {
         return chatId;
     }
 
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
     public void setData(String data) {
         this.data = data;
         lastUpdate = LocalDateTime.now();
-        if (type == TgSessionTypes.LEAVE_CONTACT && observer.updateOwner(data, step++)) {
-            contactService.create(observer.getContact());
-            removeObserver();
-            return;
-        } else if (type == TgSessionTypes.SUBMIT_REPORT) {
-            removeObserver();
-            return;
+//        if (type == TgSessionTypes.LEAVE_CONTACT && observer.updateOwner(data, step++) == 1) {
+//            contactService.create(observer.getContact());
+//            removeObserver();
+//            return;
+//        } else if (type == TgSessionTypes.SUBMIT_REPORT) {
+//            removeObserver();
+//            return;
+//        }
+        byte updResult = observer.updateOwner(data, step);
+        if (updResult == 1) { //success
+            step++;
+            botService.leaveContactStep(chatId, step);
+        } else if (updResult == 0) { //success last step
+            step++;
+            var contact = observer.getContact();
+            contact.setTelegramChatId(chatId);
+            try {
+                contactService.create(contact);
+            } catch (Exception e) {
+
+            }
+            botService.leaveContactStep(chatId, step);
+            destroy();
+        } else { //failure
+            botService.dataIngestSessionFailure(chatId, step);
         }
-        botService.leaveContactStep(chatId, step);
     }
 
     public void setObserver(TgSessionModelAssembler observer) {
@@ -59,6 +80,11 @@ public class TgSession implements Runnable {
 
     public void removeObserver() {
         this.observer = null;
+    }
+
+    public void destroy(){
+        this.observer.destroy();
+        removeObserver();
     }
 
     @Override

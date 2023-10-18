@@ -25,4 +25,5 @@ public interface TgBotService {
 
     void leaveContact(Message message);
     void leaveContactStep(long chatId, int step);
+    void dataIngestSessionFailure(long chatId, int step);
 }
