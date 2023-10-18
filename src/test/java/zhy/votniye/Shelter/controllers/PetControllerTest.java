@@ -1,24 +1,17 @@
 package zhy.votniye.Shelter.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.models.Status;
-import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.repository.PetRepository;
 
 import java.time.LocalDateTime;
@@ -49,19 +42,16 @@ public class PetControllerTest {
 //    PetDTO petDTO = new PetDTO(1L,"lupa","pupa",20F,10,
 //            photo, "./src","123","good",null);
     PetDTO p = new PetDTO(0L,"f","3w",3F, LocalDateTime.now(),photo,
-            "dgf","dsgf","dsf",null);
+            null,"dsgf","dsf",null);
 
 
     @Test
     void create__returnStatus200AndPet() {
-
         ResponseEntity<PetDTO> petResponseEntity =
                 restTemplate.postForEntity(
                         "http://localhost:" + port + "/pet", p, PetDTO.class);
         assertEquals(HttpStatus.OK, petResponseEntity.getStatusCode());
         assertEquals(p, petResponseEntity.getBody());
-
-
     }
 //
 //    @Test

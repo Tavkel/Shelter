@@ -123,15 +123,14 @@ public class PetDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PetDTO petDTO = (PetDTO) o;
-        return age == petDTO.age && Objects.equals(petId, petDTO.petId) && Objects.equals(name, petDTO.name)
+        return age == petDTO.age && Objects.equals(name, petDTO.name)
                 && Objects.equals(breed, petDTO.breed) && Objects.equals(weight, petDTO.weight)
-                && Arrays.equals(photo, petDTO.photo) && Objects.equals(filePathPetPhoto, petDTO.filePathPetPhoto)
                 && Objects.equals(description, petDTO.description) && Objects.equals(specialNeeds, petDTO.specialNeeds);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(petId, name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
+        int result = Objects.hash(name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }

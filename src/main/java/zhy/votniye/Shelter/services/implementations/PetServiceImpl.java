@@ -33,7 +33,7 @@ public class PetServiceImpl implements PetService {
     @Value("path-to-photo-folder")
     private String petPhotoDirectory;
 
-    public PetServiceImpl(PetRepository petRepository,PhotoCompression photoCompression) {
+    public PetServiceImpl(PetRepository petRepository, PhotoCompression photoCompression) {
         this.petRepository = petRepository;
         this.photoCompression = photoCompression;
 
@@ -109,32 +109,23 @@ public class PetServiceImpl implements PetService {
     public void savePetPhoto(long id, MultipartFile file) throws IOException {
         logger.debug(String.format("Attempting to create a record for photo for pet %d", id));
         Pet pet;
-        try {
-             pet = getPetPhotoPreview(id);
-        } catch (NoSuchElementException ex) {
-            if (!ex.getMessage().equals(petPhotoNotFoundMessage)) {
-                logger.warn(String.format("Encountered an error while creating a preview for photo for pet %d", id));
-                logger.warn(ex.getMessage());
-                throw ex;
-            }
-            pet = new Pet();
-            pet.setId(id);
-
-        }
+        pet = petRepository.findById(id).orElseThrow(() -> new NoSuchElementException("pet not found"));
 
         logger.debug("Attempting to write original image to file");
         var pathToFile = writePetPhotoToFile(id, file);
-        avatarSetUp(file, pet, pathToFile);
+        petPhotoSetUp(file, pet, pathToFile);
 
         petRepository.saveAndFlush(pet);
-        logger.debug("PetPhoto saved");
+        logger.debug("Pet photo saved");
     }
 
-    private void avatarSetUp(MultipartFile file, Pet pet, Path filePath) throws IOException{
-        logger.debug("Setting up avatar properties");
+    private void petPhotoSetUp(MultipartFile file, Pet pet, Path filePath) throws IOException {
+        logger.debug("Setting up photo properties");
         pet.setPathToFile(filePath.toString());
         pet.setPhoto(photoCompression.generatePreview(filePath));
-        logger.debug("PetPhoto properties set");
+        pet.setFileSize(file.getSize());
+        pet.setMediaType(file.getContentType());
+        logger.debug("Pet photo properties set");
     }
 
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
@@ -149,15 +140,14 @@ public class PetServiceImpl implements PetService {
         ) {
             bis.transferTo(bos);
         }
-        logger.debug(String.format("PetPhoto successfully written to file %s", filePath));
+        logger.debug(String.format("Pet photo successfully written to file %s", filePath));
         return filePath;
     }
+
     private String getExtension(String fileName) {
         if (fileName == null) return "";
         int lastDot = fileName.lastIndexOf(".");
         if (lastDot == -1) return "";
         return fileName.substring(lastDot);
     }
-
-
 }
