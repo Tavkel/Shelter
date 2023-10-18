@@ -1,7 +1,6 @@
 package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
-import zhy.votniye.Shelter.models.enums.Gender;
 import zhy.votniye.Shelter.models.enums.Status;
 
 import java.time.LocalDate;
@@ -17,23 +16,24 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Gender gender;
+
+    private Boolean gender;
+
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
     private byte[] photo;
     private Status.PetStatus status;
-
     @Column(name = "path_to_file")
     private String pathToFile;
 
     private String description;
+
     @Column(name = "special_needs")
     private String specialNeeds;
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
-
     public Pet() {
         status = Status.PetStatus.AVAILABLE;
     }
@@ -52,6 +52,14 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getMale() {
+        return gender;
+    }
+
+    public void setMale(Boolean male) {
+        gender = male;
     }
 
     public String getBreed() {

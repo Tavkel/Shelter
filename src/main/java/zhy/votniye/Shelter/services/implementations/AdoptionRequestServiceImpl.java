@@ -19,7 +19,6 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         this.adoptionRequestRepository = adoptionRequestRepository;
 
     }
-
     @Override
     public AdoptionRequest create(AdoptionRequest adoption) {
         logger.info("The create method was called with the data " + adoption);
