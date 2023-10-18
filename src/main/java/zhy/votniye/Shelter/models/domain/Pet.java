@@ -38,6 +38,26 @@ public class Pet {
         status = Status.PetStatus.AVAILABLE;
     }
 
+    public Pet(Long id, String name, Boolean gender,
+               String breed, Float weight,
+               LocalDateTime dateOfBirth,
+               byte[] photo, Status.PetStatus status,
+               String pathToFile, String description,
+               String specialNeeds, Owner owner) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.breed = breed;
+        this.weight = weight;
+        this.dateOfBirth = dateOfBirth;
+        this.photo = photo;
+        this.status = status;
+        this.pathToFile = pathToFile;
+        this.description = description;
+        this.specialNeeds = specialNeeds;
+        this.owner = owner;
+    }
+
     public Long getId() {
         return id;
     }

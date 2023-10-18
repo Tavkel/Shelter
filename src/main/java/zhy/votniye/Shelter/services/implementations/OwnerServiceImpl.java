@@ -64,7 +64,7 @@ public class OwnerServiceImpl implements OwnerService {
             throw new NoSuchElementException("Owner not found");
         }
         logger.info("The  method returned the owner from the database" + owner.get());
-        return null;
+        return owner.get();
     }
 
     @Override

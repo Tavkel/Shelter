@@ -61,7 +61,7 @@ public class ContactServiceImpl implements ContactService {
             throw new NoSuchElementException("Contact not found");
         }
         logger.info("The  method returned the contact from the database" + contact.get());
-        return null;
+        return contact.get();
     }
 
     @Override

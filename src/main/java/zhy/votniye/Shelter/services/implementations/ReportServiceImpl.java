@@ -56,7 +56,7 @@ public class ReportServiceImpl implements ReportService {
             throw new NoSuchElementException("Report not found");
         }
         logger.info("The  method returned the report from the database" + report.get());
-        return null;
+        return report.get();
     }
 
     @Override

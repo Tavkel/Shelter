@@ -64,7 +64,7 @@ public class PetServiceImpl implements PetService {
             throw new PetAlreadyExistsException("There is no such pet in the database");
         }
         logger.info("The  method returned the pet from the database" + pet.get());
-        return null;
+        return pet.get();
     }
 
     @Override

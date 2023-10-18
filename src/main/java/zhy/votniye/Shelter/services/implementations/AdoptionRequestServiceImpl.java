@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.services.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.models.domain.AdoptionRequest;
 import zhy.votniye.Shelter.repository.AdoptionRequestRepository;
@@ -56,7 +57,7 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
             throw new NoSuchElementException("Adoption not found");
         }
         logger.info("The  method returned the adoption from the database" + adoption.get());
-        return null;
+        return adoption.get();
     }
 
     @Override
