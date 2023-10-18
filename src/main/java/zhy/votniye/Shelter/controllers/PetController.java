@@ -20,8 +20,8 @@ import static zhy.votniye.Shelter.mapper.PetMapper.*;
 public class PetController {
 
     public final PetService petService;
-    @Value("${upload-file-size-limit}")
-    private int fileSizeLimit;
+//    @Value("${upload-file-size-limit}")
+//    private int fileSizeLimit;
 
     public PetController(PetService petService) {
         this.petService = petService;
@@ -31,7 +31,9 @@ public class PetController {
     public PetDTO create(@RequestBody PetDTO petDTO) {
         var pet = toPet(petDTO);
 
-        return fromPet(petService.create(pet));
+        var res = fromPet(petService.create(pet));
+
+        return res;
     }
 
     @GetMapping("/{petId}")
@@ -68,9 +70,9 @@ public class PetController {
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadPetPhoto(@PathVariable long petId,
                                                @RequestParam MultipartFile file) throws IOException {
-        if (file.getSize() > fileSizeLimit * 1024L) {
-            return new ResponseEntity<>("File too big.", HttpStatus.BAD_REQUEST);
-        }
+//        if (file.getSize() > fileSizeLimit * 1024L) {
+//            return new ResponseEntity<>("File too big.", HttpStatus.BAD_REQUEST);
+//        }
 
         petService.savePetPhoto(petId, file);
         return new ResponseEntity<>("File saved", HttpStatus.OK);

@@ -24,19 +24,18 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 public class PetServiceImpl implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
+
     private final PetRepository petRepository;
 
     private final PhotoCompression photoCompression;
 
     private final String petPhotoNotFoundMessage = "Pet does not have an photo.";
+    @Value("path-to-photo-folder")
+    private String petPhotoDirectory;
 
-    private final String petPhotoDirectory;
-
-    public PetServiceImpl(PetRepository petRepository,PhotoCompression photoCompression,
-                          @Value("petPhoto-directory") String petPhotoDirectory) {
+    public PetServiceImpl(PetRepository petRepository,PhotoCompression photoCompression) {
         this.petRepository = petRepository;
         this.photoCompression = photoCompression;
-        this.petPhotoDirectory = petPhotoDirectory;
 
     }
 

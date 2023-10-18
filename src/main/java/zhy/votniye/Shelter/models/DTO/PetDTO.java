@@ -21,13 +21,13 @@ public class PetDTO {
 //    private status;
 
     public PetDTO(Long petId, String name, String breed, Float weight,
-                  int age, byte[] photo, String filePathPetPhoto,
+                  LocalDateTime dateOfBirth, byte[] photo, String filePathPetPhoto,
                   String description, String specialNeeds, OwnerDTO ownerDTO) {
         this.petId = petId;
         this.name = name;
         this.breed = breed;
         this.weight = weight;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.photo = photo;
         this.filePathPetPhoto = filePathPetPhoto;
         this.description = description;

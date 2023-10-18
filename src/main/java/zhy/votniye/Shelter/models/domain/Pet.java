@@ -20,6 +20,8 @@ public class Pet {
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
+    private Long fileSize;
+    private String mediaType;
     private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;
@@ -31,6 +33,19 @@ public class Pet {
     private Owner owner;
 
     public Pet() {
+    }
+
+    public Long getFileSize(){
+        return fileSize;
+    }
+    public void setFileSize(Long fileSize){
+        this.fileSize = fileSize;
+    }
+    public String getMediaType(){
+        return mediaType;
+    }
+    public void setMediaType(String mediaType){
+        this.mediaType = mediaType;
     }
 
     public Long getId() {
@@ -127,6 +142,8 @@ public class Pet {
                 && Objects.equals(name, pet.name)
                 && Objects.equals(breed, pet.breed)
                 && Objects.equals(weight, pet.weight)
+                && Objects.equals(fileSize, pet.fileSize)
+                && Objects.equals(mediaType, pet.mediaType)
                 && Arrays.equals(photo, pet.photo)
                 && Objects.equals(pathToFile, pet.pathToFile)
                 && Objects.equals(description, pet.description)
@@ -135,7 +152,8 @@ public class Pet {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, dateOfBirth, pathToFile, description, specialNeeds);
+        int result = Objects.hash(name, breed, weight, dateOfBirth,
+                fileSize, mediaType, pathToFile, description, specialNeeds);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
