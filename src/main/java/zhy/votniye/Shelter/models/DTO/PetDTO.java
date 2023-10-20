@@ -6,12 +6,11 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Schema(title = "пет")
+@Schema(title = "PetDTO")
 public class PetDTO {
 
 
     private Long petId;
-    @Schema(name = "Pet name", example = "Barrrrsik")
     private String name;
     private String breed;
     private Float weight;

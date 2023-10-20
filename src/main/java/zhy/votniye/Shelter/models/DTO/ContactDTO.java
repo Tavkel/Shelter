@@ -1,7 +1,9 @@
 package zhy.votniye.Shelter.models.DTO;
 
-import java.util.Objects;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Objects;
+@Schema(title = "ContactDTO")
 public class ContactDTO {
 
     private Long contactId;

@@ -46,7 +46,7 @@ public class PetController {
                     )
             ),
             @ApiResponse(
-                responseCode = "400",
+                    responseCode = "400",
                     description = "Pet exists",
                     content = @Content(mediaType = MediaType.TEXT_EVENT_STREAM_VALUE)
             )
@@ -60,20 +60,43 @@ public class PetController {
         return res;
     }
 
+    @Operation(summary = "found pet", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "found pet",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pet not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
+    })
     @GetMapping("/{petId}")
     public PetDTO read(@PathVariable long petId) {
         return fromPet(petService.read(petId));
     }
 
-    @Operation(
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "updating pet",
+    @Operation(summary = "update pet", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "updated pet",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = PetDTO.class)
                     )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pet not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
-    )
+    })
     @PutMapping
     public PetDTO update(@RequestBody PetDTO petDTO) {
         var pet = toPet(petDTO);
@@ -81,33 +104,61 @@ public class PetController {
         return fromPet(petService.update(pet));
     }
 
+    @Operation(summary = "delete pet", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "deleted pet",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pet not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
+    })
     @DeleteMapping("/{petId}")
     public PetDTO delete(@PathVariable long petId) {
         return fromPet(petService.delete(petId));
     }
 
+    @Operation(summary = "find all pets", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "find all pets",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pets not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
+    })
     @GetMapping
     public Collection<PetDTO> readAll() {
         var result = petService.readAll().stream().map(PetMapper::fromPet).toList();
         return result;
     }
 
-    @Operation(summary = "view 5 photo of pets",
-            responses = {
-
-
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "view pets photo",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = PetDTO.class))
-
-                            )
+    @Operation(summary = "view five pets", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "find five pets",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
                     )
-            },
-            tags = "Pets photo"
-    )
+            )
+
+    })
     @GetMapping(value = "/all")
     public ResponseEntity<Collection<PetDTO>> getPetPage(@RequestParam int pageNum) {
         if (pageNum < 1) {
@@ -119,22 +170,28 @@ public class PetController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Operation(summary = "upload pets photo",
-            responses = {
-
-
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "uploaded pet photo",
-                            content = @Content(
-                                    mediaType = MediaType.IMAGE_JPEG_VALUE
-
-                            )
+    @Operation(summary = "upload pet photo", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "pet photo uploaded",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
                     )
-            },
-            tags = "Pets photo"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pets not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "error saving photo",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
 
-    )
+    })
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadPetPhoto(@PathVariable long petId,
                                                  @RequestParam MultipartFile file) throws IOException {

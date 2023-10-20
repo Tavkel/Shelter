@@ -1,9 +1,10 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import zhy.votniye.Shelter.models.Status;
 
 import java.util.Objects;
-
+@Schema(title = "OwnerDTO")
 public class OwnerDTO {
 
 
