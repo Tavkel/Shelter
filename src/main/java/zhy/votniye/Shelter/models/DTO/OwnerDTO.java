@@ -1,6 +1,6 @@
 package zhy.votniye.Shelter.models.DTO;
 
-import zhy.votniye.Shelter.models.Status;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.util.Objects;
 
