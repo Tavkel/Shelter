@@ -1,10 +1,14 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Schema(title = "PetDTO")
 public class PetDTO {
+
 
     private Long petId;
     private String name;
@@ -21,13 +25,13 @@ public class PetDTO {
 //    private status;
 
     public PetDTO(Long petId, String name, String breed, Float weight,
-                  int age, byte[] photo, String filePathPetPhoto,
+                  LocalDateTime dateOfBirth, byte[] photo, String filePathPetPhoto,
                   String description, String specialNeeds, OwnerDTO ownerDTO) {
         this.petId = petId;
         this.name = name;
         this.breed = breed;
         this.weight = weight;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.photo = photo;
         this.filePathPetPhoto = filePathPetPhoto;
         this.description = description;
@@ -123,15 +127,14 @@ public class PetDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PetDTO petDTO = (PetDTO) o;
-        return age == petDTO.age && Objects.equals(petId, petDTO.petId) && Objects.equals(name, petDTO.name)
+        return age == petDTO.age && Objects.equals(name, petDTO.name)
                 && Objects.equals(breed, petDTO.breed) && Objects.equals(weight, petDTO.weight)
-                && Arrays.equals(photo, petDTO.photo) && Objects.equals(filePathPetPhoto, petDTO.filePathPetPhoto)
                 && Objects.equals(description, petDTO.description) && Objects.equals(specialNeeds, petDTO.specialNeeds);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(petId, name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
+        int result = Objects.hash(name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
         result = 31 * result + Arrays.hashCode(photo);
         return result;
     }

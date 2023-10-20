@@ -1,11 +1,13 @@
 package zhy.votniye.Shelter.models.DTO;
 
-import java.util.Objects;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Objects;
+@Schema(title = "ContactDTO")
 public class ContactDTO {
 
     private Long contactId;
-    private long phone;
+    private Long phone;
 
 //    private whatsapp;
 
@@ -74,13 +76,13 @@ public class ContactDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactDTO that = (ContactDTO) o;
-        return phone == that.phone && Objects.equals(contactId, that.contactId)
+        return Objects.equals(phone, that.phone)
                 && Objects.equals(email, that.email) && Objects.equals(address, that.address)
                 && Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactId, phone, email, address, comment);
+        return Objects.hash(phone, email, address, comment);
     }
 }
