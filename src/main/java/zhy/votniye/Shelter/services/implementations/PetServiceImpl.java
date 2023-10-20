@@ -97,13 +97,13 @@ public class PetServiceImpl implements PetService {
         return petRepository.findAll(pageRequest).getContent();
     }
 
-    @Override
-    public Pet getPetPhotoPreview(long id) {
-        read(id);
-        logger.debug(String.format("Getting photo for pet %d", id));
-        return petRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(petPhotoNotFoundMessage));
-    }
+//    @Override
+//    public Pet getPetPhotoPreview(long id) {
+//        read(id);
+//        logger.debug(String.format("Getting photo for pet %d", id));
+//        return petRepository.findById(id)
+//                .orElseThrow(() -> new NoSuchElementException(petPhotoNotFoundMessage));
+//    }
 
     @Override
     public void savePetPhoto(long id, MultipartFile file) throws IOException {

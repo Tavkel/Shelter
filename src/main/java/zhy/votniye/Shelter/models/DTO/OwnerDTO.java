@@ -81,13 +81,13 @@ public class OwnerDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OwnerDTO ownerDTO = (OwnerDTO) o;
-        return Objects.equals(ownerId, ownerDTO.ownerId) && Objects.equals(firstName, ownerDTO.firstName)
+        return  Objects.equals(firstName, ownerDTO.firstName)
                 && Objects.equals(lastName, ownerDTO.lastName) && Objects.equals(middleName, ownerDTO.middleName)
                 && Objects.equals(contactDTO, ownerDTO.contactDTO);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, firstName, lastName, middleName, contactDTO);
+        return Objects.hash(firstName, lastName, middleName, contactDTO);
     }
 }
