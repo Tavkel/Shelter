@@ -17,7 +17,7 @@ public class Pet {
     private Long id;
     private String name;
 
-    private Boolean gender;
+    private Boolean isMale;
 
     private String breed;
     private Float weight;
@@ -38,7 +38,7 @@ public class Pet {
         status = Status.PetStatus.AVAILABLE;
     }
 
-    public Pet(Long id, String name, Boolean gender,
+    public Pet(Long id, String name, Boolean isMale,
                String breed, Float weight,
                LocalDateTime dateOfBirth,
                byte[] photo, Status.PetStatus status,
@@ -46,7 +46,7 @@ public class Pet {
                String specialNeeds, Owner owner) {
         this.id = id;
         this.name = name;
-        this.gender = gender;
+        this.isMale = isMale;
         this.breed = breed;
         this.weight = weight;
         this.dateOfBirth = dateOfBirth;
@@ -75,11 +75,11 @@ public class Pet {
     }
 
     public Boolean getMale() {
-        return gender;
+        return isMale;
     }
 
     public void setMale(Boolean male) {
-        gender = male;
+        isMale = male;
     }
 
     public String getBreed() {
