@@ -1,8 +1,10 @@
 package zhy.votniye.Shelter.services.implementations;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Pet;
@@ -21,9 +23,18 @@ public class PetServiceImpl implements PetService {
         this.petRepository = petRepository;
     }
 
+    /**
+     * The method creates a Pet and save it in the database
+     * The repository method is used for saving {@link JpaRepository#save(Object)}
+     *
+     * @param pet the pet being created
+     * @return a saved pet
+     * @throws PetAlreadyExistsException The database already has this pet
+     * @see PetRepository#findByNameAndBreedAndWeight(String, String, float)
+     */
     @Override
     public Pet create(Pet pet) {
-        logger.info("The create method was called with the data " + pet);
+        logger.debug("The create method was called with the data " + pet);
         if (petRepository.findByNameAndBreedAndWeight(
                         pet.getName()
                         , pet.getBreed()
@@ -31,50 +42,86 @@ public class PetServiceImpl implements PetService {
                 .isPresent()) {
             throw new PetAlreadyExistsException("The database already has this pet");
         }
-        logger.info(pet + " - added to the database");
         return petRepository.save(pet);
     }
 
+    /**
+     * Search for a pet by ID in the database.
+     * The repository method is used {@link JpaRepository#findById(Object)}
+     *
+     * @param id cannot be null
+     * @return the founds pet
+     * @throws EntityNotFoundException There is no pet with this id in the database
+     */
     @Override
     public Pet read(Long id) {
-        logger.info("The read method was called with the data " + id);
+        logger.debug("The read method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new PetAlreadyExistsException("There is no such pet in the database");
+            throw new EntityNotFoundException("There is no pet with this id in the database");
         }
-        logger.info("The read method returned the pet from the database" + pet.get());
         return pet.get();
     }
 
+    /**
+     * The method recreates the pet by searching for an identifier in the database
+     * To find a pet, use the repository method {@link JpaRepository#findById(Object)}
+     * To recreate a pet, use the repository method {@link JpaRepository#save(Object)}
+     *
+     * @param pet rewritable pet
+     * @return new pet
+     * @throws EntityNotFoundException There is no pet with this id in the database
+     */
     @Override
     public Pet update(Pet pet) {
-        logger.info("The update method was called with the data " + pet);
+        logger.debug("The update method was called with the data " + pet);
         if (petRepository.findById(pet.getId()).isEmpty()) {
-            throw new PetAlreadyExistsException("There is no such pet in the database");
+            throw new EntityNotFoundException("There is no pet with this id in the database");
         }
-        logger.info("The update method returned the pet from the database" + pet);
+
         return petRepository.save(pet);
     }
 
+    /**
+     * The method searches for the pet ID in the database and deletes it.
+     * To find a pet, use the repository method {@link JpaRepository#findById(Object)}
+     * To delete information, use the repository method {@link JpaRepository#delete(Object)}
+     *
+     * @param id - cannot be null
+     * @return delete pet
+     * @throws EntityNotFoundException There is no pet with this id in the database
+     */
     @Override
     public Pet delete(Long id) {
-        logger.info("The delete method was called with the data " + id);
+        logger.debug("The delete method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new PetAlreadyExistsException("There is no such pet in the database");
+            throw new EntityNotFoundException("There is no pet with this id in the database");
         }
-        logger.info("The  method returned the pet from the database" + pet.get());
-        return null;
+        return pet.get();
     }
 
+    /**
+     * The method shows all the pets stored in the database.
+     * The repository method is used {@link JpaRepository#findAll()}
+     *
+     * @return all pets
+     */
     @Override
     public List<Pet> readAll() {
-        logger.info("The ReadAll method is called");
+        logger.debug("The ReadAll method is called");
         return petRepository.findAll();
     }
 
+    /**
+     * The method shows pets of 5 pieces per 1 page
+     *
+     * @param pageNumber number of issued pets per 1 page
+     * @return 5 pets
+     */
     @Override
     public List<Pet> readAllPagination(int pageNumber) {
+        logger.debug("The method shows pets of 5 pieces per 1 page");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
         return petRepository.findAll(pageRequest).getContent();
     }

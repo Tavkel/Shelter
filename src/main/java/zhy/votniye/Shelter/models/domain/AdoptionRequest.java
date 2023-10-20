@@ -1,5 +1,6 @@
 package zhy.votniye.Shelter.models.domain;
 import jakarta.persistence.*;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,12 +16,14 @@ public class AdoptionRequest {
     @Column(name = "pet_id")
     private long petId;
     private byte[] photo;
+    private Status.AdoptionRequestStatus status;
     @Column(name = "path_to_file")
     private String pathToFile;
     @Column(name = "additional_info")
     private String additionalInfo;
 
     public AdoptionRequest() {
+        status = Status.AdoptionRequestStatus.OPEN;
     }
 
     public long getId() {
@@ -71,9 +74,13 @@ public class AdoptionRequest {
         this.additionalInfo = additionalInfo;
     }
 
+    public Status.AdoptionRequestStatus getStatus() {
+        return status;
+    }
 
-
-
+    public void setStatus(Status.AdoptionRequestStatus status) {
+        this.status = status;
+    }
 
     @Override
     public boolean equals(Object o) {

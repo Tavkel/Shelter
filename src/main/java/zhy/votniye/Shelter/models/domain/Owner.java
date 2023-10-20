@@ -2,7 +2,7 @@ package zhy.votniye.Shelter.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import zhy.votniye.Shelter.models.Status;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +22,16 @@ public class Owner {
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Pet> pets;
+
+    public Owner(long id, String firstName, String lastName, String middleName, Status.OwnerStatus status, List<Pet> pets) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.status = status;
+        this.pets = pets;
+    }
+
     public Owner() {
         status = Status.OwnerStatus.AWAITING_CONFIRMATION;
     }
