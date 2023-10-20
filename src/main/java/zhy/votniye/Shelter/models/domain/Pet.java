@@ -1,14 +1,13 @@
 package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.*;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.TimeZone;
 
 @Entity
 @Table(name = "pet")
@@ -17,22 +16,48 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    private Boolean isMale;
+
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
     private Long fileSize;
     private String mediaType;
     private byte[] photo;
+    private Status.PetStatus status;
     @Column(name = "path_to_file")
     private String pathToFile;
+
     private String description;
+
     @Column(name = "special_needs")
     private String specialNeeds;
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
-
     public Pet() {
+        status = Status.PetStatus.AVAILABLE;
+    }
+
+    public Pet(Long id, String name, Boolean isMale,
+               String breed, Float weight,
+               LocalDateTime dateOfBirth,
+               byte[] photo, Status.PetStatus status,
+               String pathToFile, String description,
+               String specialNeeds, Owner owner) {
+        this.id = id;
+        this.name = name;
+        this.isMale = isMale;
+        this.breed = breed;
+        this.weight = weight;
+        this.dateOfBirth = dateOfBirth;
+        this.photo = photo;
+        this.status = status;
+        this.pathToFile = pathToFile;
+        this.description = description;
+        this.specialNeeds = specialNeeds;
+        this.owner = owner;
     }
 
     public Long getFileSize(){
@@ -62,6 +87,14 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getMale() {
+        return isMale;
+    }
+
+    public void setMale(Boolean male) {
+        isMale = male;
     }
 
     public String getBreed() {
@@ -133,6 +166,22 @@ public class Pet {
         this.owner = owner;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public Status.PetStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status.PetStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,4 +206,5 @@ public class Pet {
 //        result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
+
 }
