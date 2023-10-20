@@ -22,6 +22,8 @@ public class Pet {
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
+    private Long fileSize;
+    private String mediaType;
     private byte[] photo;
     private Status.PetStatus status;
     @Column(name = "path_to_file")
@@ -56,6 +58,19 @@ public class Pet {
         this.description = description;
         this.specialNeeds = specialNeeds;
         this.owner = owner;
+    }
+
+    public Long getFileSize(){
+        return fileSize;
+    }
+    public void setFileSize(Long fileSize){
+        this.fileSize = fileSize;
+    }
+    public String getMediaType(){
+        return mediaType;
+    }
+    public void setMediaType(String mediaType){
+        this.mediaType = mediaType;
     }
 
     public Long getId() {
@@ -104,6 +119,14 @@ public class Pet {
 
     public void setDateOfBirth(LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public byte[] getPhoto(){
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo){
+        this.photo = photo;
     }
 
     public int getAge() {
@@ -168,7 +191,9 @@ public class Pet {
                 && Objects.equals(name, pet.name)
                 && Objects.equals(breed, pet.breed)
                 && Objects.equals(weight, pet.weight)
-                && Arrays.equals(photo, pet.photo)
+//                && Objects.equals(fileSize, pet.fileSize)
+//                && Objects.equals(mediaType, pet.mediaType)
+//                && Arrays.equals(photo, pet.photo)
                 && Objects.equals(pathToFile, pet.pathToFile)
                 && Objects.equals(description, pet.description)
                 && Objects.equals(specialNeeds, pet.specialNeeds);
@@ -176,8 +201,9 @@ public class Pet {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, dateOfBirth, pathToFile, description, specialNeeds);
-        result = 31 * result + Arrays.hashCode(photo);
+        int result = Objects.hash(name, breed, weight, dateOfBirth,
+                     pathToFile, description, specialNeeds);
+//        result = 31 * result + Arrays.hashCode(photo);
         return result;
     }
 

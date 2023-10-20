@@ -1,9 +1,11 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
-
+@Schema(title = "ReportDTO")
 public class ReportDTO {
 
     private Long reportId;

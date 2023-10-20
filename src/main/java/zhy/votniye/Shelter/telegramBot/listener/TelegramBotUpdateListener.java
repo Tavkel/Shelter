@@ -44,28 +44,28 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
 
-        updates.forEach(update -> {
-            logger.info("Processing update: {}", update);
-
-            if (update.message() != null && botService.getSessionIds().contains(update.message().chat().id())) {
-                botService.getSession(update.message().chat().id()).setData(update.message().text());
-                return;
-            }
-
-            if (update.message() != null) {
-                try {
-                    processMessage(update.message());
-                } catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
-                    throw new RuntimeException(e); //todo handle exceptions
-                }
-            } else if (update.callbackQuery() != null) {
-                try {
-                    processCallback(update.callbackQuery());
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+//        updates.forEach(update -> {
+//            logger.info("Processing update: {}", update);
+//
+//            if (update.message() != null && botService.getSessionIds().contains(update.message().chat().id())) {
+//                botService.getSession(update.message().chat().id()).setData(update.message().text());
+//                return;
+//            }
+//
+//            if (update.message() != null) {
+//                try {
+//                    processMessage(update.message());
+//                } catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+//                    throw new RuntimeException(e); //todo handle exceptions
+//                }
+//            } else if (update.callbackQuery() != null) {
+//                try {
+//                    processCallback(update.callbackQuery());
+//                } catch (InvocationTargetException | IllegalAccessException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
