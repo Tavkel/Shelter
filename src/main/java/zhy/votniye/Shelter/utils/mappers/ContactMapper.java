@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.mapper;
+package zhy.votniye.Shelter.utils.mappers;
 
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;

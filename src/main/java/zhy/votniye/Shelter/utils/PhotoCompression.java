@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.helpers;
+package zhy.votniye.Shelter.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

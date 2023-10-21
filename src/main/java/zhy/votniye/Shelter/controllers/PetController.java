@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import zhy.votniye.Shelter.mapper.PetMapper;
+import zhy.votniye.Shelter.utils.mappers.PetMapper;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.PetService;
 

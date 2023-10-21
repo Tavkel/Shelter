@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import zhy.votniye.Shelter.mapper.ReportMapper;
+import zhy.votniye.Shelter.utils.mappers.ReportMapper;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 import java.util.Collection;

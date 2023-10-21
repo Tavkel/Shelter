@@ -3,7 +3,7 @@ package zhy.votniye.Shelter.services.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.ContactAlreadyExistsException;
+import zhy.votniye.Shelter.exceptions.ContactAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.repository.ContactRepository;
 import zhy.votniye.Shelter.services.interfaces.ContactService;

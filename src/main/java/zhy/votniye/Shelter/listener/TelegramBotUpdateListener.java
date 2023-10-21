@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.telegramBot.listener;
+package zhy.votniye.Shelter.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;

@@ -1,7 +1,7 @@
 package zhy.votniye.Shelter.services.interfaces;
 
 import com.pengrad.telegrambot.model.Message;
-import zhy.votniye.Shelter.helpers.TgSession;
+import zhy.votniye.Shelter.sessions.tg.TgSession;
 
 import java.util.Collection;
 
