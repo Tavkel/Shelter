@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
+
 @Schema(title = "Report")
 public class ReportDTO {
 
@@ -16,7 +17,6 @@ public class ReportDTO {
     private String feedingReport;
     private String generalReport;
     private String behaviorReport;
-
     private LocalDateTime reportDate;
 
     public ReportDTO(Long reportId, Long ownerId, Long petId,
@@ -33,8 +33,7 @@ public class ReportDTO {
         this.reportDate = reportDate;
     }
 
-    public ReportDTO(){
-
+    public ReportDTO() {
     }
 
     public Long getReportId() {

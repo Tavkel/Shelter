@@ -180,20 +180,14 @@ public class Pet {
                 && Objects.equals(name, pet.name)
                 && Objects.equals(breed, pet.breed)
                 && Objects.equals(weight, pet.weight)
-//                && Objects.equals(fileSize, pet.fileSize)
-//                && Objects.equals(mediaType, pet.mediaType)
-//                && Arrays.equals(photo, pet.photo)
-                && Objects.equals(pathToFile, pet.pathToFile)
                 && Objects.equals(description, pet.description)
                 && Objects.equals(specialNeeds, pet.specialNeeds);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, dateOfBirth,
+        return Objects.hash(name, breed, weight, dateOfBirth,
                      pathToFile, description, specialNeeds);
-//        result = 31 * result + Arrays.hashCode(photo);
-        return result;
     }
 
 }

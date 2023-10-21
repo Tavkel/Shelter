@@ -19,7 +19,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     public OwnerServiceImpl(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
-
     }
 
     /**

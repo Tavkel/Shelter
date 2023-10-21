@@ -18,7 +18,6 @@ public class ReportServiceImpl implements ReportService {
 
     public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
-
     }
 
     /**

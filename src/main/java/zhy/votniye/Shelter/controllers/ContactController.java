@@ -89,25 +89,4 @@ public class ContactController {
 
         return ContactMapper.fromContact(contactService.update(contact));
     }
-
-//    @Operation(summary = "delete owner contact", tags = "Owners")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "delete owner contact",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = ContactDTO.class)
-//                    )
-//            ),
-//            @ApiResponse(
-//                    responseCode = "404",
-//                    description = "Owner contact not found",
-//                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
-//            )
-//    })
-//    @DeleteMapping("/{contactId}")
-//    public ContactDTO delete(@PathVariable long contactId){
-//        return fromContact(contactService.delete(contactId));
-//    }
 }

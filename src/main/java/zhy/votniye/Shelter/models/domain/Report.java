@@ -11,16 +11,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "reports")
 public class Report {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "owner_id")
     private long ownerId;
     @Column(name = "pet_id")
     private long petId;
-
     private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;
@@ -30,7 +27,7 @@ public class Report {
     private String generalReport;
     @Column(name = "behavior_report")
     private String behaviorReport;
-    private LocalDateTime dateOfReport;
+    private final LocalDateTime dateOfReport;
 
     public Report() {
         this.dateOfReport = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);

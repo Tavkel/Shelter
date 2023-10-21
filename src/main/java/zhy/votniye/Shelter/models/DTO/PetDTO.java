@@ -10,8 +10,6 @@ import java.util.Objects;
 
 @Schema(title = "Pet")
 public class PetDTO {
-
-
     private Long petId;
     private String name;
     private boolean isMale;
@@ -39,7 +37,8 @@ public class PetDTO {
         this.specialNeeds = specialNeeds;
 
     }
-    public PetDTO(){
+
+    public PetDTO() {
     }
 
     public Long getPetId() {
@@ -53,6 +52,7 @@ public class PetDTO {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }

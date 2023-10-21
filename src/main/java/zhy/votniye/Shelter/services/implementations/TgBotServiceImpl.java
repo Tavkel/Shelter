@@ -177,7 +177,7 @@ public class TgBotServiceImpl implements TgBotService {
                 "Want something else?");
 
         EnumSet<Button> buttons = EnumSet.of(Button.ABOUT_SHELTER_BUTTON, Button.LEAVE_CONTACT_BUTTON,
-                Button.SUBMIT_REPORT_BUTTON, Button.CALL_VOLUNTEER_BUTTON);//todo check for submit report availability needed
+                Button.SUBMIT_REPORT_BUTTON, Button.CALL_VOLUNTEER_BUTTON);//todo check for report submission availability needed
         var newKeyboard = assembleKeyboard(buttons);
         EditMessageReplyMarkup editButtons = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(newKeyboard);

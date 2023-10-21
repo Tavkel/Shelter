@@ -8,13 +8,6 @@ public class ContactDTO {
 
     private Long contactId;
     private Long phone;
-
-//    private whatsapp;
-
-//    private telegram;
-
-//    private telegramChatId;
-
     private String email;
     private String address;
     private String comment;

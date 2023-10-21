@@ -9,6 +9,7 @@ public interface TgBotService {
     void sendErrorReport(long chatId, String eMessage);
 
     Collection<Long> getSessionIds();
+
     TgSession getSession(long chatId);
 
     void sayHello(long chatId);
@@ -26,6 +27,8 @@ public interface TgBotService {
     void backToMain(Message message);
 
     void leaveContact(Message message);
+
     void leaveContactStep(long chatId, int step);
+
     void dataIngestSessionFailure(long chatId, int step);
 }
