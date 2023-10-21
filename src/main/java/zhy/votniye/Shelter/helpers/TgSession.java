@@ -1,13 +1,11 @@
 package zhy.votniye.Shelter.helpers;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.time.LocalDateTime;
 
-@Configurable
-public class TgSession implements Runnable {
+public class TgSession {
     private final long chatId;
 
     private LocalDateTime lastUpdate;
@@ -28,7 +26,7 @@ public class TgSession implements Runnable {
         this.botService = botService;
         this.lastUpdate = LocalDateTime.now();
         this.type = type;
-        this.run();
+        this.setObserver(new TgSessionModelAssembler());
     }
 
     public void setContactService(ContactService contactService) {
@@ -39,18 +37,40 @@ public class TgSession implements Runnable {
         return chatId;
     }
 
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    /**
+     * Sets incoming data string and calls observer to process it.
+     * Calls {@link TgBotService} to form response based on result of {@link TgSessionModelAssembler#updateOwner(String, int)}
+     *
+     * @param data
+     */
+    //todo rework to work with any model
     public void setData(String data) {
         this.data = data;
         lastUpdate = LocalDateTime.now();
-        if (type == TgSessionTypes.LEAVE_CONTACT && observer.updateOwner(data, step++)) {
-            contactService.create(observer.getContact());
-            removeObserver();
-            return;
-        } else if (type == TgSessionTypes.SUBMIT_REPORT) {
-            removeObserver();
-            return;
+        byte updResult = observer.updateOwner(data, step);
+
+        if (updResult == 1) { //success
+            step++;
+            botService.leaveContactStep(chatId, step);
+        } else if (updResult == 0) { //success last step
+            step++;
+            var contact = observer.getContact();
+            contact.setTelegramChatId(chatId);
+            //move to TgService?
+            try {
+                contactService.create(contact);
+            } catch (Exception e) {
+                botService.sendErrorReport(chatId, e.getMessage());
+            }
+            botService.leaveContactStep(chatId, step);
+            destroy();
+        } else { //failure
+            botService.dataIngestSessionFailure(chatId, step);
         }
-        botService.leaveContactStep(chatId, step);
     }
 
     public void setObserver(TgSessionModelAssembler observer) {
@@ -61,9 +81,8 @@ public class TgSession implements Runnable {
         this.observer = null;
     }
 
-    @Override
-    public void run() {
-        var observer = new TgSessionModelAssembler();
-        this.setObserver(observer);
+    public void destroy(){
+        this.observer.destroy();
+        removeObserver();
     }
 }

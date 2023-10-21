@@ -135,10 +135,10 @@ public class ReportController {
             )
     })
     @GetMapping("/owner")
-    public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
+    public ResponseEntity<Collection<ReportDTO>> readAllReportsByOwner(@RequestParam long ownerId) {
 
         var result = reportService.readAllReportsByOwner(ownerId).stream().map(ReportMapper::fromReport).toList();
 
-        return new ResponseEntity<>(result, HttpStatus.OK).getBody();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

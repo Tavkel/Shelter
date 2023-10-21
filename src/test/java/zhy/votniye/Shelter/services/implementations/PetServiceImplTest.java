@@ -108,7 +108,7 @@ class PetServiceImplTest {
 
     @Test
     void readAllPagination() {
-        when(petRepository.findAll())
+        when(petRepository.findAll());
 
     }
 }

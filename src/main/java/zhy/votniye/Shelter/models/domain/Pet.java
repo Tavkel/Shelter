@@ -121,14 +121,6 @@ public class Pet {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public byte[] getPhoto(){
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo){
-        this.photo = photo;
-    }
-
     public int getAge() {
         Period age = Period.between(dateOfBirth.toLocalDate(), LocalDate.now());
         return age.getYears();

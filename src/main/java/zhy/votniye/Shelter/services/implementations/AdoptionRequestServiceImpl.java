@@ -1,20 +1,16 @@
 package zhy.votniye.Shelter.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.AdoptionRequest;
 import zhy.votniye.Shelter.repository.AdoptionRequestRepository;
-import zhy.votniye.Shelter.repository.PetRepository;
 import zhy.votniye.Shelter.services.interfaces.AdoptionRequestService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 @Service
 public class AdoptionRequestServiceImpl implements AdoptionRequestService {
     private final Logger logger = LoggerFactory.getLogger(AdoptionRequestServiceImpl.class);
@@ -22,12 +18,11 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
 
     public AdoptionRequestServiceImpl(AdoptionRequestRepository adoptionRequestRepository) {
         this.adoptionRequestRepository = adoptionRequestRepository;
-
     }
 
     /**
      * The method creates an adoption and save it in the database
-     * The repository method is used for saving {@link JpaRepository#save(Object)}
+     * The repository method is used for saving {@link AdoptionRequestRepository#save(Object)}
      *
      * @param adoption the adoption being created
      * @return a saved adoption
@@ -37,9 +32,10 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         logger.debug("The create method was called with the data " + adoption);
         return adoptionRequestRepository.save(adoption);
     }
+
     /**
      * Search for an adoption by ID in the database.
-     * The repository method is used {@link JpaRepository#findById(Object)}
+     * The repository method is used {@link AdoptionRequestRepository#findById(Object)}
      *
      * @param id cannot be null
      * @return the founds adoption
@@ -54,10 +50,11 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         }
         return adoption.get();
     }
+
     /**
      * The method recreates the adoption by searching for an identifier in the database
-     * To find an adoption, use the repository method {@link JpaRepository#findById(Object)}
-     * To recreate an adoption, use the repository method {@link JpaRepository#save(Object)}
+     * To find an adoption, use the repository method {@link AdoptionRequestRepository#findById(Object)}
+     * To recreate an adoption, use the repository method {@link AdoptionRequestRepository#save(Object)}
      *
      * @param adoption rewritable adoption
      * @return new adoption
@@ -71,10 +68,11 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         }
         return adoptionRequestRepository.save(adoption);
     }
+
     /**
      * The method searches for the adoption ID in the database and deletes it.
-     * To find an adoption, use the repository method {@link JpaRepository#findById(Object)}
-     * To delete information, use the repository method {@link JpaRepository#delete(Object)}
+     * To find an adoption, use the repository method {@link AdoptionRequestRepository#findById(Object)}
+     * To delete information, use the repository method {@link AdoptionRequestRepository#delete(Object)}
      *
      * @param id - cannot be null
      * @return delete adoption
@@ -89,9 +87,10 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         }
         return adoption.get();
     }
+
     /**
      * The method shows all the adoption stored in the database.
-     * The repository method is used {@link JpaRepository#findAll()}
+     * The repository method is used {@link AdoptionRequestRepository#findAll()}
      *
      * @return all adoption
      */

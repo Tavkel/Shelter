@@ -16,6 +16,7 @@ path_to_file TEXT,
 description TEXT NOT NULL,
 special_needs TEXT NOT NULL,
 owner_id BIGINT,
+status SMALLINT,
 CONSTRAINT pet_pk PRIMARY KEY (id),
 CONSTRAINT "FK_pet_owner" FOREIGN KEY (owner_id) REFERENCES owner(id)
 );

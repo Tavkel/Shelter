@@ -15,7 +15,6 @@ public class Contact {
     private String address;
     private String comment;
     @OneToOne
-    @MapsId
     @JoinColumn(name = "id")
     private Owner owner;
 

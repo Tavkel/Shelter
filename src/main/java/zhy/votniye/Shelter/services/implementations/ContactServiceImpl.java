@@ -1,16 +1,13 @@
 package zhy.votniye.Shelter.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.exception.ContactAlreadyExistsException;
-import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.repository.ContactRepository;
-import zhy.votniye.Shelter.repository.PetRepository;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,15 +17,16 @@ import java.util.Optional;
 public class ContactServiceImpl implements ContactService {
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
+    private final OwnerService ownerService;
 
-    public ContactServiceImpl(ContactRepository contactRepository) {
+    public ContactServiceImpl(ContactRepository contactRepository, OwnerService ownerService) {
         this.contactRepository = contactRepository;
-
+        this.ownerService = ownerService;
     }
 
     /**
      * The method creates a contact and save it in the database
-     * The repository method is used for saving {@link JpaRepository#save(Object)}
+     * The repository method is used for saving {@link ContactRepository#save(Object)}
      *
      * @param contact the pet being created
      * @return a saved contact
@@ -37,16 +35,18 @@ public class ContactServiceImpl implements ContactService {
      */
     @Override
     public Contact create(Contact contact) {
-        logger.debug("The create method was called with the data " + contact);
-        if (contactRepository.findByPhoneAndTelegramChatId(contact.getPhone(), contact.getTelegramChatId())
-                .isPresent()) {
-            throw new ContactAlreadyExistsException("The database already has this contact");
+        if (contact.getOwner().getId() == 0) {
+            var o = ownerService.create(contact.getOwner());
+            contact.setId(o.getId());
+
+            contact.setOwner(null);
         }
         return contactRepository.save(contact);
     }
+
     /**
      * Search for a contact by ID in the database.
-     * The repository method is used {@link JpaRepository#findById(Object)}
+     * The repository method is used {@link ContactRepository#findById(Object)}
      *
      * @param id cannot be null
      * @return the founds contact
@@ -61,10 +61,11 @@ public class ContactServiceImpl implements ContactService {
         }
         return contact.get();
     }
+
     /**
      * The method recreates the contact by searching for an identifier in the database
-     * To find a contact, use the repository method {@link JpaRepository#findById(Object)}
-     * To recreate a contact, use the repository method {@link JpaRepository#save(Object)}
+     * To find a contact, use the repository method {@link ContactRepository#findById(Object)}
+     * To recreate a contact, use the repository method {@link ContactRepository#save(Object)}
      *
      * @param contact rewritable contact
      * @return new contact
@@ -78,10 +79,11 @@ public class ContactServiceImpl implements ContactService {
         }
         return contactRepository.save(contact);
     }
+
     /**
      * The method searches for the contact ID in the database and deletes it.
-     * To find a contact, use the repository method {@link JpaRepository#findById(Object)}
-     * To delete information, use the repository method {@link JpaRepository#delete(Object)}
+     * To find a contact, use the repository method {@link ContactRepository#findById(Object)}
+     * To delete information, use the repository method {@link ContactRepository#delete(Object)}
      *
      * @param id - cannot be null
      * @return delete contact
@@ -96,9 +98,10 @@ public class ContactServiceImpl implements ContactService {
         }
         return contact.get();
     }
+
     /**
      * The method shows all the contacts stored in the database.
-     * The repository method is used {@link JpaRepository#findAll()}
+     * The repository method is used {@link ContactRepository#findAll()}
      *
      * @return all contacts
      */

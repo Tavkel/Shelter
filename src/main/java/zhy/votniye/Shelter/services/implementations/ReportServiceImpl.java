@@ -1,19 +1,16 @@
 package zhy.votniye.Shelter.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Report;
-import zhy.votniye.Shelter.repository.PetRepository;
 import zhy.votniye.Shelter.repository.ReportRepository;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 @Service
 public class ReportServiceImpl implements ReportService {
     private final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
@@ -23,9 +20,10 @@ public class ReportServiceImpl implements ReportService {
         this.reportRepository = reportRepository;
 
     }
+
     /**
      * The method creates a report and save it in the database
-     * The repository method is used for saving {@link JpaRepository#save(Object)}
+     * The repository method is used for saving {@link ReportRepository#save(Object)}
      *
      * @param report the report being created
      * @return a saved report
@@ -35,14 +33,14 @@ public class ReportServiceImpl implements ReportService {
         logger.debug("The create method was called with the data " + report);
         return reportRepository.save(report);
     }
+
     /**
      * Search for a report by ID in the database.
-     * The repository method is used {@link JpaRepository#findById(Object)}
+     * The repository method is used {@link ReportRepository#findById(Object)}
      *
-     * @param id  cannot be null
-     * @throws NoSuchElementException Report not found
+     * @param id cannot be null
      * @return the founds report
-     *
+     * @throws NoSuchElementException Report not found
      */
     @Override
     public Report read(Long id) {
@@ -53,14 +51,15 @@ public class ReportServiceImpl implements ReportService {
         }
         return report.get();
     }
+
     /**
      * The method recreates the report by searching for an identifier in the database
-     * To find a report, use the repository method {@link JpaRepository#findById(Object)}
-     * To recreate a report, use the repository method {@link JpaRepository#save(Object)}
+     * To find a report, use the repository method {@link ReportRepository#findById(Object)}
+     * To recreate a report, use the repository method {@link ReportRepository#save(Object)}
      *
      * @param report rewritable report
-     * @throws NoSuchElementException Report not found
      * @return the founds report
+     * @throws NoSuchElementException Report not found
      */
     @Override
     public Report update(Report report) {
@@ -73,13 +72,12 @@ public class ReportServiceImpl implements ReportService {
 
     /**
      * The method searches for the report ID in the database and deletes it.
-     *To find a report, use the repository method {@link JpaRepository#findById(Object)}
-     * To delete information, use the repository method {@link JpaRepository#delete(Object)}
-     *
+     * To find a report, use the repository method {@link ReportRepository#findById(Object)}
+     * To delete information, use the repository method {@link ReportRepository#delete(Object)}
      *
      * @param id - cannot be null
-     * @throws NoSuchElementException Report not found
      * @return delete report
+     * @throws NoSuchElementException Report not found
      */
     @Override
     public Report delete(Long id) {
@@ -95,6 +93,7 @@ public class ReportServiceImpl implements ReportService {
      * The method shows all the owners reports
      * * The repository method {@link ReportRepository#findByOwnerId(long)}
      * is used to search for owner reports
+     *
      * @param ownerId
      * @return all owner reports
      */
