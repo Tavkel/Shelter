@@ -11,9 +11,8 @@ import org.springframework.http.ResponseEntity;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
-import zhy.votniye.Shelter.models.Status;
+import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.OwnerRepository;
-import zhy.votniye.Shelter.repository.PetRepository;
 
 import java.time.LocalDateTime;
 

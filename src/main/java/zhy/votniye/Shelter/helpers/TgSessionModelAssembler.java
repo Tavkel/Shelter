@@ -12,6 +12,14 @@ public class TgSessionModelAssembler {
     private final Pattern textPattern = Pattern.compile("[А-я\\w\\s-]+");
     private final Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
 
+    /**
+     * Sets data to object's field corresponding to current step of the state.
+     * Calling {@link #compareToPattern(Pattern, String)} with corresponding pattern if needed.
+     *
+     * @param data
+     * @param step
+     * @return 1 if step succeeded, -1 in case of failure, 0 if last step succeeded.
+     */
     public byte updateOwner(String data, int step) {
         switch (step) {
             case 1:
@@ -64,6 +72,12 @@ public class TgSessionModelAssembler {
         contact = null;
     }
 
+    /**
+     * Compares provided string to provided pattern.
+     * @param pattern
+     * @param data
+     * @return true if string matches pattern, false if not.
+     */
     private boolean compareToPattern(Pattern pattern, String data) {
         if (data == null || data.isEmpty()) return false;
         Matcher matcher = pattern.matcher(data);

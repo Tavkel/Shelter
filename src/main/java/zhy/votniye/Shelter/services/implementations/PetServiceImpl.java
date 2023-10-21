@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
@@ -43,7 +42,7 @@ public class PetServiceImpl implements PetService {
 
     /**
      * The method creates a Pet and save it in the database
-     * The repository method is used for saving {@link JpaRepository#save(Object)}
+     * The repository method is used for saving {@link PetRepository#save(Object)}
      *
      * @param pet the pet being created
      * @return a saved pet
@@ -53,11 +52,7 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet create(Pet pet) {
         logger.debug("The create method was called with the data " + pet);
-        if (petRepository.findByNameAndBreedAndWeight(
-                        pet.getName()
-                        , pet.getBreed()
-                        , pet.getWeight())
-                .isPresent()) {
+        if (petRepository.findByNameAndBreedAndWeight(pet.getName(), pet.getBreed(), pet.getWeight()).isPresent()) {
             throw new PetAlreadyExistsException("The database already has this pet");
         }
         return petRepository.save(pet);
@@ -65,7 +60,7 @@ public class PetServiceImpl implements PetService {
 
     /**
      * Search for a pet by ID in the database.
-     * The repository method is used {@link JpaRepository#findById(Object)}
+     * The repository method is used {@link PetRepository#findById(Object)}
      *
      * @param id cannot be null
      * @return the founds pet
@@ -83,8 +78,8 @@ public class PetServiceImpl implements PetService {
 
     /**
      * The method recreates the pet by searching for an identifier in the database
-     * To find a pet, use the repository method {@link JpaRepository#findById(Object)}
-     * To recreate a pet, use the repository method {@link JpaRepository#save(Object)}
+     * To find a pet, use the repository method {@link PetRepository#findById(Object)}
+     * To recreate a pet, use the repository method {@link PetRepository#save(Object)}
      *
      * @param pet rewritable pet
      * @return new pet
@@ -102,8 +97,8 @@ public class PetServiceImpl implements PetService {
 
     /**
      * The method searches for the pet ID in the database and deletes it.
-     * To find a pet, use the repository method {@link JpaRepository#findById(Object)}
-     * To delete information, use the repository method {@link JpaRepository#delete(Object)}
+     * To find a pet, use the repository method {@link PetRepository#findById(Object)}
+     * To delete information, use the repository method {@link PetRepository#delete(Object)}
      *
      * @param id - cannot be null
      * @return delete pet
@@ -121,7 +116,7 @@ public class PetServiceImpl implements PetService {
 
     /**
      * The method shows all the pets stored in the database.
-     * The repository method is used {@link JpaRepository#findAll()}
+     * The repository method is used {@link PetRepository#findAll()}
      *
      * @return all pets
      */

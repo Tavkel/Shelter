@@ -35,6 +35,11 @@ public class TgBotServiceImpl implements TgBotService {
         this.telegramBot = telegramBot;
     }
 
+    /**
+     * Sends greeting message
+     *
+     * @param chatId
+     */
     //region single arg commands
     @Override
     public void sayHello(long chatId) {
@@ -55,6 +60,12 @@ public class TgBotServiceImpl implements TgBotService {
     //region double arg commands
     //endregion
     //region callbacks
+
+    /**
+     * Edits bot's message from which callback was received into about menu form.
+     *
+     * @param message
+     */
     @Override
     public void about(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -70,6 +81,11 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    /**
+     * Edits bot's message from which callback was received into general info form.
+     *
+     * @param message
+     */
     @Override
     public void aboutGeneral(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -86,6 +102,11 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    /**
+     * Edits bot's message from which callback was received into contacts info form.
+     *
+     * @param message
+     */
     @Override
     public void aboutContacts(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -102,6 +123,11 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    /**
+     * Edits bot's message from which callback was received into drive-in permission info form.
+     *
+     * @param message
+     */
     @Override
     public void aboutEntryPermit(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -118,6 +144,11 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    /**
+     * Edits bot's message from which callback was received into about rules on territory info form.
+     *
+     * @param message
+     */
     @Override
     public void aboutRulesOnTerritory(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -134,6 +165,11 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    /**
+     * Edits bot's message from which callback was received into main menu form.
+     *
+     * @param message
+     */
     @Override
     public void backToMain(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
@@ -148,20 +184,30 @@ public class TgBotServiceImpl implements TgBotService {
 
         telegramBot.execute(editText);
         telegramBot.execute(editButtons);
-
     }
 
+    /**
+     * Starts process of collection {@link zhy.votniye.Shelter.models.domain.Contact} data
+     * @param message
+     */
     @Override
     public void leaveContact(Message message) {
+        //todo extract to method
+        TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
+        session.setContactService(contactService);
+        sessions.add(session);
+
         cleanUpButtons(message);
         SendMessage response = new SendMessage(message.chat().id(), "First I need your last name");
         telegramBot.execute(response);
-        TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
-
-        session.setContactService(contactService);
-        sessions.add(session);
     }
 
+    /**
+     * Sends message to user asking for next piece of data for next step
+     * Sends "success" message on last step and dereferences {@link TgSession}
+     * @param chatId
+     * @param step
+     */
     @Override
     public void leaveContactStep(long chatId, int step) {
         if (step == 8) {
@@ -176,12 +222,23 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(sendMessage);
     }
 
+    /**
+     * Notifies user of failure while processing provided data on current step
+     * @param chatId
+     * @param step
+     */
     @Override
     public void dataIngestSessionFailure(long chatId, int step) {
         SendMessage sendMessage = new SendMessage(chatId, "Failed to process data " + LeaveContactSteps.values()[step - 1]);
         telegramBot.execute(sendMessage);
     }
 
+    //endregion
+
+    /**
+     * removes buttons from message sending callback
+     * @param message
+     */
     private void cleanUpButtons(Message message) {
         EditMessageReplyMarkup edit = new EditMessageReplyMarkup(
                 message.chat().id(),
@@ -189,25 +246,45 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(edit);
     }
 
-    //endregion
     private void sendMessage() {
     }
 
+    /**
+     * Basic error message sender
+     * @param chatId
+     * @param eMessage
+     */
+    @Override
+    public void sendErrorReport(long chatId, String eMessage) {
+        var sendMessage = new SendMessage(chatId, "Encountered error while processing your message:\n" + eMessage);
+        telegramBot.execute(sendMessage);
+    }
+
+    /**
+     * Dereferences any {@link TgSession} longer than 2 minutes
+     */
     @Scheduled(cron = "0 0/1 * * * *")
     private void searchAndDestroySessions() {
         sessions.forEach(session -> {
             var lastUpdate = session.getLastUpdate();
             var timePassed = Duration.between(lastUpdate, LocalDateTime.now()).toMinutesPart();
 
+
+            //extract session life duration limit to props?
             if (timePassed > 2) {
                 var chatId = session.getChatId();
                 session.destroy();
                 sessions.remove(session);
-                telegramBot.execute(new SendMessage(chatId, "..."));
+                telegramBot.execute(new SendMessage(chatId, "Closing session. Reason - reached time limit"));
             }
         });
     }
 
+    /**
+     * Builds keyboard based on provided flags
+     * @param flags {@link Button}
+     * @return created keyboard
+     */
     private InlineKeyboardMarkup assembleKeyboard(EnumSet<Button> flags) {
         InlineKeyboardMarkup result = new InlineKeyboardMarkup();
 
@@ -228,6 +305,8 @@ public class TgBotServiceImpl implements TgBotService {
     }
 
     private static class ResponseMessages {
+
+        //todo rework
         private static SendMessage getHelloMessage(long chatId) {
             SendMessage result;
 
@@ -312,6 +391,7 @@ public class TgBotServiceImpl implements TgBotService {
     }
 
     private enum LeaveContactSteps {
+        //todo add associated message to step
         LAST_NAME(1), FIRST_NAME(2), MIDDLE_NAME(3), PHONE(4), ADDRESS(5), EMAIL(6), COMMENT(7), FINISH(8), FAILURE(9);
         private final int num;
 

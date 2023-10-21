@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ControllerExceptionHandler {
 
     Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
 

@@ -6,6 +6,8 @@ import zhy.votniye.Shelter.helpers.TgSession;
 import java.util.Collection;
 
 public interface TgBotService {
+    void sendErrorReport(long chatId, String eMessage);
+
     Collection<Long> getSessionIds();
     TgSession getSession(long chatId);
 

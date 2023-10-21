@@ -33,6 +33,9 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         this.botService = botService;
     }
 
+    /**
+     * Метод Собирает мапы команд и колбэков
+     */
     @PostConstruct
     public void init() {
         singleArgCommands = Commands.getSingleArgCommandsMap();
@@ -41,36 +44,50 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     * Обрабатывает сообщения и действия пользователя
+     * @see #processMessage(Message)
+     * @see #processCallback(CallbackQuery)
+     */
     @Override
     public int process(List<Update> updates) {
 
-//        updates.forEach(update -> {
-//            logger.info("Processing update: {}", update);
-//
-//            if (update.message() != null && botService.getSessionIds().contains(update.message().chat().id())) {
-//                botService.getSession(update.message().chat().id()).setData(update.message().text());
-//                return;
-//            }
-//
-//            if (update.message() != null) {
-//                try {
-//                    processMessage(update.message());
-//                } catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
-//                    throw new RuntimeException(e); //todo handle exceptions
-//                }
-//            } else if (update.callbackQuery() != null) {
-//                try {
-//                    processCallback(update.callbackQuery());
-//                } catch (InvocationTargetException | IllegalAccessException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
+        updates.forEach(update -> {
+            logger.info("Processing update: {}", update);
+
+            if (update.message() != null && botService.getSessionIds().contains(update.message().chat().id())) {
+                botService.getSession(update.message().chat().id()).setData(update.message().text());
+                return;
+            }
+
+            if (update.message() != null) {
+                try {
+                    processMessage(update.message());
+                } catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+                    botService.sendErrorReport(update.message().chat().id(), e.getMessage());
+                }
+            } else if (update.callbackQuery() != null) {
+                try {
+                    processCallback(update.callbackQuery());
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    botService.sendErrorReport(update.message().chat().id(), e.getMessage());
+                }
+            }
+        });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
+    /**
+     * Метод принимает тело сообщения пользователя и проверяет его на соответствие
+     * паттернам команд с аргументами / без аргументов и вызывает метод {@link TgBotService}
+     * соответствующий полученной команде.
+     * @param message
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     private void processMessage(Message message) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
-        if(message.text() == null) return;
+        if (message.text() == null) return;
         Pattern patternDouble = Pattern.compile("(^/[\\w?]+)(\\s)(.+)");
         Matcher matcher = patternDouble.matcher(message.text());
         if (matcher.matches()) {
@@ -96,6 +113,13 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         //singleArgCommands.get("/start").invoke(botService, message.chat().id());
     }
 
+    /**
+     * Метод принимает {@link CallbackQuery}, и вызывает метод {@link TgBotService}
+     * соответствующий полученной команде.
+     * @param callback
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     private void processCallback(CallbackQuery callback) throws InvocationTargetException, IllegalAccessException {
         if (callbacks.containsKey(callback.data())) {
             var method = callbacks.get(callback.data());
