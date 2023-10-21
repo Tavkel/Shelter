@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.helpers;
+package zhy.votniye.Shelter.sessions.tg;
 
 import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;

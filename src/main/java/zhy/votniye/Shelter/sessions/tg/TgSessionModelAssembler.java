@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.helpers;
+package zhy.votniye.Shelter.sessions.tg;
 
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.models.domain.Owner;

@@ -6,14 +6,11 @@ import zhy.votniye.Shelter.models.enums.Status;
 import java.util.Objects;
 @Schema(title = "Owner")
 public class OwnerDTO {
-
-
     private Long ownerId;
     private String firstName;
     private String lastName;
     private String middleName;
     private ContactDTO contactDTO;
-
     private Status.OwnerStatus status;
 
     public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName, ContactDTO contactDTO, Status.OwnerStatus status) {
@@ -26,7 +23,6 @@ public class OwnerDTO {
     }
 
     public OwnerDTO(){
-
     }
 
     public Long getOwnerId() {

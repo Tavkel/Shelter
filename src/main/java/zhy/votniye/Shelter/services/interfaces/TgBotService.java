@@ -1,7 +1,7 @@
 package zhy.votniye.Shelter.services.interfaces;
 
 import com.pengrad.telegrambot.model.Message;
-import zhy.votniye.Shelter.helpers.TgSession;
+import zhy.votniye.Shelter.sessions.tg.TgSession;
 
 import java.util.Collection;
 
@@ -9,6 +9,7 @@ public interface TgBotService {
     void sendErrorReport(long chatId, String eMessage);
 
     Collection<Long> getSessionIds();
+
     TgSession getSession(long chatId);
 
     void sayHello(long chatId);
@@ -26,6 +27,8 @@ public interface TgBotService {
     void backToMain(Message message);
 
     void leaveContact(Message message);
+
     void leaveContactStep(long chatId, int step);
+
     void dataIngestSessionFailure(long chatId, int step);
 }

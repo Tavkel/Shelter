@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.telegramBot.config;
+package zhy.votniye.Shelter.config;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.DeleteMyCommands;

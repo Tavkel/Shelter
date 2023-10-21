@@ -13,10 +13,6 @@ public class AdoptionRequestDTO {
     private String additionalInfo;
     private String status;
 
-
-//    private status;
-
-
     public AdoptionRequestDTO(Long idAdoptionRequestDTO, Long ownerIdDTO,
                               Long petIdDTO, byte[] photoAdoptionRequest,
                               String pathToFilePhotoAdoptionRequest, String additionalInfo, String status) {

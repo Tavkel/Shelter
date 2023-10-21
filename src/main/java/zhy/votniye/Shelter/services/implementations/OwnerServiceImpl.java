@@ -3,7 +3,7 @@ package zhy.votniye.Shelter.services.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exception.OwnerAlreadyExistsException;
+import zhy.votniye.Shelter.exceptions.OwnerAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.repository.OwnerRepository;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
@@ -19,7 +19,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     public OwnerServiceImpl(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
-
     }
 
     /**

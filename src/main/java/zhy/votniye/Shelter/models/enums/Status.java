@@ -13,7 +13,6 @@ public class Status {
     }
     public enum AdoptionRequestStatus{
         OPEN,
-
         TRIAL_PERIOD,
         FINISHED,
         CLOSED

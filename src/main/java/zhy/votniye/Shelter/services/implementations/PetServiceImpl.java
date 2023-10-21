@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
-import zhy.votniye.Shelter.helpers.PhotoCompression;
+import zhy.votniye.Shelter.exceptions.PetAlreadyExistsException;
+import zhy.votniye.Shelter.utils.PhotoCompression;
 import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.repository.PetRepository;
 import zhy.votniye.Shelter.services.interfaces.PetService;
@@ -25,11 +25,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 public class PetServiceImpl implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
-
     private final PetRepository petRepository;
-
     private final PhotoCompression photoCompression;
-
     private final String petPhotoNotFoundMessage = "Pet does not have an photo.";
     @Value("path-to-photo-folder")
     private String petPhotoDirectory;
@@ -139,14 +136,15 @@ public class PetServiceImpl implements PetService {
         return petRepository.findAll(pageRequest).getContent();
     }
 
-//    @Override
-//    public Pet getPetPhotoPreview(long id) {
-//        read(id);
-//        logger.debug(String.format("Getting photo for pet %d", id));
-//        return petRepository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException(petPhotoNotFoundMessage));
-//    }
-
+    /**
+     * Gets pet from db by id, calls for methods to write received image to drive, compress image for storing it in db,
+     * setting photo related fields in pet object. Saves resulting pet to db
+     * @param id
+     * @param file
+     * @throws IOException
+     * @see #petPhotoSetUp(MultipartFile, Pet, Path)
+     * @see #writePetPhotoToFile(long, MultipartFile)
+     */
     @Override
     public void savePetPhoto(long id, MultipartFile file) throws IOException {
         logger.debug(String.format("Attempting to create a record for photo for pet %d", id));
@@ -161,6 +159,13 @@ public class PetServiceImpl implements PetService {
         logger.debug("Pet photo saved");
     }
 
+    /**
+     * Sets all photo related fields of pet object
+     * @param file
+     * @param pet
+     * @param filePath
+     * @throws IOException
+     */
     private void petPhotoSetUp(MultipartFile file, Pet pet, Path filePath) throws IOException {
         logger.debug("Setting up photo properties");
         pet.setPathToFile(filePath.toString());
@@ -170,6 +175,13 @@ public class PetServiceImpl implements PetService {
         logger.debug("Pet photo properties set");
     }
 
+    /**
+     * Writes photo to drive and returns path to it
+     * @param id
+     * @param file
+     * @return path to the written file
+     * @throws IOException
+     */
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
         Path filePath = Path.of(petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -186,6 +198,11 @@ public class PetServiceImpl implements PetService {
         return filePath;
     }
 
+    /**
+     *
+     * @param fileName
+     * @return file's extension
+     */
     private String getExtension(String fileName) {
         if (fileName == null) return "";
         int lastDot = fileName.lastIndexOf(".");

@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.mapper;
+package zhy.votniye.Shelter.utils.mappers;
 
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
 import zhy.votniye.Shelter.models.domain.Report;
@@ -6,7 +6,7 @@ import zhy.votniye.Shelter.models.domain.Report;
 public class ReportMapper {
     public static Report toReport(ReportDTO reportDTO) {
         if (reportDTO == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to Report");
         }
 
         Report report = new Report();
@@ -25,7 +25,7 @@ public class ReportMapper {
 
     public static ReportDTO fromReport(Report report) {
         if (report == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to ReportDTO");
         }
 
         ReportDTO reportDTO = new ReportDTO();

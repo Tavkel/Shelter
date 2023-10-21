@@ -6,17 +6,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import zhy.votniye.Shelter.mapper.ReportMapper;
+import zhy.votniye.Shelter.utils.mappers.ReportMapper;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
-
 import java.util.Collection;
-
-import static zhy.votniye.Shelter.mapper.ReportMapper.*;
 
 @RestController
 @RequestMapping("/report")
@@ -46,9 +41,9 @@ public class ReportController {
     })
     @PostMapping
     public ReportDTO create(@RequestBody ReportDTO reportDTO) {
-        var report = toReport(reportDTO);
+        var report = ReportMapper.toReport(reportDTO);
 
-        return fromReport(reportService.create(report));
+        return ReportMapper.fromReport(reportService.create(report));
     }
 
     @Operation(summary = "find report", tags = "Reports")
@@ -69,7 +64,7 @@ public class ReportController {
     })
     @GetMapping("/{reportId}")
     public ReportDTO read(@PathVariable long reportId) {
-        return fromReport(reportService.read(reportId));
+        return ReportMapper.fromReport(reportService.read(reportId));
     }
 
     @Operation(summary = "update report", tags = "Reports")
@@ -90,9 +85,9 @@ public class ReportController {
     })
     @PutMapping
     public ReportDTO update(@RequestBody ReportDTO reportDTO) {
-        var report = toReport(reportDTO);
+        var report = ReportMapper.toReport(reportDTO);
 
-        return fromReport(reportService.update(report));
+        return ReportMapper.fromReport(reportService.update(report));
     }
 
     @Operation(summary = "delete report", tags = "Reports")
@@ -113,7 +108,7 @@ public class ReportController {
     })
     @DeleteMapping("/{reportId}")
     public ReportDTO delete(@PathVariable long reportId) {
-        return fromReport(reportService.delete(reportId));
+        return ReportMapper.fromReport(reportService.delete(reportId));
     }
 
     @Operation(summary = "read all reports by owner", tags = "Reports")
@@ -133,10 +128,8 @@ public class ReportController {
             )
     })
     @GetMapping("/owner")
-    public ResponseEntity<Collection<ReportDTO>> readAllReportsByOwner(@RequestParam long ownerId) {
+    public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
 
-        var result = reportService.readAllReportsByOwner(ownerId).stream().map(ReportMapper::fromReport).toList();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return reportService.readAllReportsByOwner(ownerId).stream().map(ReportMapper::fromReport).toList();
     }
 }

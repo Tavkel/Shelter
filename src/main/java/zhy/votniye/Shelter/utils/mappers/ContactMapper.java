@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.mapper;
+package zhy.votniye.Shelter.utils.mappers;
 
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
@@ -7,7 +7,7 @@ public class ContactMapper {
 
     public static Contact toContact(ContactDTO contactDTO) {
         if (contactDTO == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to Contact");
         }
 
         Contact contact = new Contact();
@@ -25,7 +25,7 @@ public class ContactMapper {
 
     public static ContactDTO fromContact(Contact contact) {
         if (contact == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to ContactDTO");
         }
 
         ContactDTO contactDTO = new ContactDTO();

@@ -18,7 +18,6 @@ public interface PetService {
     List<Pet> readAll();
 
     List<Pet> readAllPagination(int pageNumber);
-//    Pet getPetPhotoPreview(long id);
 
     void savePetPhoto(long id, MultipartFile file) throws IOException;
 }

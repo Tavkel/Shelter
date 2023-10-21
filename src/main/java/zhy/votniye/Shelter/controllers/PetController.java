@@ -8,27 +8,20 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import zhy.votniye.Shelter.mapper.PetMapper;
+import zhy.votniye.Shelter.utils.mappers.PetMapper;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.PetService;
 
 import java.io.IOException;
 import java.util.Collection;
 
-import static zhy.votniye.Shelter.mapper.PetMapper.*;
-
 @RestController
 @RequestMapping("/pet")
 public class PetController {
-
     public final PetService petService;
-//    @Value("${upload-file-size-limit}")
-//    private int fileSizeLimit;
 
     public PetController(PetService petService) {
         this.petService = petService;
@@ -53,11 +46,9 @@ public class PetController {
     })
     @PostMapping
     public PetDTO create(@Parameter(description = "object PetDTO", example = "test") @RequestBody PetDTO petDTO) {
-        var pet = toPet(petDTO);
+        var pet = PetMapper.toPet(petDTO);
 
-        var res = fromPet(petService.create(pet));
-
-        return res;
+        return PetMapper.fromPet(petService.create(pet));
     }
 
     @Operation(summary = "found pet", tags = "Pets")
@@ -78,7 +69,7 @@ public class PetController {
     })
     @GetMapping("/{petId}")
     public PetDTO read(@PathVariable long petId) {
-        return fromPet(petService.read(petId));
+        return PetMapper.fromPet(petService.read(petId));
     }
 
     @Operation(summary = "update pet", tags = "Pets")
@@ -99,9 +90,9 @@ public class PetController {
     })
     @PutMapping
     public PetDTO update(@RequestBody PetDTO petDTO) {
-        var pet = toPet(petDTO);
+        var pet = PetMapper.toPet(petDTO);
 
-        return fromPet(petService.update(pet));
+        return PetMapper.fromPet(petService.update(pet));
     }
 
     @Operation(summary = "delete pet", tags = "Pets")
@@ -122,7 +113,7 @@ public class PetController {
     })
     @DeleteMapping("/{petId}")
     public PetDTO delete(@PathVariable long petId) {
-        return fromPet(petService.delete(petId));
+        return PetMapper.fromPet(petService.delete(petId));
     }
 
     @Operation(summary = "find all pets", tags = "Pets")
@@ -143,8 +134,7 @@ public class PetController {
     })
     @GetMapping
     public Collection<PetDTO> readAll() {
-        var result = petService.readAll().stream().map(PetMapper::fromPet).toList();
-        return result;
+        return petService.readAll().stream().map(PetMapper::fromPet).toList();
     }
 
     @Operation(summary = "view five pets", tags = "Pets")
@@ -160,14 +150,12 @@ public class PetController {
 
     })
     @GetMapping(value = "/all")
-    public ResponseEntity<Collection<PetDTO>> getPetPage(@RequestParam int pageNum) {
+    public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
         if (pageNum < 1) {
             pageNum = 1;
         }
 
-        var result = petService.readAllPagination(pageNum).stream().map(PetMapper::fromPet).toList();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return petService.readAllPagination(pageNum).stream().map(PetMapper::fromPet).toList();
     }
 
     @Operation(summary = "upload pet photo", tags = "Pets")
@@ -193,14 +181,10 @@ public class PetController {
 
     })
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadPetPhoto(@PathVariable long petId,
-                                                 @RequestParam MultipartFile file) throws IOException {
-//        if (file.getSize() > fileSizeLimit * 1024L) {
-//            return new ResponseEntity<>("File too big.", HttpStatus.BAD_REQUEST);
-//        }
-
+    public String uploadPetPhoto(@PathVariable long petId, @RequestParam MultipartFile file)
+            throws IOException {
         petService.savePetPhoto(petId, file);
-        return new ResponseEntity<>("File saved", HttpStatus.OK);
+        return "File saved";
     }
 }
 

@@ -7,10 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.utils.mappers.OwnerMapper;
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
-
-import static zhy.votniye.Shelter.mapper.OwnerMapper.*;
 
 @RestController
 @RequestMapping("/owner")
@@ -40,8 +39,8 @@ public class OwnerController {
     })
     @PostMapping
     public OwnerDTO create(@RequestBody OwnerDTO ownerDTO) {
-        var owner = toOwner(ownerDTO);
-        return fromOwner(ownerService.create(owner));
+        var owner = OwnerMapper.toOwner(ownerDTO);
+        return OwnerMapper.fromOwner(ownerService.create(owner));
     }
 
     @Operation(summary = "find owner", tags = "Owners")
@@ -62,7 +61,7 @@ public class OwnerController {
     })
     @GetMapping("/{ownerId}")
     public OwnerDTO read(@PathVariable long ownerId) {
-        return fromOwner(ownerService.read(ownerId));
+        return OwnerMapper.fromOwner(ownerService.read(ownerId));
     }
 
     @Operation(summary = "update owner", tags = "Owners")
@@ -83,8 +82,8 @@ public class OwnerController {
     })
     @PutMapping
     public OwnerDTO update(OwnerDTO ownerDTO) {
-        var owner = toOwner(ownerDTO);
-        return fromOwner(ownerService.update(owner));
+        var owner = OwnerMapper.toOwner(ownerDTO);
+        return OwnerMapper.fromOwner(ownerService.update(owner));
     }
 
     @Operation(summary = "delete owner", tags = "Owners")
@@ -105,6 +104,6 @@ public class OwnerController {
     })
     @DeleteMapping("/{ownerId}")
     public OwnerDTO delete(@PathVariable long ownerId) {
-        return fromOwner(ownerService.delete(ownerId));
+        return OwnerMapper.fromOwner(ownerService.delete(ownerId));
     }
 }

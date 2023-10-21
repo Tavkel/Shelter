@@ -1,4 +1,4 @@
-package zhy.votniye.Shelter.exception;
+package zhy.votniye.Shelter.exceptions;
 
 public class OwnerAlreadyExistsException extends RuntimeException {
     public OwnerAlreadyExistsException(String message) {

@@ -6,7 +6,6 @@ import zhy.votniye.Shelter.models.enums.Status;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -16,9 +15,7 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     private Boolean isMale;
-
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
@@ -89,11 +86,11 @@ public class Pet {
         this.name = name;
     }
 
-    public Boolean getMale() {
+    public Boolean getSex() {
         return isMale;
     }
 
-    public void setMale(Boolean male) {
+    public void setSex(Boolean male) {
         isMale = male;
     }
 
@@ -183,20 +180,14 @@ public class Pet {
                 && Objects.equals(name, pet.name)
                 && Objects.equals(breed, pet.breed)
                 && Objects.equals(weight, pet.weight)
-//                && Objects.equals(fileSize, pet.fileSize)
-//                && Objects.equals(mediaType, pet.mediaType)
-//                && Arrays.equals(photo, pet.photo)
-                && Objects.equals(pathToFile, pet.pathToFile)
                 && Objects.equals(description, pet.description)
                 && Objects.equals(specialNeeds, pet.specialNeeds);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, dateOfBirth,
+        return Objects.hash(name, breed, weight, dateOfBirth,
                      pathToFile, description, specialNeeds);
-//        result = 31 * result + Arrays.hashCode(photo);
-        return result;
     }
 
 }
