@@ -14,16 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.mapper.PetMapper;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.PetService;
+
 import java.io.IOException;
 import java.util.Collection;
 
 @RestController
 @RequestMapping("/pet")
 public class PetController {
-
     public final PetService petService;
-//    @Value("${upload-file-size-limit}")
-//    private int fileSizeLimit;
 
     public PetController(PetService petService) {
         this.petService = petService;
@@ -183,12 +181,8 @@ public class PetController {
 
     })
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadPetPhoto(@PathVariable long petId,
-                                                 @RequestParam MultipartFile file) throws IOException {
-//        if (file.getSize() > fileSizeLimit * 1024L) {
-//            return "File too big.";
-//        }
-
+    public String uploadPetPhoto(@PathVariable long petId, @RequestParam MultipartFile file)
+            throws IOException {
         petService.savePetPhoto(petId, file);
         return "File saved";
     }
