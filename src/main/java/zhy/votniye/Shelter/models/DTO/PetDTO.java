@@ -1,6 +1,8 @@
 package zhy.votniye.Shelter.models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import zhy.votniye.Shelter.models.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ public class PetDTO {
 
     private Long petId;
     private String name;
+    private boolean isMale;
     private String breed;
     private Float weight;
     private int age;
@@ -20,9 +23,7 @@ public class PetDTO {
     private String filePathPetPhoto;
     private String description;
     private String specialNeeds;
-
-
-//    private status;
+    private Status.PetStatus status;
 
     public PetDTO(Long petId, String name, String breed, Float weight,
                   LocalDateTime dateOfBirth, byte[] photo, String filePathPetPhoto,
@@ -38,14 +39,13 @@ public class PetDTO {
         this.specialNeeds = specialNeeds;
 
     }
-
     public PetDTO(){
-
     }
 
     public Long getPetId() {
         return petId;
     }
+
     public void setPetId(Long petId) {
         this.petId = petId;
     }
@@ -53,7 +53,6 @@ public class PetDTO {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -64,6 +63,15 @@ public class PetDTO {
 
     public void setBreed(String breed) {
         this.breed = breed;
+    }
+
+    @JsonProperty("Is male")
+    public boolean getSex() {
+        return isMale;
+    }
+
+    public void setSex(boolean male) {
+        isMale = male;
     }
 
     public Float getWeight() {
@@ -122,20 +130,24 @@ public class PetDTO {
         this.specialNeeds = specialNeeds;
     }
 
+    public Status.PetStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status.PetStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PetDTO petDTO = (PetDTO) o;
-        return age == petDTO.age && Objects.equals(name, petDTO.name)
-                && Objects.equals(breed, petDTO.breed) && Objects.equals(weight, petDTO.weight)
-                && Objects.equals(description, petDTO.description) && Objects.equals(specialNeeds, petDTO.specialNeeds);
+        return isMale == petDTO.isMale && Objects.equals(name, petDTO.name) && Objects.equals(breed, petDTO.breed) && Objects.equals(weight, petDTO.weight) && Objects.equals(dateOfBirth, petDTO.dateOfBirth) && Objects.equals(description, petDTO.description) && Objects.equals(specialNeeds, petDTO.specialNeeds) && status == petDTO.status;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, breed, weight, age, filePathPetPhoto, description, specialNeeds);
-        result = 31 * result + Arrays.hashCode(photo);
-        return result;
+        return Objects.hash(name, isMale, breed, weight, dateOfBirth, description, specialNeeds, status);
     }
 }

@@ -6,7 +6,6 @@ import zhy.votniye.Shelter.models.enums.Status;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -16,9 +15,7 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     private Boolean isMale;
-
     private String breed;
     private Float weight;
     private LocalDateTime dateOfBirth;
@@ -89,11 +86,11 @@ public class Pet {
         this.name = name;
     }
 
-    public Boolean getMale() {
+    public Boolean getSex() {
         return isMale;
     }
 
-    public void setMale(Boolean male) {
+    public void setSex(Boolean male) {
         isMale = male;
     }
 
