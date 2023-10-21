@@ -7,10 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.mapper.ContactMapper;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
-
-import static zhy.votniye.Shelter.mapper.ContactMapper.*;
 
 @RestController
 @RequestMapping("/contact")
@@ -41,9 +40,9 @@ public class ContactController {
     @PostMapping
     public ContactDTO create(@RequestBody ContactDTO contactDTO) {
 
-        var contact = toContact(contactDTO);
+        var contact = ContactMapper.toContact(contactDTO);
 
-        return fromContact(contactService.create(contact));
+        return ContactMapper.fromContact(contactService.create(contact));
     }
 
     @Operation(summary = "find owner contact", tags = "Owners")
@@ -64,7 +63,7 @@ public class ContactController {
     })
     @GetMapping("/{contactId}")
     public ContactDTO read(@PathVariable long contactId) {
-        return fromContact(contactService.read(contactId));
+        return ContactMapper.fromContact(contactService.read(contactId));
     }
 
     @Operation(summary = "update owner contact", tags = "Owners")
@@ -86,9 +85,9 @@ public class ContactController {
     @PutMapping
     public ContactDTO update(@RequestBody ContactDTO contactDTO) {
 
-        var contact = toContact(contactDTO);
+        var contact = ContactMapper.toContact(contactDTO);
 
-        return fromContact(contactService.update(contact));
+        return ContactMapper.fromContact(contactService.update(contact));
     }
 
 //    @Operation(summary = "delete owner contact", tags = "Owners")
