@@ -132,7 +132,7 @@ public class PetController {
                     description = "find all pets",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            array = @ArraySchema(schema = @Schema(implementation = PetDTO.class))
                     )
             ),
             @ApiResponse(
