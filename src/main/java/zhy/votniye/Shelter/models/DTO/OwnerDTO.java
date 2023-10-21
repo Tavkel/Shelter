@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import zhy.votniye.Shelter.models.enums.Status;
 
 import java.util.Objects;
-@Schema(title = "OwnerDTO")
+@Schema(title = "Owner")
 public class OwnerDTO {
 
 
