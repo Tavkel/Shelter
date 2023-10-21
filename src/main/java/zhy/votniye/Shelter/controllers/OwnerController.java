@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
-import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
 
 import static zhy.votniye.Shelter.mapper.OwnerMapper.*;
@@ -30,7 +29,7 @@ public class OwnerController {
                     description = "created owner",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = OwnerDTO.class)
                     )
             ),
             @ApiResponse(
@@ -52,7 +51,7 @@ public class OwnerController {
                     description = "find owner",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = OwnerDTO.class)
                     )
             ),
             @ApiResponse(
@@ -73,7 +72,7 @@ public class OwnerController {
                     description = "updated owner",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = OwnerDTO.class)
                     )
             ),
             @ApiResponse(
@@ -95,7 +94,7 @@ public class OwnerController {
                     description = "deleted owner",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = OwnerDTO.class)
                     )
             ),
             @ApiResponse(

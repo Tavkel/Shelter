@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
-import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
 
 import static zhy.votniye.Shelter.mapper.ContactMapper.*;
@@ -30,7 +29,7 @@ public class ContactController {
                     description = "created contact for owner",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = ContactDTO.class)
                     )
             ),
             @ApiResponse(
@@ -54,7 +53,7 @@ public class ContactController {
                     description = "find owners contact",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = ContactDTO.class)
                     )
             ),
             @ApiResponse(
@@ -75,7 +74,7 @@ public class ContactController {
                     description = "updated owner contact",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
+                            schema = @Schema(implementation = ContactDTO.class)
                     )
             ),
             @ApiResponse(
@@ -99,7 +98,7 @@ public class ContactController {
 //                    description = "delete owner contact",
 //                    content = @Content(
 //                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = PetDTO.class)
+//                            schema = @Schema(implementation = ContactDTO.class)
 //                    )
 //            ),
 //            @ApiResponse(
