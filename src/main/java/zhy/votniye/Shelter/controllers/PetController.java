@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.mapper.PetMapper;
@@ -160,14 +159,14 @@ public class PetController {
 
     })
     @GetMapping(value = "/all")
-    public ResponseEntity<Collection<PetDTO>> getPetPage(@RequestParam int pageNum) {
+    public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
         if (pageNum < 1) {
             pageNum = 1;
         }
 
         var result = petService.readAllPagination(pageNum).stream().map(PetMapper::fromPet).toList();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return result;
     }
 
     @Operation(summary = "upload pet photo", tags = "Pets")
@@ -193,14 +192,14 @@ public class PetController {
 
     })
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadPetPhoto(@PathVariable long petId,
+    public String uploadPetPhoto(@PathVariable long petId,
                                                  @RequestParam MultipartFile file) throws IOException {
 //        if (file.getSize() > fileSizeLimit * 1024L) {
-//            return new ResponseEntity<>("File too big.", HttpStatus.BAD_REQUEST);
+//            return "File too big.";
 //        }
 
         petService.savePetPhoto(petId, file);
-        return new ResponseEntity<>("File saved", HttpStatus.OK);
+        return "File saved";
     }
 }
 

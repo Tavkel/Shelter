@@ -6,9 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.mapper.ReportMapper;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
@@ -133,10 +131,10 @@ public class ReportController {
             )
     })
     @GetMapping("/owner")
-    public ResponseEntity<Collection<ReportDTO>> readAllReportsByOwner(@RequestParam long ownerId) {
+    public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
 
         var result = reportService.readAllReportsByOwner(ownerId).stream().map(ReportMapper::fromReport).toList();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return result;
     }
 }
