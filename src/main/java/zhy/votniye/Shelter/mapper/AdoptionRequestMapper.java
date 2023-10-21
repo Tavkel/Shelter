@@ -6,7 +6,7 @@ import zhy.votniye.Shelter.models.DTO.AdoptionRequestDTO;
 public class AdoptionRequestMapper {
     public static AdoptionRequest toAdoptionRequest(AdoptionRequestDTO adoptionRequestDTO) {
         if (adoptionRequestDTO == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to AdoptionRequest");
         }
 
         AdoptionRequest adoptionRequest = new AdoptionRequest();
@@ -16,14 +16,13 @@ public class AdoptionRequestMapper {
         adoptionRequest.setPetId(adoptionRequestDTO.getPetId());
         adoptionRequest.setPathToFile(adoptionRequestDTO.getPathToFilePhotoAdoptionRequest());
         adoptionRequest.setAdditionalInfo(adoptionRequestDTO.getAdditionalInfo());
-        //adoptionRequest.setStatus(adoptionRequestDTO.getStatus());
 
         return adoptionRequest;
     }
 
     public static AdoptionRequestDTO fromAdoptionRequest(AdoptionRequest adoptionRequest) {
         if (adoptionRequest == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to AdoptionRequestDTO");
         }
 
         AdoptionRequestDTO adoptionRequestDTO = new AdoptionRequestDTO();
@@ -33,7 +32,6 @@ public class AdoptionRequestMapper {
         adoptionRequestDTO.setPetId(adoptionRequest.getPetId());
         adoptionRequestDTO.setPathToFilePhotoAdoptionRequest(adoptionRequest.getPathToFile());
         adoptionRequestDTO.setAdditionalInfo(adoptionRequest.getAdditionalInfo());
-        //adoptionRequestDTO.setStatus(adoptionRequest.getStatus());
 
         return adoptionRequestDTO;
     }

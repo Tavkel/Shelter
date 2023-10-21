@@ -7,7 +7,7 @@ public class PetMapper {
 
     public static Pet toPet(PetDTO petDTO) {
         if (petDTO == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to Pet");
         }
 
         Pet pet = new Pet();
@@ -28,7 +28,7 @@ public class PetMapper {
 
     public static PetDTO fromPet(Pet pet) {
         if (pet == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to PetDTO");
         }
 
         PetDTO petDTO = new PetDTO();

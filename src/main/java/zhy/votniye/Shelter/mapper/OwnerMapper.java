@@ -6,7 +6,7 @@ import zhy.votniye.Shelter.models.domain.Owner;
 public class OwnerMapper {
     public static Owner toOwner(OwnerDTO ownerDTO) {
         if (ownerDTO == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to Owner");
         }
 
         Owner owner = new Owner();
@@ -23,7 +23,7 @@ public class OwnerMapper {
 
     public static OwnerDTO fromOwner(Owner owner) {
         if (owner == null) {
-            return null;
+            throw new NullPointerException("Tried to map null to OwnerDTO");
         }
 
         OwnerDTO ownerDTO = new OwnerDTO();
