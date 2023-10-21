@@ -301,7 +301,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     @Override
     public TgSession getSession(long chatId) {
-        return sessions.stream().filter(s -> s.getChatId() == chatId).findFirst().get();
+        return sessions.stream().filter(s -> s.getChatId() == chatId).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     private static class ResponseMessages {
@@ -325,10 +325,10 @@ public class TgBotServiceImpl implements TgBotService {
                 result = new SendMessage(chatId, "Hello! This is SHELTER-NAME bot-assistant! " +
                         "Please tell what i can do for you, or if you don't want to interact with me " +
                         "I can call one of the leather bags.");
-                //Add status for owner
-                //using bit flags determine if person was added to db (left contact before), if no add leave contact button
-                //using bit flags determine if person already adopted an animal, if yes and is on probation period then
-                //add report button
+                //todo
+                // -using bit flags determine if person was added to db (left contact before), if no add leave contact button
+                // -using bit flags determine if person already adopted an animal, if yes and is on probation period then
+                // -add report button
                 Keyboard keyboard = new InlineKeyboardMarkup(Button.ABOUT_SHELTER_BUTTON.getButton())
                         .addRow(Button.LEAVE_CONTACT_BUTTON.getButton())
                         .addRow(Button.SUBMIT_REPORT_BUTTON.getButton())
@@ -371,9 +371,9 @@ public class TgBotServiceImpl implements TgBotService {
                 .callbackData("general_info")),
         ABOUT_CONTACTS_BUTTON(new InlineKeyboardButton("Contacts")
                 .callbackData("contacts")),
-        ABOUT_PERMIT_BUTTON(new InlineKeyboardButton("Заказать пропуск на территорию")
+        ABOUT_PERMIT_BUTTON(new InlineKeyboardButton("Request permit to the territory")
                 .callbackData("drive_permit")),
-        ABOUT_RULES_ON_TERRITORY(new InlineKeyboardButton("Правила поведения на территории")
+        ABOUT_RULES_ON_TERRITORY(new InlineKeyboardButton("Rules for visitors")
                 .callbackData("rules_on_territory")),
         CALL_VOLUNTEER_BUTTON(new InlineKeyboardButton("Call volunteer")
                 .callbackData("call_volunteer")),

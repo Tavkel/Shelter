@@ -34,7 +34,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     }
 
     /**
-     * Метод Собирает мапы команд и колбэков
+     * Creates maps of methods for commands and callbacks
      */
     @PostConstruct
     public void init() {
@@ -45,7 +45,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     }
 
     /**
-     * Обрабатывает сообщения и действия пользователя
+     * processes updates
      * @see #processMessage(Message)
      * @see #processCallback(CallbackQuery)
      */
@@ -78,9 +78,8 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     }
 
     /**
-     * Метод принимает тело сообщения пользователя и проверяет его на соответствие
-     * паттернам команд с аргументами / без аргументов и вызывает метод {@link TgBotService}
-     * соответствующий полученной команде.
+     * Receives message of update, checks its body for matching with patterns of command with or without arguments
+     * and calls for corresponding method of {@link TgBotService}
      * @param message
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
@@ -107,15 +106,12 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             if (singleArgCommands.containsKey(command)) {
                 var method = singleArgCommands.get(command);
                 method.invoke(botService, message.chat().id());
-                return;
             }
         }
-        //singleArgCommands.get("/start").invoke(botService, message.chat().id());
     }
 
     /**
-     * Метод принимает {@link CallbackQuery}, и вызывает метод {@link TgBotService}
-     * соответствующий полученной команде.
+     * Receives {@link CallbackQuery} and calls for method of {@link TgBotService} corresponding to {@link CallbackQuery#data()}
      * @param callback
      * @throws InvocationTargetException
      * @throws IllegalAccessException
