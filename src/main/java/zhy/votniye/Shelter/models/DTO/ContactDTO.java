@@ -3,7 +3,7 @@ package zhy.votniye.Shelter.models.DTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
-@Schema(title = "ContactDTO")
+@Schema(title = "Contact")
 public class ContactDTO {
 
     private Long contactId;

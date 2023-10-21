@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
-@Schema(title = "ReportDTO")
+@Schema(title = "Report")
 public class ReportDTO {
 
     private Long reportId;

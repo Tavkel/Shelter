@@ -1,13 +1,10 @@
 package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import zhy.votniye.Shelter.mapper.AdoptionRequestMapper;
 import zhy.votniye.Shelter.models.DTO.AdoptionRequestDTO;
 import zhy.votniye.Shelter.models.domain.AdoptionRequest;
-import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.services.interfaces.AdoptionRequestService;
 
-import java.util.Collection;
 import java.util.List;
 
 import static zhy.votniye.Shelter.mapper.AdoptionRequestMapper.*;

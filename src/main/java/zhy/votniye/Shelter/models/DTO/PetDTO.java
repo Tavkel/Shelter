@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Schema(title = "PetDTO")
+@Schema(title = "Pet")
 public class PetDTO {
 
 
