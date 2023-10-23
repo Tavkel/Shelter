@@ -199,4 +199,23 @@ public class Pet {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isMale=" + isMale +
+                ", breed='" + breed + '\'' +
+                ", weight=" + weight +
+                ", dateOfBirth=" + dateOfBirth +
+                ", fileSize=" + fileSize +
+                ", mediaType='" + mediaType + '\'' +
+                ", photo=" + Arrays.toString(photo) +
+                ", status=" + status +
+                ", pathToFile='" + pathToFile + '\'' +
+                ", description='" + description + '\'' +
+                ", specialNeeds='" + specialNeeds + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

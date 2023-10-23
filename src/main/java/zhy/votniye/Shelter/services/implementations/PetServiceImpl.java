@@ -52,7 +52,10 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet create(Pet pet) {
         logger.debug("The create method was called with the data " + pet);
-        if (petRepository.findByNameAndBreedAndWeight(pet.getName(), pet.getBreed(), pet.getWeight()).isPresent()) {
+        if (petRepository.findByNameAndBreedAndWeight(
+                pet.getName(),
+                pet.getBreed(),
+                pet.getWeight()).isPresent()) {
             throw new PetAlreadyExistsException("The database already has this pet");
         }
         return petRepository.save(pet);
