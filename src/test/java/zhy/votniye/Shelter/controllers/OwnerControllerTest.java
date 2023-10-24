@@ -19,6 +19,7 @@ import zhy.votniye.Shelter.utils.mappers.OwnerMapper;
 import zhy.votniye.Shelter.utils.mappers.PetMapper;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,11 +43,11 @@ public class OwnerControllerTest {
     ContactDTO c = new ContactDTO(2L,4257457435745L,
             "ohohohho","aaaaaa","kuku");
     OwnerDTO o = new OwnerDTO(0L,"ivan","ivanovich",
-            "shulc");
+            "shulc", Status.OwnerStatus.REGISTERED);
 
 
-    PetDTO p = new PetDTO(0L,"f",true,"3w",3F, LocalDateTime.now(),photo,
-            null,"dsgf","dsf",null);
+    PetDTO p = new PetDTO(0L,"f",true,"3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),null,
+            null,"dsgf","dsf");
 
     @Test
     void create__returnStatus200AndOwner() {
@@ -74,7 +75,7 @@ public class OwnerControllerTest {
             var original = ownerRepository.save(OwnerMapper.toOwner(o));
 
             var updated = new OwnerDTO(original.getId(),"ivanus","ivanovich",
-                    "shulc");
+                    "shulc", Status.OwnerStatus.REGISTERED);
 
             ResponseEntity<OwnerDTO> update = restTemplate.exchange(
                     "http://localhost:" + port + "/owner",

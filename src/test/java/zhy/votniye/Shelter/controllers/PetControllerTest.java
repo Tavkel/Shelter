@@ -15,6 +15,7 @@ import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.PetRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,11 +39,11 @@ public class PetControllerTest {
     ContactDTO c = new ContactDTO(2L,4257457435745L,
             "ohohohho","aaaaaa","kuku");
     OwnerDTO o = new OwnerDTO(0L,"ivan","ivanovich",
-            "shulc",c, Status.OwnerStatus.REGISTERED);
+            "shulc", Status.OwnerStatus.REGISTERED);
 //    PetDTO petDTO = new PetDTO(1L,"lupa","pupa",20F,10,
 //            photo, "./src","123","good",null);
-    PetDTO p = new PetDTO(0L,"f","3w",3F, LocalDateTime.now(),photo,
-            null,"dsgf","dsf",null);
+    PetDTO p = new PetDTO(0L,"f",true, "3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),null,
+            null,"dsgf","dsf");
 
 
     @Test

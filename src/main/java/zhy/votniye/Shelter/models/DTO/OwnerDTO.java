@@ -13,12 +13,13 @@ public class OwnerDTO {
     private ContactDTO contactDTO;
     private Status.OwnerStatus status;
 
-    public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName, ContactDTO contactDTO, Status.OwnerStatus status) {
+    public OwnerDTO(Long ownerId, String firstName,
+                    String lastName, String middleName,
+                    Status.OwnerStatus status) {
         this.ownerId = ownerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
-        this.contactDTO = contactDTO;
         this.status = status;
     }
 
@@ -79,12 +80,23 @@ public class OwnerDTO {
         if (o == null || getClass() != o.getClass()) return false;
         OwnerDTO ownerDTO = (OwnerDTO) o;
         return  Objects.equals(firstName, ownerDTO.firstName)
-                && Objects.equals(lastName, ownerDTO.lastName) && Objects.equals(middleName, ownerDTO.middleName)
-                && Objects.equals(contactDTO, ownerDTO.contactDTO);
+                && Objects.equals(lastName, ownerDTO.lastName) && Objects.equals(middleName, ownerDTO.middleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, middleName, contactDTO);
+        return Objects.hash(firstName, lastName, middleName);
+    }
+
+    @Override
+    public String toString() {
+        return "OwnerDTO{" +
+                "ownerId=" + ownerId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", contactDTO=" + contactDTO +
+                ", status=" + status +
+                '}';
     }
 }

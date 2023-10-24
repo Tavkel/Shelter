@@ -23,11 +23,12 @@ public class PetDTO {
     private String specialNeeds;
     private Status.PetStatus status;
 
-    public PetDTO(Long petId, String name, String breed, Float weight,
+    public PetDTO(Long petId, String name, boolean isMale, String breed, Float weight,
                   LocalDateTime dateOfBirth, byte[] photo, String filePathPetPhoto,
-                  String description, String specialNeeds, OwnerDTO ownerDTO) {
+                  String description, String specialNeeds) {
         this.petId = petId;
         this.name = name;
+        this.isMale = isMale;
         this.breed = breed;
         this.weight = weight;
         this.dateOfBirth = dateOfBirth;
@@ -35,7 +36,6 @@ public class PetDTO {
         this.filePathPetPhoto = filePathPetPhoto;
         this.description = description;
         this.specialNeeds = specialNeeds;
-
     }
 
     public PetDTO() {
