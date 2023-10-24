@@ -12,6 +12,8 @@ import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.Pet;
@@ -19,6 +21,9 @@ import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.PetRepository;
 
 import java.awt.print.Pageable;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +34,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PetServiceImplTest {
     private byte[] photo;
+    private final String path = "./src/test/resources";
     @Mock
     PetRepository petRepository;
     @InjectMocks
@@ -156,4 +162,15 @@ class PetServiceImplTest {
     }
 
 
+    @Test
+    void savePetPhoto() throws IOException {
+        MultipartFile file = new MockMultipartFile("filename.jpg",
+                "filename.jpg", "jpg", photo);
+        when(petRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
+        when(petRepository.findById(pet.getId())).thenReturn(Optional.empty());
+        out.savePetPhoto(pet.getId(), file);
+
+        assertTrue(Files.isReadable(Path.of(path + "/" + pet.getId() + ".jpg")));
+
+    }
 }
