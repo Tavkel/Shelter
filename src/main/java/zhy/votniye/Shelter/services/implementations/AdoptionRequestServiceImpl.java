@@ -46,7 +46,7 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         logger.debug("The read method was called with the data " + id);
         Optional<AdoptionRequest> adoption = adoptionRequestRepository.findById(id);
         if (adoption.isEmpty()) {
-            throw new NoSuchElementException("Adoption not found");
+            throw new NoSuchElementException("Adoption request not found");
         }
         return adoption.get();
     }
@@ -64,7 +64,7 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
     public AdoptionRequest update(AdoptionRequest adoption) {
         logger.debug("The update method was called with the data " + adoption);
         if (adoptionRequestRepository.findById(adoption.getId()).isEmpty()) {
-            throw new NoSuchElementException("Adoption not found");
+            throw new NoSuchElementException("Adoption request not found");
         }
         return adoptionRequestRepository.save(adoption);
     }
@@ -83,7 +83,7 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         logger.debug("The delete method was called with the data " + id);
         Optional<AdoptionRequest> adoption = adoptionRequestRepository.findById(id);
         if (adoption.isEmpty()) {
-            throw new NoSuchElementException("Adoption not found");
+            throw new NoSuchElementException("Adoption request not found");
         }
         return adoption.get();
     }

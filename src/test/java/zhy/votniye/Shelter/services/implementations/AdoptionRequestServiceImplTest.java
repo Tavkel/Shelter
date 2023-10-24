@@ -1,14 +1,11 @@
 package zhy.votniye.Shelter.services.implementations;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import zhy.votniye.Shelter.exception.OwnerAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.AdoptionRequest;
-import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.repository.AdoptionRequestRepository;
 
 import java.util.List;
@@ -26,6 +23,7 @@ class AdoptionRequestServiceImplTest {
     AdoptionRequestServiceImpl out;
     AdoptionRequest adoptionRequest = new AdoptionRequest();
     List<AdoptionRequest> adoptionRequests = List.of(adoptionRequest);
+
     @Test
     void create_addAdoptionRequestInRepository_returnedAdoptionRequest() {
         when(adoptionRequestRepository.save(adoptionRequest)).thenReturn(adoptionRequest);
@@ -47,7 +45,7 @@ class AdoptionRequestServiceImplTest {
         when(adoptionRequestRepository.findById(adoptionRequest.getId())).thenReturn(Optional.empty());
         NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(adoptionRequest.getId()));
-        assertEquals("AdoptionRequest not found", exception.getMessage());
+        assertEquals("Adoption request not found", exception.getMessage());
     }
 
     @Test
@@ -62,7 +60,7 @@ class AdoptionRequestServiceImplTest {
         when(adoptionRequestRepository.findById(adoptionRequest.getId())).thenReturn(Optional.empty());
         NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(adoptionRequest.getId()));
-        assertEquals("AdoptionRequest not found", exception.getMessage());
+        assertEquals("Adoption request not found", exception.getMessage());
 
     }
 
@@ -78,7 +76,7 @@ class AdoptionRequestServiceImplTest {
         when(adoptionRequestRepository.findById(adoptionRequest.getId())).thenReturn(Optional.empty());
         NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(adoptionRequest.getId()));
-        assertEquals("AdoptionRequest not found", exception.getMessage());
+        assertEquals("Adoption request not found", exception.getMessage());
 
     }
 
