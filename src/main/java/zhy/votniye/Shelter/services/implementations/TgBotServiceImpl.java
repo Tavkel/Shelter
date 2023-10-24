@@ -47,7 +47,6 @@ public class TgBotServiceImpl implements TgBotService {
 
 
         var result = telegramBot.execute(response);
-//        var result = telegramBot.execute(response);
 
         if (result.isOk()) {
             logger.debug("Response sent");
@@ -188,6 +187,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     /**
      * Starts process of collection {@link zhy.votniye.Shelter.models.domain.Contact} data
+     *
      * @param message
      */
     @Override
@@ -205,6 +205,7 @@ public class TgBotServiceImpl implements TgBotService {
     /**
      * Sends message to user asking for next piece of data for next step
      * Sends "success" message on last step and dereferences {@link TgSession}
+     *
      * @param chatId
      * @param step
      */
@@ -224,6 +225,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     /**
      * Notifies user of failure while processing provided data on current step
+     *
      * @param chatId
      * @param step
      */
@@ -237,6 +239,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     /**
      * removes buttons from message sending callback
+     *
      * @param message
      */
     private void cleanUpButtons(Message message) {
@@ -251,6 +254,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     /**
      * Basic error message sender
+     *
      * @param chatId
      * @param eMessage
      */
@@ -282,6 +286,7 @@ public class TgBotServiceImpl implements TgBotService {
 
     /**
      * Builds keyboard based on provided flags
+     *
      * @param flags {@link Button}
      * @return created keyboard
      */
@@ -304,10 +309,10 @@ public class TgBotServiceImpl implements TgBotService {
         return sessions.stream().filter(s -> s.getChatId() == chatId).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
-    private static class ResponseMessages {
+    public static class ResponseMessages {
 
         //todo rework
-        private static SendMessage getHelloMessage(long chatId) {
+        public static SendMessage getHelloMessage(long chatId) {
             SendMessage result;
 
             var owner = Optional.of(new Owner()); //get owner by chatId
@@ -338,29 +343,29 @@ public class TgBotServiceImpl implements TgBotService {
             }
         }
 
-        private static String getAboutMessage() {
+        public static String getAboutMessage() {
             return "What exactly I should tell you about our shelter?";
         }
 
-        private static String getAboutGeneralMessage() {
+        public static String getAboutGeneralMessage() {
             return "General info on the shelter. Address, working hours, etc";
         }
 
-        private static String getAboutContactsMessage() {
+        public static String getAboutContactsMessage() {
             return "Contacts, phones, tg, whatsapp, link to web";
         }
 
-        private static String getAboutEntryPermitMessage() {
+        public static String getAboutEntryPermitMessage() {
             return "You need to request permit to enter shelter's territory. " +
                     "You can do it by calling following number: +*(***)***-**-**";
         }
 
-        private static String getAboutRulesOnTerritoryMessage() {
+        public static String getAboutRulesOnTerritoryMessage() {
             return "Keep quiet, no running, no smoking, etc, etc";
         }
     }
 
-    private enum Button {
+    public enum Button {
         ABOUT_SHELTER_BUTTON(new InlineKeyboardButton("About shelter")
                 .callbackData("about_shelter")),
         LEAVE_CONTACT_BUTTON(new InlineKeyboardButton("Leave contact")
@@ -385,18 +390,22 @@ public class TgBotServiceImpl implements TgBotService {
             this.button = button;
         }
 
-        private InlineKeyboardButton getButton() {
+        public InlineKeyboardButton getButton() {
             return this.button;
         }
     }
 
-    private enum LeaveContactSteps {
+    public enum LeaveContactSteps {
         //todo add associated message to step
         LAST_NAME(1), FIRST_NAME(2), MIDDLE_NAME(3), PHONE(4), ADDRESS(5), EMAIL(6), COMMENT(7), FINISH(8), FAILURE(9);
         private final int num;
 
         LeaveContactSteps(int step) {
             num = step;
+        }
+
+        public int getStep() {
+            return this.num;
         }
     }
 }
