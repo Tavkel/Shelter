@@ -13,14 +13,12 @@ public class OwnerDTO {
     private ContactDTO contactDTO;
     private Status.OwnerStatus status;
 
-    public OwnerDTO(Long ownerId, String firstName,
-                    String lastName, String middleName,
-                    Status.OwnerStatus status) {
+    public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName) {
         this.ownerId = ownerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
-        this.status = status;
+
     }
 
     public OwnerDTO(){
@@ -80,7 +78,9 @@ public class OwnerDTO {
         if (o == null || getClass() != o.getClass()) return false;
         OwnerDTO ownerDTO = (OwnerDTO) o;
         return  Objects.equals(firstName, ownerDTO.firstName)
-                && Objects.equals(lastName, ownerDTO.lastName) && Objects.equals(middleName, ownerDTO.middleName);
+                && Objects.equals(lastName, ownerDTO.lastName)
+                && Objects.equals(middleName, ownerDTO.middleName);
+
     }
 
     @Override
@@ -95,8 +95,6 @@ public class OwnerDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
-                ", contactDTO=" + contactDTO +
-                ", status=" + status +
                 '}';
     }
 }

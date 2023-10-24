@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import zhy.votniye.Shelter.utils.mappers.PetMapper;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
 import zhy.votniye.Shelter.models.DTO.OwnerDTO;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
@@ -39,11 +43,10 @@ public class PetControllerTest {
     ContactDTO c = new ContactDTO(2L,4257457435745L,
             "ohohohho","aaaaaa","kuku");
     OwnerDTO o = new OwnerDTO(0L,"ivan","ivanovich",
-            "shulc", Status.OwnerStatus.REGISTERED);
-//    PetDTO petDTO = new PetDTO(1L,"lupa","pupa",20F,10,
-//            photo, "./src","123","good",null);
-    PetDTO p = new PetDTO(0L,"f",true, "3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),null,
-            null,"dsgf","dsf");
+            "shulc");
+
+    PetDTO p = new PetDTO(0L,"f", true,"3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),photo,
+            null,"dsgf","dsf",null);
 
 
     @Test
@@ -54,37 +57,48 @@ public class PetControllerTest {
         assertEquals(HttpStatus.OK, petResponseEntity.getStatusCode());
         assertEquals(p, petResponseEntity.getBody());
     }
-//
-//    @Test
-//    void read_petInDB_returnStatus200() {
-//        petRepository.save(petDTO);
-//        ResponseEntity<String> petResponseEntity =
-//                restTemplate.getForEntity(
-//                        "http://localhost:" + port + "/pet" + petDTO.getPetId(), String.class);
-//
-//        assertEquals(HttpStatus.OK, petResponseEntity.getStatusCode());
-//
-//    }
-//
-//    @Test
-//    void update_petInDB_returnStatus200AndPet() {
-//        Pet thisPet = petRepository.save(petDTO);
-//        ResponseEntity<PetDTO> update = restTemplate.exchange(
-//                "http://localhost:" + port + "/pet",
-//                HttpMethod.PUT, new HttpEntity<>(thisPet), PetDTO.class);
-//
-//        assertEquals(HttpStatus.OK, update.getStatusCode());
-//        assertEquals(thisPet, update.getBody());
-//    }
 
-//    @Test
-//    void delete_petInDB_returnStatus404() {
-//        ResponseEntity<String> delete = restTemplate.exchange(
-//                "http://localhost:" + port + "/pet" + petDTO.getPetId(),
-//                HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
-//                });
-//        assertEquals(HttpStatus.NOT_FOUND, delete.getStatusCode());
-//    }
+    @Test
+    void read_petInDB_returnStatus200() {
+        var res = petRepository.save(PetMapper.toPet(p));
+        ResponseEntity<PetDTO> petResponseEntity =
+                restTemplate.getForEntity(
+                        "http://localhost:" + port + "/pet/" + res.getId(), PetDTO.class);
+
+        assertEquals(HttpStatus.OK, petResponseEntity.getStatusCode());
+        assertEquals(PetMapper.fromPet(res), petResponseEntity.getBody());
+
+    }
+
+    @Test
+    void update_petInDB_returnStatus200AndPet() {
+        var original = petRepository.save(PetMapper.toPet(p));
+
+        var updated = new PetDTO(original.getId(),"y", true,"3w",3F, LocalDateTime.now(),photo,
+                null,"dsgf","dsf",null);
+
+        ResponseEntity<PetDTO> update = restTemplate.exchange(
+                "http://localhost:" + port + "/pet",
+                HttpMethod.PUT, new HttpEntity<>(updated), PetDTO.class);
+
+        assertEquals(HttpStatus.OK, update.getStatusCode());
+        assertEquals(updated, update.getBody());
+    }
+
+    @Test
+    void delete_petInDB_returnStatus200() {
+
+        var res = petRepository.save(PetMapper.toPet(p));
+
+
+
+        ResponseEntity<PetDTO> delete = restTemplate.exchange(
+                "http://localhost:" + port + "/pet/" + res.getId(),
+                HttpMethod.DELETE, null, PetDTO.class
+                );
+        assertEquals(HttpStatus.OK, delete.getStatusCode());
+        assertEquals(PetMapper.fromPet(res), delete.getBody());
+    }
 
 
 

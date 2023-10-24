@@ -43,11 +43,11 @@ public class OwnerControllerTest {
     ContactDTO c = new ContactDTO(2L,4257457435745L,
             "ohohohho","aaaaaa","kuku");
     OwnerDTO o = new OwnerDTO(0L,"ivan","ivanovich",
-            "shulc", Status.OwnerStatus.REGISTERED);
+            "shulc");
 
 
-    PetDTO p = new PetDTO(0L,"f",true,"3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),null,
-            null,"dsgf","dsf");
+    PetDTO p = new PetDTO(0L,"f", true,"3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),photo,
+            null,"dsgf","dsf",null);
 
     @Test
     void create__returnStatus200AndOwner() {
@@ -75,7 +75,7 @@ public class OwnerControllerTest {
             var original = ownerRepository.save(OwnerMapper.toOwner(o));
 
             var updated = new OwnerDTO(original.getId(),"ivanus","ivanovich",
-                    "shulc", Status.OwnerStatus.REGISTERED);
+                    "shulc");
 
             ResponseEntity<OwnerDTO> update = restTemplate.exchange(
                     "http://localhost:" + port + "/owner",
