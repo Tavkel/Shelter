@@ -18,6 +18,8 @@ public class Report {
     private long ownerId;
     @Column(name = "pet_id")
     private long petId;
+    private Long fileSize;
+    private String mediaType;
     private byte[] photo;
     @Column(name = "path_to_file")
     private String pathToFile;

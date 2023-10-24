@@ -19,9 +19,13 @@ public class ReportDTO {
     private String behaviorReport;
     private LocalDateTime reportDate;
 
-    public ReportDTO(Long reportId, String feedingReport,
-                     String generalReport, String behaviorReport, LocalDateTime reportDate) {
+    public ReportDTO(Long reportId, Long ownerId,
+                     Long petId, String feedingReport,
+                     String generalReport, String behaviorReport,
+                     LocalDateTime reportDate) {
         this.reportId = reportId;
+        this.ownerId = ownerId;
+        this.petId = petId;
         this.feedingReport = feedingReport;
         this.generalReport = generalReport;
         this.behaviorReport = behaviorReport;
