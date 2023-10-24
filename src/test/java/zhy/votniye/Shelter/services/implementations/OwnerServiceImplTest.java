@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import zhy.votniye.Shelter.exception.OwnerAlreadyExistsException;
+import zhy.votniye.Shelter.exceptions.OwnerAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.models.enums.Status;
@@ -105,7 +105,6 @@ class OwnerServiceImplTest {
         NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(owner.getId()));
         assertEquals("Owner not found", exception.getMessage());
-
     }
 
     @Test

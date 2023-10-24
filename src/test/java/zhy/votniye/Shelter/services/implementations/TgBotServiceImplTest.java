@@ -82,7 +82,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.about(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
@@ -115,7 +115,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.aboutGeneral(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
@@ -148,7 +148,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.aboutContacts(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
@@ -181,7 +181,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.aboutEntryPermit(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
@@ -214,7 +214,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.aboutRulesOnTerritory(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
@@ -247,7 +247,7 @@ class TgBotServiceImplTest {
         EditMessageReplyMarkup expectedReplyMarkup = new EditMessageReplyMarkup(message.chat().id(),
                 message.messageId()).replyMarkup(keyboard);
         ArgumentCaptor<EditMessageText> argumentCaptorText = ArgumentCaptor.forClass(EditMessageText.class);
-        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup= ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
 
         sut.backToMain(message);
         verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
