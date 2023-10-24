@@ -19,14 +19,13 @@ public class ReportDTO {
     private String behaviorReport;
     private LocalDateTime reportDate;
 
-    public ReportDTO(Long reportId, Long ownerId, Long petId,
-                     byte[] reportPhoto, String pathToFileReportPhoto, String feedingReport,
-                     String generalReport, String behaviorReport, LocalDateTime reportDate) {
+    public ReportDTO(Long reportId, Long ownerId,
+                     Long petId, String feedingReport,
+                     String generalReport, String behaviorReport,
+                     LocalDateTime reportDate) {
         this.reportId = reportId;
         this.ownerId = ownerId;
         this.petId = petId;
-        this.reportPhoto = reportPhoto;
-        this.pathToFileReportPhoto = pathToFileReportPhoto;
         this.feedingReport = feedingReport;
         this.generalReport = generalReport;
         this.behaviorReport = behaviorReport;
@@ -113,10 +112,8 @@ public class ReportDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReportDTO reportDTO = (ReportDTO) o;
-        return Objects.equals(reportId, reportDTO.reportId) && Objects.equals(ownerId, reportDTO.ownerId)
-                && Objects.equals(petId, reportDTO.petId) && Arrays.equals(reportPhoto, reportDTO.reportPhoto)
-                && Objects.equals(pathToFileReportPhoto, reportDTO.pathToFileReportPhoto)
-                && Objects.equals(feedingReport, reportDTO.feedingReport)
+        return
+                Objects.equals(feedingReport, reportDTO.feedingReport)
                 && Objects.equals(generalReport, reportDTO.generalReport)
                 && Objects.equals(behaviorReport, reportDTO.behaviorReport)
                 && Objects.equals(reportDate, reportDTO.reportDate);
@@ -124,9 +121,18 @@ public class ReportDTO {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(reportId, ownerId, petId, pathToFileReportPhoto,
+        int result = Objects.hash(
                 feedingReport, generalReport, behaviorReport, reportDate);
-        result = 31 * result + Arrays.hashCode(reportPhoto);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportDTO{" +
+                ", feedingReport='" + feedingReport + '\'' +
+                ", generalReport='" + generalReport + '\'' +
+                ", behaviorReport='" + behaviorReport + '\'' +
+                ", reportDate=" + reportDate +
+                '}';
     }
 }

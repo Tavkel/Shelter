@@ -81,7 +81,7 @@ public class OwnerController {
             )
     })
     @PutMapping
-    public OwnerDTO update(OwnerDTO ownerDTO) {
+    public OwnerDTO update(@RequestBody OwnerDTO ownerDTO) {
         var owner = OwnerMapper.toOwner(ownerDTO);
         return OwnerMapper.fromOwner(ownerService.update(owner));
     }

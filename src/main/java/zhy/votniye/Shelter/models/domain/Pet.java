@@ -178,6 +178,7 @@ public class Pet {
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
         return Objects.equals(dateOfBirth, pet.dateOfBirth)
+                && Objects.equals(isMale, pet.isMale)
                 && Objects.equals(name, pet.name)
                 && Objects.equals(breed, pet.breed)
                 && Objects.equals(weight, pet.weight)
@@ -187,7 +188,7 @@ public class Pet {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, breed, weight, dateOfBirth,
+        return Objects.hash(name, isMale, breed, weight, dateOfBirth,
                      pathToFile, description, specialNeeds);
     }
 
