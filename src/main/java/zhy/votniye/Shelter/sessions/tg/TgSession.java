@@ -67,7 +67,6 @@ public class TgSession {
                 botService.sendErrorReport(chatId, e.getMessage());
             }
             botService.leaveContactStep(chatId, step);
-            destroy();
         } else { //failure
             botService.dataIngestSessionFailure(chatId, step);
         }
