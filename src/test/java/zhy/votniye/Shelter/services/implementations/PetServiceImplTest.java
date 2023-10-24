@@ -8,20 +8,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.exception.PetAlreadyExistsException;
+import zhy.votniye.Shelter.helpers.PhotoCompression;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.PetRepository;
 
-import java.awt.print.Pageable;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -35,13 +34,21 @@ import static org.mockito.Mockito.*;
 class PetServiceImplTest {
     private byte[] photo;
     private final String path = "./src/test/resources";
-    @Mock
-    PetRepository petRepository;
-    @InjectMocks
+    PetRepository petRepository = mock(PetRepository.class);
     PetServiceImpl out;
     List<Pet> pets;
-    @Mock
-    Page<Pet> petsPage;
+
+    public PetServiceImplTest() throws IOException {
+        out = new PetServiceImpl(petRepository, new PhotoCompression());
+
+        try (InputStream is = Files.newInputStream(Path.of(path + "/test.jpg"));
+             BufferedInputStream bis = new BufferedInputStream(is, 1024);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ) {
+            bis.transferTo(baos);
+            this.photo = baos.toByteArray();
+        }
+    }
 
     @BeforeEach
     void setUp() {
@@ -166,11 +173,11 @@ class PetServiceImplTest {
     void savePetPhoto() throws IOException {
         MultipartFile file = new MockMultipartFile("filename.jpg",
                 "filename.jpg", "jpg", photo);
-        when(petRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
-        when(petRepository.findById(pet.getId())).thenReturn(Optional.empty());
+        when(petRepository.findById(anyLong())).thenReturn(Optional.of(pet));
+
         out.savePetPhoto(pet.getId(), file);
 
-        assertTrue(Files.isReadable(Path.of(path + "/" + pet.getId() + ".jpg")));
-
+        verify(petRepository, times(1)).findById(anyLong());
+        assertTrue(Files.isReadable(Path.of("./photo/" + pet.getId() + ".jpg")));
     }
 }

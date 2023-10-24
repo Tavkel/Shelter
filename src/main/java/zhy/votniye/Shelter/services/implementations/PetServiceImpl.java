@@ -37,7 +37,6 @@ public class PetServiceImpl implements PetService {
     public PetServiceImpl(PetRepository petRepository, PhotoCompression photoCompression) {
         this.petRepository = petRepository;
         this.photoCompression = photoCompression;
-
     }
 
     /**
@@ -174,7 +173,7 @@ public class PetServiceImpl implements PetService {
     }
 
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
-        Path filePath = Path.of(petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(petPhotoDirectory == null? "./photo": petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 
