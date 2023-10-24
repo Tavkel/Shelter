@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ReportControllerTest {
@@ -45,13 +46,13 @@ public class ReportControllerTest {
 
     byte[] photo = new byte[1];
 
-    OwnerDTO o = new OwnerDTO(0L,"dsagf","asfd","saf");
+    OwnerDTO o = new OwnerDTO(0L, "dsagf", "asfd", "saf");
 
-    ReportDTO r = new ReportDTO(0L, 1L, 1L, "qqq","dsafg","sfasf",
+    ReportDTO r = new ReportDTO(0L, 1L, 1L, "qqq", "dsafg", "sfasf",
             LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
-    PetDTO p = new PetDTO(0L,"f", true,"3w",3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),photo,
-            null,"dsgf","dsf",null);
+    PetDTO p = new PetDTO(0L, "f", true, "3w", 3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), photo,
+            null, "dsgf", "dsf", null);
 
     @Test
     void create__returnStatus200AndReport() {
@@ -62,11 +63,11 @@ public class ReportControllerTest {
             var realPet = petService.create(PetMapper.toPet(p));
             ownerId = realOwner.getId();
             petId = realPet.getId();
-        } catch (Exception e){
+        } catch (Exception e) {
             ownerId = 1L;
             petId = 1L;
         }
-        var expectedReport = new ReportDTO(1L, ownerId, petId, "qqq","dsafg","sfasf",
+        var expectedReport = new ReportDTO(1L, ownerId, petId, "qqq", "dsafg", "sfasf",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         ResponseEntity<ReportDTO> reportDTOResponseEntity =
@@ -85,11 +86,11 @@ public class ReportControllerTest {
             var realPet = petService.create(PetMapper.toPet(p));
             ownerId = realOwner.getId();
             petId = realPet.getId();
-        } catch (Exception e){
+        } catch (Exception e) {
             ownerId = 1L;
             petId = 1L;
         }
-        var realReport = new ReportDTO(1L, ownerId, petId, "qqq","dsafg","sfasf",
+        var realReport = new ReportDTO(1L, ownerId, petId, "qqq", "dsafg", "sfasf",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         var res = reportRepository.save(ReportMapper.toReport(realReport));
@@ -122,7 +123,7 @@ public class ReportControllerTest {
 
         var original = reportRepository.save(ReportMapper.toReport(realReport));
 
-        var updated = new ReportDTO(original.getId(), ownerId,petId,"qqe","dsafg","sfasf",
+        var updated = new ReportDTO(original.getId(), ownerId, petId, "qqe", "dsafg", "sfasf",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         ResponseEntity<ReportDTO> update = restTemplate.exchange(
@@ -143,11 +144,11 @@ public class ReportControllerTest {
             var realPet = petService.create(PetMapper.toPet(p));
             ownerId = realOwner.getId();
             petId = realPet.getId();
-        } catch (Exception e){
+        } catch (Exception e) {
             ownerId = 1L;
             petId = 1L;
         }
-        var realReport = new ReportDTO(1L, ownerId, petId, "qqq","dsafg","sfasf",
+        var realReport = new ReportDTO(1L, ownerId, petId, "qqq", "dsafg", "sfasf",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         var res = reportRepository.save(ReportMapper.toReport(realReport));
@@ -162,8 +163,4 @@ public class ReportControllerTest {
 
     }
 
-    @Test
-    void readAllReportsByOwner_returnStatus200(){
-
-    }
 }

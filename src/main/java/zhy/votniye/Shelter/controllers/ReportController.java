@@ -127,6 +127,7 @@ public class ReportController {
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
     })
+    //not implemented!
     @GetMapping("/owner")
     public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
 

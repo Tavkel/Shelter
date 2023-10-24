@@ -149,6 +149,7 @@ public class PetController {
             )
 
     })
+    //not implemented!
     @GetMapping(value = "/all")
     public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
         if (pageNum < 1) {
@@ -180,6 +181,7 @@ public class PetController {
             )
 
     })
+
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadPetPhoto(@PathVariable long petId, @RequestParam MultipartFile file)
             throws IOException {
