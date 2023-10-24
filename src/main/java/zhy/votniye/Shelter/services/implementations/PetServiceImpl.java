@@ -34,7 +34,6 @@ public class PetServiceImpl implements PetService {
     public PetServiceImpl(PetRepository petRepository, PhotoCompression photoCompression) {
         this.petRepository = petRepository;
         this.photoCompression = photoCompression;
-
     }
 
     /**
@@ -49,7 +48,10 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet create(Pet pet) {
         logger.debug("The create method was called with the data " + pet);
-        if (petRepository.findByNameAndBreedAndWeight(pet.getName(), pet.getBreed(), pet.getWeight()).isPresent()) {
+        if (petRepository.findByNameAndBreedAndWeight(
+                pet.getName(),
+                pet.getBreed(),
+                pet.getWeight()).isPresent()) {
             throw new PetAlreadyExistsException("The database already has this pet");
         }
         return petRepository.save(pet);
@@ -183,7 +185,7 @@ public class PetServiceImpl implements PetService {
      * @throws IOException
      */
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
-        Path filePath = Path.of(petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(petPhotoDirectory == null? "./photo": petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 

@@ -29,6 +29,18 @@ public class Report {
     private String behaviorReport;
     private final LocalDateTime dateOfReport;
 
+    public Report(long id, long ownerId, long petId, byte[] photo, String pathToFile, String feedingReport, String generalReport, String behaviorReport, LocalDateTime dateOfReport) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.petId = petId;
+        this.photo = photo;
+        this.pathToFile = pathToFile;
+        this.feedingReport = feedingReport;
+        this.generalReport = generalReport;
+        this.behaviorReport = behaviorReport;
+        this.dateOfReport = dateOfReport;
+    }
+
     public Report() {
         this.dateOfReport = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
