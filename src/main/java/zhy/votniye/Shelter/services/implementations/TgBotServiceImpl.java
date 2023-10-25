@@ -216,6 +216,10 @@ public class TgBotServiceImpl implements TgBotService {
             toRemove.destroy();
             sessions.remove(toRemove);
             SendMessage sendMessage = new SendMessage(chatId, "Alright! All data written!");
+            EnumSet<Button> buttons = EnumSet.of(Button.ABOUT_SHELTER_BUTTON, Button.LEAVE_CONTACT_BUTTON,
+                    Button.SUBMIT_REPORT_BUTTON, Button.CALL_VOLUNTEER_BUTTON);
+            var keyboard = assembleKeyboard(buttons);
+            sendMessage.replyMarkup(keyboard);
             telegramBot.execute(sendMessage);
             return;
         }
