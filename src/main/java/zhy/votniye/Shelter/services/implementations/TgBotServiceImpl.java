@@ -59,6 +59,16 @@ public class TgBotServiceImpl implements TgBotService {
     //region double arg commands
     //endregion
     //region callbacks
+    @Override
+    public void callVolunteer(Message message) {
+        SendMessage sendMessage = new SendMessage(message.chat().id(), "Called volunteer. Please await response, someone will reach out to you soon!");
+        cleanUpButtons(message);
+        telegramBot.execute(sendMessage);
+        //Тут должна быть логика по которой чат айди юзера уходит в какой-то чатик волонтеров для обратной связи
+        //или юзернейм
+        //или контактные данные если юзер зарегестрирован
+        //или что-то еще
+    }
 
     /**
      * Edits bot's message from which callback was received into about menu form.
