@@ -15,6 +15,12 @@ public class OwnerMapper {
         owner.setFirstName(ownerDTO.getFirstName());
         owner.setLastName(ownerDTO.getLastName());
         owner.setMiddleName(ownerDTO.getMiddleName());
+        owner.setTelegramChatId(ownerDTO.getTelegramChatId());
+        owner.setTelegramHandle(ownerDTO.getTelegramHandle());
+        owner.setPhoneNumber(ownerDTO.getPhoneNumber());
+        owner.setEmail(ownerDTO.getEmail());
+        owner.setAddress(ownerDTO.getAddress());
+        owner.setComment(ownerDTO.getComment());
         if(ownerDTO.getStatus() != null) {
             owner.setStatus(ownerDTO.getStatus());
         }
@@ -32,6 +38,12 @@ public class OwnerMapper {
         ownerDTO.setFirstName(owner.getFirstName());
         ownerDTO.setLastName(owner.getLastName());
         ownerDTO.setMiddleName(owner.getMiddleName());
+        ownerDTO.setTelegramChatId(owner.getTelegramChatId());
+        ownerDTO.setTelegramHandle(owner.getTelegramHandle());
+        ownerDTO.setPhoneNumber(owner.getPhoneNumber());
+        ownerDTO.setEmail(owner.getEmail());
+        ownerDTO.setAddress(owner.getAddress());
+        ownerDTO.setComment(owner.getComment());
         ownerDTO.setStatus(owner.getStatus());
 
         return ownerDTO;

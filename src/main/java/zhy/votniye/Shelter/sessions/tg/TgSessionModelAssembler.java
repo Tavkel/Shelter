@@ -1,6 +1,5 @@
 package zhy.votniye.Shelter.sessions.tg;
 
-import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.models.domain.Owner;
 
 import java.util.regex.Matcher;
@@ -8,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class TgSessionModelAssembler {
 
-    private Contact contact;
+    private Owner owner;
     private final Pattern textPattern = Pattern.compile("[А-я\\w\\s-]+");
     private final Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
 
@@ -23,9 +22,7 @@ public class TgSessionModelAssembler {
     public byte updateOwner(String data, int step) {
         switch (step) {
             case 1:
-                var owner = new Owner();
-                contact = new Contact();
-                contact.setOwner(owner);
+                owner = new Owner();
 
                 if (compareToPattern(textPattern, data)) {
                     owner.setLastName(data);
@@ -33,43 +30,43 @@ public class TgSessionModelAssembler {
                 } else return -1;
             case 2:
                 if (compareToPattern(textPattern, data)) {
-                    contact.getOwner().setFirstName(data);
+                    owner.setFirstName(data);
                     return 1;
                 } else return -1;
             case 3:
                 if (compareToPattern(textPattern, data)) {
-                    contact.getOwner().setMiddleName(data);
+                    owner.setMiddleName(data);
                     return 1;
                 } else return -1;
             case 4:
                 try {
-                    contact.setPhone(Long.parseLong(data.replaceAll("\\D", "")));
+                    owner.setPhoneNumber(Long.parseLong(data.replaceAll("\\D", "")));
                 } catch (NumberFormatException e) {
                     return -1;
                 }
                 return 1;
             case 5:
-                contact.setAddress(data);
+                owner.setAddress(data);
                 return 1;
             case 6:
                 if (compareToPattern(emailPattern, data)) {
-                    contact.setEmail(data);
+                    owner.setEmail(data);
                     return 1;
                 } else return -1;
             case 7:
-                contact.setComment(data);
+                owner.setComment(data);
                 return 0;
             default:
                 throw new IllegalStateException("Unexpected value on step " + step);
         }
     }
 
-    public Contact getContact() {
-        return contact;
+    public Owner getOwner() {
+        return owner;
     }
 
     public void destroy() {
-        contact = null;
+        owner = null;
     }
 
     /**

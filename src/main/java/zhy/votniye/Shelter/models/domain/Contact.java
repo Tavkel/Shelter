@@ -3,7 +3,7 @@ package zhy.votniye.Shelter.models.domain;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-
+@Deprecated
 @Entity
 public class Contact {
     @Id

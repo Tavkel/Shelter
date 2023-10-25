@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.sessions.tg.TgSession;
 import zhy.votniye.Shelter.sessions.tg.TgSessionTypes;
 import zhy.votniye.Shelter.models.domain.Owner;
@@ -25,7 +26,7 @@ import java.util.*;
 @Service
 public class TgBotServiceImpl implements TgBotService {
     @Autowired
-    private ContactService contactService;
+    private OwnerService ownerService;
     private final Logger logger = LoggerFactory.getLogger(TgBotServiceImpl.class);
     private final TelegramBot telegramBot;
 
@@ -193,8 +194,8 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public void leaveContact(Message message) {
         //todo extract to method
-        TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
-        session.setContactService(contactService);
+        TgSession session = new TgSession(message, TgSessionTypes.LEAVE_CONTACT, this);
+        session.setContactService(ownerService);
         sessions.add(session);
 
         cleanUpButtons(message);

@@ -10,7 +10,12 @@ public class OwnerDTO {
     private String firstName;
     private String lastName;
     private String middleName;
-    private ContactDTO contactDTO;
+    private Long telegramChatId;
+    private String telegramHandle;
+    private Long phoneNumber;
+    private String email;
+    private String address;
+    private String comment;
     private Status.OwnerStatus status;
 
     public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName) {
@@ -56,12 +61,52 @@ public class OwnerDTO {
         this.middleName = middleName;
     }
 
-    public ContactDTO getContactDTO() {
-        return contactDTO;
+    public Long getTelegramChatId() {
+        return telegramChatId;
     }
 
-    public void setContactDTO(ContactDTO contactDTO) {
-        this.contactDTO = contactDTO;
+    public void setTelegramChatId(Long telegramChatId) {
+        this.telegramChatId = telegramChatId;
+    }
+
+    public String getTelegramHandle() {
+        return telegramHandle;
+    }
+
+    public void setTelegramHandle(String telegramHandle) {
+        this.telegramHandle = telegramHandle;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Status.OwnerStatus getStatus() {
@@ -77,15 +122,22 @@ public class OwnerDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OwnerDTO ownerDTO = (OwnerDTO) o;
-        return  Objects.equals(firstName, ownerDTO.firstName)
-                && Objects.equals(lastName, ownerDTO.lastName)
-                && Objects.equals(middleName, ownerDTO.middleName);
-
+        return Objects.equals(firstName, ownerDTO.firstName) && Objects.equals(lastName, ownerDTO.lastName)
+                && Objects.equals(middleName, ownerDTO.middleName)
+                && Objects.equals(telegramChatId, ownerDTO.telegramChatId)
+                && Objects.equals(telegramHandle, ownerDTO.telegramHandle)
+                && Objects.equals(phoneNumber, ownerDTO.phoneNumber) && Objects.equals(email, ownerDTO.email)
+                && Objects.equals(address, ownerDTO.address) && Objects.equals(comment, ownerDTO.comment)
+                && status == ownerDTO.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, middleName);
+        return Objects.hash(firstName, lastName,
+                middleName, telegramChatId,
+                phoneNumber, telegramHandle,
+                email, address,
+                comment, status);
     }
 
     @Override
@@ -95,6 +147,13 @@ public class OwnerDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
+                ", telegramChatId=" + telegramChatId +
+                ", telegramHandle='" + telegramHandle + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", comment='" + comment + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
