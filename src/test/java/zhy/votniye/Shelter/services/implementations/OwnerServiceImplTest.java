@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OwnerServiceImplTest {
@@ -112,6 +112,7 @@ class OwnerServiceImplTest {
         when(ownerRepository.findById(pet.getId())).thenReturn(Optional.of(owner));
         Owner result = out.delete(owner.getId());
         assertEquals(owner, result);
+        verify(ownerRepository, times(1)).delete(result);
     }
 
     @Test

@@ -148,6 +148,7 @@ class PetServiceImplTest {
         when(petRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
         Pet result = out.delete(pet.getId());
         assertEquals(pet, result);
+        verify(petRepository, times(1)).delete(result);
     }
 
     @Test
@@ -156,7 +157,6 @@ class PetServiceImplTest {
         NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(pet.getId()));
         assertEquals("There is no pet with this id in the database", exception.getMessage());
-
     }
 
     @Test

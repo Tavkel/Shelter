@@ -86,10 +86,11 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet update(Pet pet) {
         logger.debug("The update method was called with the data " + pet);
-        if (petRepository.findById(pet.getId()).isEmpty()) {
-            throw new NoSuchElementException("There is no pet with this id in the database");
-        }
-        //todo rework to apply only non-photo related changes!
+        var existingPet = petRepository.findById(pet.getId()).orElseThrow(() -> new NoSuchElementException("There is no pet with this id in the database"));
+        pet.setMediaType(existingPet.getMediaType());
+        pet.setFileSize(existingPet.getFileSize());
+        pet.setPathToFile(existingPet.getPathToFile());
+        pet.setPhoto(existingPet.getPhoto());
         return petRepository.save(pet);
     }
 
@@ -109,6 +110,7 @@ public class PetServiceImpl implements PetService {
         if (pet.isEmpty()) {
             throw new NoSuchElementException("There is no pet with this id in the database");
         }
+        petRepository.delete(pet.get());
         return pet.get();
     }
 

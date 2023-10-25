@@ -52,7 +52,7 @@ public class ReportControllerTest {
             LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
     PetDTO p = new PetDTO(0L, "f", true, "3w", 3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), photo,
-            null, "dsgf", null);
+            "null", "dsgf", null);
 
     @Test
     void create__returnStatus200AndReport() {
