@@ -50,7 +50,7 @@ public class PetControllerTest {
 
     PetDTO p = new PetDTO(0L, "f", true, "3w", 3F,
             LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), photo,
-            null, "dsgf", "dsf", null);
+            null, "dsgf", null);
 
 
     @Test
@@ -79,7 +79,7 @@ public class PetControllerTest {
         var original = petRepository.save(PetMapper.toPet(p));
 
         var updated = new PetDTO(original.getId(), "y", true, "3w", 3F, LocalDateTime.now(), photo,
-                null, "dsgf", "dsf", null);
+                null, "dsgf", null);
 
         ResponseEntity<PetDTO> update = restTemplate.exchange(
                 "http://localhost:" + port + "/pet",

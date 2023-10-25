@@ -48,7 +48,7 @@ public class OwnerControllerTest {
 
 
     PetDTO p = new PetDTO(0L, "f", true, "3w", 3F, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), photo,
-            null, "dsgf", "dsf", null);
+            null, "dsgf", null);
 
     @Test
     void create__returnStatus200AndOwner() {

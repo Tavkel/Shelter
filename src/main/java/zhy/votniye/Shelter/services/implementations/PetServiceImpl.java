@@ -89,7 +89,7 @@ public class PetServiceImpl implements PetService {
         if (petRepository.findById(pet.getId()).isEmpty()) {
             throw new NoSuchElementException("There is no pet with this id in the database");
         }
-
+        //todo rework to apply only non-photo related changes!
         return petRepository.save(pet);
     }
 
