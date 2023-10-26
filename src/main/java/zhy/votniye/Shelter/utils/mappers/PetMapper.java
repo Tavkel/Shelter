@@ -1,16 +1,17 @@
 package zhy.votniye.Shelter.utils.mappers;
 
 import zhy.votniye.Shelter.models.DTO.PetDTO;
+import zhy.votniye.Shelter.models.domain.Cat;
 import zhy.votniye.Shelter.models.domain.Pet;
 
 public class PetMapper {
 
-    public static Pet toPet(PetDTO petDTO) {
+    public static toPet(PetDTO petDTO) {
         if (petDTO == null) {
             throw new NullPointerException("Tried to map null to Pet");
         }
 
-        Pet pet = new Pet();
+        Pet pet = new Cat();
 
         pet.setId(petDTO.getPetId());
         pet.setName(petDTO.getName());

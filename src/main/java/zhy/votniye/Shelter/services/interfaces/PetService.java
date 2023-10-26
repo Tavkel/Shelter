@@ -6,18 +6,18 @@ import zhy.votniye.Shelter.models.domain.Pet;
 import java.io.IOException;
 import java.util.List;
 
-public interface PetService {
-    Pet create(Pet pet);
+public interface PetService<T extends Pet> {
+    T create(T pet);
 
-    Pet read(Long id);
+    T read(Long id);
 
-    Pet update(Pet pet);
+    T update(T pet);
 
-    Pet delete(Long id);
+    T delete(Long id);
 
-    List<Pet> readAll();
+    List<T> readAll();
 
-    List<Pet> readAllPagination(int pageNumber);
+    List<T> readAllPagination(int pageNumber);
 
     void savePetPhoto(long id, MultipartFile file) throws IOException;
 }

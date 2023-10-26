@@ -21,15 +21,17 @@ public class Owner {
     private Status.OwnerStatus status;
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
-    private List<Pet> pets;
+    private List<Cat> cats;
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<Dog> dogs;
 
-    public Owner(long id, String firstName, String lastName, String middleName, Status.OwnerStatus status, List<Pet> pets) {
+    public Owner(long id, String firstName, String lastName, String middleName, Status.OwnerStatus status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.status = status;
-        this.pets = pets;
     }
 
     public Owner() {
@@ -74,6 +76,22 @@ public class Owner {
 
     public void setStatus(Status.OwnerStatus status) {
         this.status = status;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Dog> getDogs() {
+        return dogs;
+    }
+
+    public void setDogs(List<Dog> dogs) {
+        this.dogs = dogs;
     }
 
     @Override

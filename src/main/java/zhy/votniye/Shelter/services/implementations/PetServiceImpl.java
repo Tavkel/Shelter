@@ -22,10 +22,10 @@ import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
-@Service
-public class PetServiceImpl implements PetService {
+
+public class PetServiceImpl<T extends Pet> implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
-    private final PetRepository petRepository;
+    protected final PetRepository petRepository;
     private final PhotoCompression photoCompression;
     private final String petPhotoNotFoundMessage = "Pet does not have an photo.";
     @Value("path-to-photo-folder")
@@ -46,7 +46,7 @@ public class PetServiceImpl implements PetService {
      * @see PetRepository#findByNameAndBreedAndWeight(String, String, float)
      */
     @Override
-    public Pet create(Pet pet) {
+    public T create(Pet pet) {
         logger.debug("The create method was called with the data " + pet);
         if (petRepository.findByNameAndBreedAndWeight(
                 pet.getName(),
@@ -54,7 +54,7 @@ public class PetServiceImpl implements PetService {
                 pet.getWeight()).isPresent()) {
             throw new PetAlreadyExistsException("The database already has this pet");
         }
-        return petRepository.save(pet);
+        return (T) petRepository.save(pet);
     }
 
     /**
@@ -66,9 +66,9 @@ public class PetServiceImpl implements PetService {
      * @throws EntityNotFoundException There is no pet with this id in the database
      */
     @Override
-    public Pet read(Long id) {
+    public T read(Long id) {
         logger.debug("The read method was called with the data " + id);
-        Optional<Pet> pet = petRepository.findById(id);
+        Optional<T> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
             throw new EntityNotFoundException("There is no pet with this id in the database");
         }
@@ -85,13 +85,13 @@ public class PetServiceImpl implements PetService {
      * @throws EntityNotFoundException There is no pet with this id in the database
      */
     @Override
-    public Pet update(Pet pet) {
+    public T update(Pet pet) {
         logger.debug("The update method was called with the data " + pet);
         if (petRepository.findById(pet.getId()).isEmpty()) {
             throw new EntityNotFoundException("There is no pet with this id in the database");
         }
 
-        return petRepository.save(pet);
+        return (T) petRepository.save(pet);
     }
 
     /**
@@ -104,9 +104,9 @@ public class PetServiceImpl implements PetService {
      * @throws EntityNotFoundException There is no pet with this id in the database
      */
     @Override
-    public Pet delete(Long id) {
+    public T delete(Long id) {
         logger.debug("The delete method was called with the data " + id);
-        Optional<Pet> pet = petRepository.findById(id);
+        Optional<T> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
             throw new EntityNotFoundException("There is no pet with this id in the database");
         }
@@ -120,7 +120,7 @@ public class PetServiceImpl implements PetService {
      * @return all pets
      */
     @Override
-    public List<Pet> readAll() {
+    public List<T> readAll() {
         logger.debug("The ReadAll method is called");
         return petRepository.findAll();
     }
@@ -132,7 +132,7 @@ public class PetServiceImpl implements PetService {
      * @return 5 pets
      */
     @Override
-    public List<Pet> readAllPagination(int pageNumber) {
+    public List<T> readAllPagination(int pageNumber) {
         logger.debug("The method shows pets of 5 pieces per 1 page");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
         return petRepository.findAll(pageRequest).getContent();
@@ -150,12 +150,12 @@ public class PetServiceImpl implements PetService {
     @Override
     public void savePetPhoto(long id, MultipartFile file) throws IOException {
         logger.debug(String.format("Attempting to create a record for photo for pet %d", id));
-        Pet pet;
-        pet = petRepository.findById(id).orElseThrow(() -> new NoSuchElementException("pet not found"));
+        Optional<T> pet;
+        pet = petRepository.findById(id);//.orElseThrow(() -> new NoSuchElementException("pet not found"));
 
         logger.debug("Attempting to write original image to file");
         var pathToFile = writePetPhotoToFile(id, file);
-        petPhotoSetUp(file, pet, pathToFile);
+        petPhotoSetUp(file, pet.get(), pathToFile);
 
         petRepository.saveAndFlush(pet);
         logger.debug("Pet photo saved");
