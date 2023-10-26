@@ -17,6 +17,8 @@ public class OwnerMapper {
         owner.setMiddleName(ownerDTO.getMiddleName());
         if(ownerDTO.getStatus() != null) {
             owner.setStatus(ownerDTO.getStatus());
+        }else if(ownerDTO.getPreference() != null){
+            owner.setPreference(ownerDTO.getPreference());
         }
         return owner;
     }
@@ -33,6 +35,7 @@ public class OwnerMapper {
         ownerDTO.setLastName(owner.getLastName());
         ownerDTO.setMiddleName(owner.getMiddleName());
         ownerDTO.setStatus(owner.getStatus());
+        ownerDTO.setPreference(ownerDTO.getPreference());
 
         return ownerDTO;
     }

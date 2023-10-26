@@ -13,6 +13,8 @@ public class OwnerDTO {
     private ContactDTO contactDTO;
     private Status.OwnerStatus status;
 
+    private Status.OwnerPreference preference;
+
     public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName) {
         this.ownerId = ownerId;
         this.firstName = firstName;
@@ -70,6 +72,13 @@ public class OwnerDTO {
 
     public void setStatus(Status.OwnerStatus status) {
         this.status = status;
+    }
+
+    public Status.OwnerPreference getPreference(){
+        return preference;
+    }
+    public void setPreference(Status.OwnerPreference preference){
+        this.preference = preference;
     }
 
     @Override
