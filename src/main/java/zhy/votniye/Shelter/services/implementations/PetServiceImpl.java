@@ -23,7 +23,7 @@ import java.util.Optional;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 
-public class PetServiceImpl<T extends Pet> implements PetService {
+public abstract class PetServiceImpl<T extends Pet> implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
     protected final PetRepository petRepository;
     private final PhotoCompression photoCompression;

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @Schema(title = "Pet")
-public class PetDTO {
+public abstract class PetDTO {
     private Long petId;
     private String name;
     private Boolean isMale;

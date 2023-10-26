@@ -3,31 +3,27 @@ package zhy.votniye.Shelter.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import zhy.votniye.Shelter.utils.mappers.PetMapper;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.services.interfaces.PetService;
+import zhy.votniye.Shelter.utils.mappers.PetMapper;
 
 import java.io.IOException;
-import java.util.Collection;
 
-@RestController
-@RequestMapping("/pet")
-public class PetController {
+public abstract class PetController<T extends PetDTO> {
 
-    public final PetService petService;
+    private final PetService petService;
+    private final PetMapper petMapper;
 
-    public PetController(@Qualifier("DogServiceImpl") PetService petService) {
+    public PetController(PetService petService, PetMapper petMapper) {
         this.petService = petService;
+        this.petMapper = petMapper;
     }
 
 
@@ -48,10 +44,10 @@ public class PetController {
             )
     })
     @PostMapping
-    public PetDTO create(@Parameter(description = "object PetDTO", example = "test") @RequestBody PetDTO petDTO) {
-        var pet = PetMapper.toPet(petDTO);
+    public T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody T petDTO) {
+        var pet = petMapper.toPet(petDTO);
 
-        return PetMapper.fromPet(petService.create(pet));
+        return (T) petMapper.fromPet(petService.create(pet));
     }
 
     @Operation(summary = "found pet", tags = "Pets")
@@ -71,8 +67,8 @@ public class PetController {
             )
     })
     @GetMapping("/{petId}")
-    public PetDTO read(@PathVariable long petId) {
-        return PetMapper.fromPet(petService.read(petId));
+    public T read(@PathVariable long petId) {
+        return (T) petMapper.fromPet(petService.read(petId));
     }
 
     @Operation(summary = "update pet", tags = "Pets")
@@ -92,10 +88,10 @@ public class PetController {
             )
     })
     @PutMapping
-    public PetDTO update(@RequestBody PetDTO petDTO) {
-        var pet = PetMapper.toPet(petDTO);
+    public T update(@RequestBody T petDTO) {
+        var pet = petMapper.toPet(petDTO);
 
-        return PetMapper.fromPet(petService.update(pet));
+        return (T) petMapper.fromPet(petService.update(pet));
     }
 
     @Operation(summary = "delete pet", tags = "Pets")
@@ -115,8 +111,8 @@ public class PetController {
             )
     })
     @DeleteMapping("/{petId}")
-    public PetDTO delete(@PathVariable long petId) {
-        return PetMapper.fromPet(petService.delete(petId));
+    public T delete(@PathVariable long petId) {
+        return (T) petMapper.fromPet(petService.delete(petId));
     }
 
 //    @Operation(summary = "find all pets", tags = "Pets")
