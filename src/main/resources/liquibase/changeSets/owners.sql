@@ -10,3 +10,8 @@
  status SMALLINT NOT NULL,
 CONSTRAINT owner_pk PRIMARY KEY (id)
  );
+
+ --changeset zaitcev:21
+ ALTER TABLE
+ ADD COLUMN preference SMALLINT;
+

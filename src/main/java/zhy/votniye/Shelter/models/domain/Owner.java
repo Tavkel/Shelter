@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import zhy.votniye.Shelter.models.enums.Status;
 
+
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,9 @@ public class Owner {
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Pet> pets;
+
+    private Status.OwnerPreference preference;
+
 
     public Owner(long id, String firstName, String lastName, String middleName, Status.OwnerStatus status, List<Pet> pets) {
         this.id = id;
@@ -74,6 +78,13 @@ public class Owner {
 
     public void setStatus(Status.OwnerStatus status) {
         this.status = status;
+    }
+
+    public Status.OwnerPreference getPreference(){
+        return preference;
+    }
+    public void setPreference(Status.OwnerPreference preference){
+        this.preference = preference;
     }
 
     @Override
