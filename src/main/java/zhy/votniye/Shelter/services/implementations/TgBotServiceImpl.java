@@ -15,7 +15,6 @@ import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.sessions.tg.TgSession;
 import zhy.votniye.Shelter.sessions.tg.TgSessionTypes;
 import zhy.votniye.Shelter.models.domain.Owner;
-import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.time.Duration;

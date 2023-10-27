@@ -13,3 +13,5 @@ databaseChangeLog:
       file: liquibase/changeSets/dogs.sql
   - include:
       file: liquibase/changeSets/cats.sql
+  - include:
+      file: liquibase/changeSets/unregisteredOwner.sql
