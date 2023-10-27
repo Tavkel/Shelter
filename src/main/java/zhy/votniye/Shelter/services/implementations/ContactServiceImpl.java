@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Deprecated
 public class ContactServiceImpl implements ContactService {
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
