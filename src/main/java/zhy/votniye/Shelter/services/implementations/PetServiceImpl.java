@@ -149,15 +149,16 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
      */
     @Override
     public void savePetPhoto(long id, MultipartFile file) throws IOException {
-        logger.debug(String.format("Attempting to create a record for photo for pet %d", id));
+        logger.info(String.format("Attempting to create a record for photo for pet %d", id));
         Optional<T> pet;
         pet = petRepository.findById(id);//.orElseThrow(() -> new NoSuchElementException("pet not found"));
+        if(pet.isEmpty()) throw new NoSuchElementException("pet not found");
 
         logger.debug("Attempting to write original image to file");
         var pathToFile = writePetPhotoToFile(id, file);
         petPhotoSetUp(file, pet.get(), pathToFile);
 
-        petRepository.saveAndFlush(pet);
+        petRepository.saveAndFlush(pet.get());
         logger.debug("Pet photo saved");
     }
 
@@ -185,7 +186,10 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
      * @throws IOException
      */
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
-        Path filePath = Path.of(petPhotoDirectory == null? "./photo": petPhotoDirectory, id + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(petPhotoDirectory == null?
+                "./photo":
+                petPhotoDirectory + "/" + this.getClass().getSimpleName().substring(0,3),
+                id + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 
