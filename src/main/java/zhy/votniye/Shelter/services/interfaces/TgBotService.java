@@ -31,4 +31,8 @@ public interface TgBotService {
     void leaveContactStep(long chatId, int step);
 
     void dataIngestSessionFailure(long chatId, int step);
+
+    void startFresh(long chatId);
+    void catShelter(Message message);
+    void dogShelter(Message message);
 }

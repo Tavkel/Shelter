@@ -54,11 +54,58 @@ public class TgBotServiceImpl implements TgBotService {
             logger.warn("sayHello(). Failed to send response");
         }
     }
+    /**
+     * Sends greeting message startFresh
+     *
+     * @param chatId
+     */
+    @Override
+    public void startFresh(long chatId) {
+        SendMessage response = ResponseMessages.getHelloMessage(chatId);
+
+        var result = telegramBot.execute(response);
+
+        if (result.isOk()) {
+            logger.debug("Response startFresh sent");
+        }else {
+            logger.warn("startFresh(). Failed to send response");
+        }
+
+    }
 
     //endregion
     //region double arg commands
     //endregion
     //region callbacks
+    @Override
+    public void catShelter(Message message) {
+        EditMessageText editText = new EditMessageText(message.chat().id(),
+                message.messageId(),
+                ResponseMessages.getAboutMessage());
+
+        EnumSet<Button> buttons = EnumSet.of(Button.CAT_SHELTER_BUTTON);
+        var newKeyboard = assembleKeyboard(buttons);
+        EditMessageReplyMarkup editButtons = new EditMessageReplyMarkup(message.chat().id(),
+                message.messageId()).replyMarkup(newKeyboard);
+        telegramBot.execute(editText);
+        telegramBot.execute(editButtons);
+    }
+    @Override
+    public void dogShelter(Message message) {
+        EditMessageText editText = new EditMessageText(message.chat().id(),
+                message.messageId(),
+                ResponseMessages.getAboutMessage());
+
+        EnumSet<Button> buttons = EnumSet.of(Button.DOG_SHELTER_BUTTON);
+        var newKeyboard = assembleKeyboard(buttons);
+        EditMessageReplyMarkup editButtons = new EditMessageReplyMarkup(message.chat().id(),
+                message.messageId()).replyMarkup(newKeyboard);
+        telegramBot.execute(editText);
+        telegramBot.execute(editButtons);
+    }
+
+
+    //todo add methods cat and dog(dog/cat shelter - sayHello)!!!!
 
     /**
      * Edits bot's message from which callback was received into about menu form.
@@ -383,7 +430,11 @@ public class TgBotServiceImpl implements TgBotService {
         CALL_VOLUNTEER_BUTTON(new InlineKeyboardButton("Call volunteer")
                 .callbackData("call_volunteer")),
         BACK_MAIN_BUTTON(new InlineKeyboardButton("<- Back <-")
-                .callbackData("back_to_main"));
+                .callbackData("back_to_main")),
+        CAT_SHELTER_BUTTON(new InlineKeyboardButton("Cat shelter").callbackData("cat_shelter")),
+        DOG_SHELTER_BUTTON(new InlineKeyboardButton("Dog shelter").callbackData("dog_shelter"));
+
+
         private final InlineKeyboardButton button;
 
         Button(InlineKeyboardButton button) {

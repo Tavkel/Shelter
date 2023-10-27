@@ -130,7 +130,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             Map<String, Method> result;
             //add commands here
             try {
-                result = Map.of("/start", TgBotServiceImpl.class.getMethod("sayHello", long.class));
+                result = Map.of("/start", TgBotServiceImpl.class.getMethod("sayHello", long.class)
+                        ,"/startFresh", TgBotServiceImpl.class.getMethod("startFresh",long.class));
+
+
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
@@ -150,7 +153,12 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                         "drive_permit", TgBotService.class.getMethod("aboutEntryPermit", Message.class),
                         "rules_on_territory", TgBotService.class.getMethod("aboutRulesOnTerritory", Message.class),
                         "back_to_main", TgBotService.class.getMethod("backToMain", Message.class),
-                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class));
+                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class),
+                        "cat_shelter",TgBotService.class.getMethod("catShelter", Message.class),
+                        "dog_shelter",TgBotService.class.getMethod("dogShelter", Message.class));
+
+
+
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
