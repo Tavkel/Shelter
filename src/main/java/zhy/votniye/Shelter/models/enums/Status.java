@@ -10,7 +10,6 @@ public class Status {
         AVAILABLE,
         ON_PROBATION,
         IN_FAMILY
-
     }
     public enum AdoptionRequestStatus{
         OPEN,
@@ -22,5 +21,4 @@ public class Status {
         DOG,
         CAT
     }
-
 }

@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceImplTest {
@@ -69,6 +69,7 @@ class ReportServiceImplTest {
         when(reportRepository.findById(report.getId())).thenReturn(Optional.of(report));
         Report result = out.delete(report.getId());
         assertEquals(report, result);
+        verify(reportRepository, times(1)).delete(result);
     }
 
     @Test

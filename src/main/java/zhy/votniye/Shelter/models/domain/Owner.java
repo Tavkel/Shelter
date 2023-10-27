@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import zhy.votniye.Shelter.models.enums.Status;
 
-
 import java.util.List;
 import java.util.Objects;
 

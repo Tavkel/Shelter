@@ -1,7 +1,6 @@
 
 package zhy.votniye.Shelter.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -122,7 +122,7 @@ class PetServiceImplTest {
     @Test
     void read_petNotFound_returnedException() {
         when(petRepository.findById(pet.getId())).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(pet.getId()));
         assertEquals("There is no pet with this id in the database", exception.getMessage());
     }
@@ -137,7 +137,7 @@ class PetServiceImplTest {
     @Test
     void update_petNotFound_returnedException() {
         when(petRepository.findById(pet.getId())).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(pet.getId()));
         assertEquals("There is no pet with this id in the database", exception.getMessage());
 
@@ -148,15 +148,15 @@ class PetServiceImplTest {
         when(petRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
         Pet result = out.delete(pet.getId());
         assertEquals(pet, result);
+        verify(petRepository, times(1)).delete(result);
     }
 
     @Test
     void delete_petNotFound_returnedException() {
         when(petRepository.findById(pet.getId())).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class,
                 () -> out.read(pet.getId()));
         assertEquals("There is no pet with this id in the database", exception.getMessage());
-
     }
 
     @Test

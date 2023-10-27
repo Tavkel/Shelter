@@ -150,7 +150,8 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                         "drive_permit", TgBotService.class.getMethod("aboutEntryPermit", Message.class),
                         "rules_on_territory", TgBotService.class.getMethod("aboutRulesOnTerritory", Message.class),
                         "back_to_main", TgBotService.class.getMethod("backToMain", Message.class),
-                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class));
+                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class),
+                        "call_volunteer", TgBotService.class.getMethod("callVolunteer", Message.class));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
