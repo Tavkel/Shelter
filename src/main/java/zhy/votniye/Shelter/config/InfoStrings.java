@@ -31,6 +31,14 @@ public class InfoStrings {
         };
     }
 
+    public static String getInformationAboutTheAnimalDatingRule(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutTheAnimalDatingRule();
+            case DOG -> DogShelterInfoProvider.getInformationAboutTheAnimalDatingRule();
+        };
+    }
+
+
     public static class DogShelterInfoProvider {
 
         public static String getGeneralInfo() {
@@ -48,6 +56,9 @@ public class InfoStrings {
 
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
+        }
+        public static String getInformationAboutTheAnimalDatingRule(){
+            return "";
         }
     }
 
@@ -68,6 +79,9 @@ public class InfoStrings {
 
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
+        }
+        public static String getInformationAboutTheAnimalDatingRule(){
+            return "";
         }
     }
 

@@ -24,6 +24,20 @@ public interface TgBotService {
 
     void aboutGeneral(Message message);
 
+    void aboutGettingToPet(Message message);
+
+    void aboutTheDocumentsToReceive(Message message);
+
+    void aboutPetTransportation(Message message);
+
+    void aboutHomeImprovementForAPet(Message message);
+
+    void aboutHomeImprovementForAYoungPet(Message message);
+
+    void aboutHomeImprovementForADisabledPet(Message message);
+
+    void aboutTheReasonsForRefusingToReceiveAPet(Message message);
+
     void aboutContacts(Message message);
 
     void aboutEntryPermit(Message message);
