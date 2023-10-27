@@ -132,6 +132,13 @@ public class Owner {
         this.status = status;
     }
 
+    public Status.OwnerPreference getPreference(){
+        return preference;
+    }
+    public void setPreference(Status.OwnerPreference preference){
+        this.preference = preference;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

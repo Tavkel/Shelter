@@ -17,14 +17,16 @@ public class PetDTO {
     private Float weight;
     private int age;
     private LocalDateTime dateOfBirth;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private String mediaType;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private byte[] photo;
-    private String filePathPetPhoto;
     private String description;
     private String specialNeeds;
     private Status.PetStatus status;
 
     public PetDTO(Long petId, String name, Boolean isMale, String breed, Float weight,
-                  LocalDateTime dateOfBirth, byte[] photo, String filePathPetPhoto,
+                  LocalDateTime dateOfBirth, byte[] photo,
                   String description, String specialNeeds, OwnerDTO ownerDTO) {
         this.petId = petId;
         this.name = name;
@@ -33,7 +35,6 @@ public class PetDTO {
         this.weight = weight;
         this.dateOfBirth = dateOfBirth;
         this.photo = photo;
-        this.filePathPetPhoto = filePathPetPhoto;
         this.description = description;
         this.specialNeeds = specialNeeds;
 
@@ -107,12 +108,12 @@ public class PetDTO {
         this.photo = photo;
     }
 
-    public String getFilePathPetPhoto() {
-        return filePathPetPhoto;
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public void setFilePathPetPhoto(String filePathPetPhoto) {
-        this.filePathPetPhoto = filePathPetPhoto;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
     public String getDescription() {
@@ -157,7 +158,10 @@ public class PetDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, isMale, breed, weight, dateOfBirth, description, specialNeeds, status);
+        return Objects.hash(name, isMale,
+                breed, weight,
+                dateOfBirth, description,
+                specialNeeds, status);
     }
 
     @Override
@@ -170,8 +174,6 @@ public class PetDTO {
                 ", weight=" + weight +
                 ", age=" + age +
                 ", dateOfBirth=" + dateOfBirth +
-                ", photo=" + Arrays.toString(photo) +
-                ", filePathPetPhoto='" + filePathPetPhoto + '\'' +
                 ", description='" + description + '\'' +
                 ", specialNeeds='" + specialNeeds + '\'' +
                 ", status=" + status +

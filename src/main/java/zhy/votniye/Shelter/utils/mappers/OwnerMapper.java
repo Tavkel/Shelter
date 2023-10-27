@@ -23,6 +23,8 @@ public class OwnerMapper {
         owner.setComment(ownerDTO.getComment());
         if(ownerDTO.getStatus() != null) {
             owner.setStatus(ownerDTO.getStatus());
+        }else if(ownerDTO.getPreference() != null){
+            owner.setPreference(ownerDTO.getPreference());
         }
         return owner;
     }
@@ -45,6 +47,7 @@ public class OwnerMapper {
         ownerDTO.setAddress(owner.getAddress());
         ownerDTO.setComment(owner.getComment());
         ownerDTO.setStatus(owner.getStatus());
+        ownerDTO.setPreference(ownerDTO.getPreference());
 
         return ownerDTO;
     }

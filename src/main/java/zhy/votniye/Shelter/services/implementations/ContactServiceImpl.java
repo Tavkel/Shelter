@@ -97,6 +97,7 @@ public class ContactServiceImpl implements ContactService {
         if (contact.isEmpty()) {
             throw new NoSuchElementException("Contact not found");
         }
+        contactRepository.delete(contact.get());
         return contact.get();
     }
 
