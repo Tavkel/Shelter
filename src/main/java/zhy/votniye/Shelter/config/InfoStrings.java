@@ -38,6 +38,41 @@ public class InfoStrings {
         };
     }
 
+    public static String getInformationAboutPetTransportation(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutPetTransportation();
+            case DOG -> DogShelterInfoProvider.getInformationAboutPetTransportation();
+        };
+    }
+
+    public static String getInformationAboutHomeImprovementForAPet(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutHomeImprovementForAPet();
+            case DOG -> DogShelterInfoProvider.getInformationAboutHomeImprovementForAPet();
+        };
+    }
+
+    public static String getInformationAboutHomeImprovementForAYoungPet(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutHomeImprovementForAYoungPet();
+            case DOG -> DogShelterInfoProvider.getInformationAboutHomeImprovementForAYoungPet();
+        };
+    }
+
+    public static String getInformationAboutHomeImprovementForADisabledPet(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutHomeImprovementForADisabledPet();
+            case DOG -> DogShelterInfoProvider.getInformationAboutHomeImprovementForADisabledPet();
+        };
+    }
+
+    public static String getInformationAboutTheReasonsForRefusingToReceiveAPet(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference){
+            case DOG -> DogShelterInfoProvider.getInformationAboutTheReasonsForRefusingToReceiveAPet();
+            case CAT -> CatShelterInfoProvider.getInformationAboutTheReasonsForRefusingToReceiveAPet();
+        };
+    }
+
 
     public static class DogShelterInfoProvider {
 
@@ -57,8 +92,34 @@ public class InfoStrings {
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
         }
-        public static String getInformationAboutTheAnimalDatingRule(){
-            return "";
+
+        public static String getInformationAboutTheAnimalDatingRule() {
+            return "For a great acquaintance with your dog, you will need to take a yummy for dogs";
+        }
+
+        public static String getInformationAboutPetTransportation() {
+            return "To transport a dog, you will need a carrier suitable for the size of the dog. For heavy dogs," +
+                    " it is better to use a metal carrier";
+        }
+
+        public static String getInformationAboutHomeImprovementForAPet() {
+            return "To keep a dog at home, you just need to feed the dog and take it out for a walk," +
+                    " you definitely need a couch, or your bed will do." +
+                    " You can buy toys if you don't want the dog to start playing with your shoes.";
+        }
+
+        public static String getInformationAboutHomeImprovementForAYoungPet() {
+            return "To keep a puppy at home, you just need to feed the puppy with puppy food and go out for a walk.\n" +
+                    "Buy a couch or your bed will do.\n" +
+                    "You can buy toys if you don't want the dog to start playing with your shoes.";
+        }
+
+        public static String getInformationAboutHomeImprovementForADisabledPet() {
+            return "For specific instructions, contact the volunteers";
+        }
+
+        public static String getInformationAboutTheReasonsForRefusingToReceiveAPet() {
+            return "The first reason is you, and the second is just what we wanted";
         }
     }
 
@@ -80,8 +141,32 @@ public class InfoStrings {
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
         }
-        public static String getInformationAboutTheAnimalDatingRule(){
-            return "";
+
+        public static String getInformationAboutTheAnimalDatingRule() {
+            return "For a great acquaintance with your cat, you will need to take a yummy for cats";
+        }
+
+        public static String getInformationAboutPetTransportation() {
+            return "To transport a cat, you will need a carrier suitable for the size of the cat.\n" +
+                    "Fabric carriers are well suited";
+        }
+
+        public static String getInformationAboutHomeImprovementForAPet() {
+            return "To keep a cat at home, you need to buy food, a stool tray, a filler for the tray.\n" +
+                    "Be sure to buy a scratching post and a laser pointer. A big plus will be the presence of empty boxes.";
+        }
+
+        public static String getInformationAboutHomeImprovementForAYoungPet() {
+            return "To keep a kitten at home, you need to buy food for kittens, a tray for a chair, a filler for a tray.\n" +
+                    "Be sure to buy a scratching post and a laser pointer. A big plus will be the presence of empty boxes.";
+        }
+
+        public static String getInformationAboutHomeImprovementForADisabledPet() {
+            return "For specific instructions, contact the volunteers";
+        }
+
+        public static String getInformationAboutTheReasonsForRefusingToReceiveAPet() {
+            return "The first reason is you, and the second is just what we wanted";
         }
     }
 
