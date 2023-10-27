@@ -25,6 +25,7 @@ public class Owner {
     private String address;
     private String comment;
     private Status.OwnerStatus status;
+    private Status.OwnerPreference preference;
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Cat> cats;
@@ -194,7 +195,8 @@ public class Owner {
                 ", address='" + address + '\'' +
                 ", comment='" + comment + '\'' +
                 ", status=" + status +
-                ", pets=" + pets +
+                ", cats=" + cats +
+                ", dogs=" + dogs +
                 '}';
     }
 }

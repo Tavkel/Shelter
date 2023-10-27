@@ -22,7 +22,6 @@ public class CatMapper implements PetMapper<Cat, CatDTO> {
         cat.setSex(petDTO.getSex());
         cat.setWeight(petDTO.getWeight());
         cat.setDateOfBirth(petDTO.getDateOfBirth());
-        cat.setPathToFile(petDTO.getFilePathPetPhoto());
         cat.setDescription(petDTO.getDescription());
         cat.setSpecialNeeds(petDTO.getSpecialNeeds());
         cat.setStatus(petDTO.getStatus());
@@ -44,7 +43,8 @@ public class CatMapper implements PetMapper<Cat, CatDTO> {
         catDTO.setWeight(pet.getWeight());
         catDTO.setAge(pet.getAge());
         catDTO.setDateOfBirth(pet.getDateOfBirth());
-        catDTO.setFilePathPetPhoto(pet.getPathToFile());
+        catDTO.setPhoto(pet.getPhoto());
+        catDTO.setMediaType(pet.getMediaType());
         catDTO.setDescription(pet.getDescription());
         catDTO.setSpecialNeeds(pet.getSpecialNeeds());
         catDTO.setStatus(pet.getStatus());

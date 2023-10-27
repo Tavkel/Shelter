@@ -21,7 +21,6 @@ public class DogMapper implements PetMapper<Dog, DogDTO> {
         Dog.setSex(petDTO.getSex());
         Dog.setWeight(petDTO.getWeight());
         Dog.setDateOfBirth(petDTO.getDateOfBirth());
-        Dog.setPathToFile(petDTO.getFilePathPetPhoto());
         Dog.setDescription(petDTO.getDescription());
         Dog.setSpecialNeeds(petDTO.getSpecialNeeds());
         Dog.setStatus(petDTO.getStatus());
@@ -43,7 +42,8 @@ public class DogMapper implements PetMapper<Dog, DogDTO> {
         DogDTO.setWeight(pet.getWeight());
         DogDTO.setAge(pet.getAge());
         DogDTO.setDateOfBirth(pet.getDateOfBirth());
-        DogDTO.setFilePathPetPhoto(pet.getPathToFile());
+        DogDTO.setPhoto(pet.getPhoto());
+        DogDTO.setMediaType(pet.getMediaType());
         DogDTO.setDescription(pet.getDescription());
         DogDTO.setSpecialNeeds(pet.getSpecialNeeds());
         DogDTO.setStatus(pet.getStatus());

@@ -37,7 +37,6 @@ public abstract class PetDTO {
         this.photo = photo;
         this.description = description;
         this.specialNeeds = specialNeeds;
-
     }
 
     public PetDTO() {
