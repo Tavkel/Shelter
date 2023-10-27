@@ -10,7 +10,8 @@ import zhy.votniye.Shelter.utils.mappers.PetMapper;
 @RestController
 @RequestMapping("/cat")
 public class CatController extends PetController<CatDTO> {
-    public CatController(PetService<Cat> petService, PetMapper<Cat, CatDTO> petMapper) {
+    public CatController(PetService<Cat> petService,
+                         PetMapper<Cat, CatDTO> petMapper) {
         super(petService, petMapper);
     }
 }

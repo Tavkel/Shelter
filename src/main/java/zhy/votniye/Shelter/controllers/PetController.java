@@ -3,6 +3,7 @@ package zhy.votniye.Shelter.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,10 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
+import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.services.interfaces.PetService;
 import zhy.votniye.Shelter.utils.mappers.PetMapper;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 public abstract class PetController<T extends PetDTO> {
 
@@ -115,48 +119,49 @@ public abstract class PetController<T extends PetDTO> {
         return (T) petMapper.fromPet(petService.delete(petId));
     }
 
-//    @Operation(summary = "find all pets", tags = "Pets")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "find all pets",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            array = @ArraySchema(schema = @Schema(implementation = PetDTO.class))
-//                    )
-//            ),
-//            @ApiResponse(
-//                    responseCode = "404",
-//                    description = "Pets not found",
-//                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
-//            )
-//    })
-//    @GetMapping
-//    public Collection<PetDTO> readAll() {
-//        return petService.readAll().stream().map(PetMapper::fromPet).toList();
-//    }
+    @Operation(summary = "find all pets", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "find all pets",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = PetDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Pets not found",
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
+            )
+    })
+    @GetMapping
+    public Collection<PetDTO> readAll() {
+        List<Pet> tmp = petService.readAll();
+        return tmp.stream().map(p -> petMapper.fromPet(p)).toList();
+    }
 
-//    @Operation(summary = "view five pets", tags = "Pets")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "find five pets",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = PetDTO.class)
-//                    )
-//            )
-//
-//    })
-//    //not implemented!
-//    @GetMapping(value = "/all")
-//    public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
-//        if (pageNum < 1) {
-//            pageNum = 1;
-//        }
-//
-//        return petService.readAllPagination(pageNum).stream().map(PetMapper::fromPet).toList();
-//    }
+    @Operation(summary = "view five pets", tags = "Pets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "find five pets",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = PetDTO.class)
+                    )
+            )
+
+    })
+    //not implemented!
+    @GetMapping(value = "/all")
+    public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
+        if (pageNum < 1) {
+            pageNum = 1;
+        }
+        List<Pet> tmp = petService.readAllPagination(pageNum);
+        return tmp.stream().map(p -> petMapper.fromPet(p)).toList();
+    }
 
     @Operation(summary = "upload pet photo", tags = "Pets")
     @ApiResponses(value = {

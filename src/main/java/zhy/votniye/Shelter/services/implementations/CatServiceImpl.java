@@ -25,7 +25,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class CatServiceImpl extends PetServiceImpl<Cat> {
-    public CatServiceImpl(CatRepository catRepository, PhotoCompression photoCompression) {
+    public CatServiceImpl(CatRepository catRepository,
+                          PhotoCompression photoCompression) {
         super(catRepository, photoCompression);
     }
 }
