@@ -15,7 +15,6 @@ public class ReportMapper {
         report.setId(reportDTO.getReportId());
         report.setOwnerId(reportDTO.getOwnerId());
         report.setPetId(reportDTO.getPetId());
-        report.setPathToFile(reportDTO.getPathToFileReportPhoto());
         report.setFeedingReport(reportDTO.getFeedingReport());
         report.setGeneralReport(reportDTO.getGeneralReport());
         report.setBehaviorReport(reportDTO.getBehaviorReport());
@@ -33,7 +32,8 @@ public class ReportMapper {
         reportDTO.setReportId(report.getId());
         reportDTO.setOwnerId(report.getOwnerId());
         reportDTO.setPetId(report.getPetId());
-        reportDTO.setPathToFileReportPhoto(report.getPathToFile());
+        reportDTO.setMediaType(report.getMediaType());
+        reportDTO.setReportPhoto(reportDTO.getReportPhoto());
         reportDTO.setFeedingReport(report.getFeedingReport());
         reportDTO.setGeneralReport(report.getGeneralReport());
         reportDTO.setBehaviorReport(report.getBehaviorReport());

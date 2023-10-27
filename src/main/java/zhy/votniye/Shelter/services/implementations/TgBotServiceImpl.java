@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.sessions.tg.TgSession;
 import zhy.votniye.Shelter.sessions.tg.TgSessionTypes;
 import zhy.votniye.Shelter.models.domain.Owner;
@@ -25,7 +26,7 @@ import java.util.*;
 @Service
 public class TgBotServiceImpl implements TgBotService {
     @Autowired
-    private ContactService contactService;
+    private OwnerService ownerService;
     private final Logger logger = LoggerFactory.getLogger(TgBotServiceImpl.class);
     private final TelegramBot telegramBot;
 
@@ -59,6 +60,16 @@ public class TgBotServiceImpl implements TgBotService {
     //region double arg commands
     //endregion
     //region callbacks
+    @Override
+    public void callVolunteer(Message message) {
+        SendMessage sendMessage = new SendMessage(message.chat().id(), "Called volunteer. Please await response, someone will reach out to you soon!");
+        cleanUpButtons(message);
+        telegramBot.execute(sendMessage);
+        //Тут должна быть логика по которой чат айди юзера уходит в какой-то чатик волонтеров для обратной связи
+        //или юзернейм
+        //или контактные данные если юзер зарегестрирован
+        //или что-то еще
+    }
 
     /**
      * Edits bot's message from which callback was received into about menu form.
@@ -193,8 +204,8 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public void leaveContact(Message message) {
         //todo extract to method
-        TgSession session = new TgSession(message.chat().id(), TgSessionTypes.LEAVE_CONTACT, this);
-        session.setContactService(contactService);
+        TgSession session = new TgSession(message, TgSessionTypes.LEAVE_CONTACT, this);
+        session.setContactService(ownerService);
         sessions.add(session);
 
         cleanUpButtons(message);
@@ -216,6 +227,10 @@ public class TgBotServiceImpl implements TgBotService {
             toRemove.destroy();
             sessions.remove(toRemove);
             SendMessage sendMessage = new SendMessage(chatId, "Alright! All data written!");
+            EnumSet<Button> buttons = EnumSet.of(Button.ABOUT_SHELTER_BUTTON, Button.LEAVE_CONTACT_BUTTON,
+                    Button.SUBMIT_REPORT_BUTTON, Button.CALL_VOLUNTEER_BUTTON);
+            var keyboard = assembleKeyboard(buttons);
+            sendMessage.replyMarkup(keyboard);
             telegramBot.execute(sendMessage);
             return;
         }

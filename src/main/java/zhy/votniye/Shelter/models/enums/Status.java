@@ -19,4 +19,8 @@ public class Status {
         FINISHED,
         CLOSED
     }
+    public enum OwnerPreference{
+        DOG,
+        CAT
+    }
 }
