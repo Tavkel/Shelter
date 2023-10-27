@@ -1,9 +1,8 @@
 package zhy.votniye.Shelter.sessions.tg;
 
 import com.pengrad.telegrambot.model.Message;
-import zhy.votniye.Shelter.services.interfaces.ContactService;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
-import zhy.votniye.Shelter.services.interfaces.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 
 import java.time.LocalDateTime;
 

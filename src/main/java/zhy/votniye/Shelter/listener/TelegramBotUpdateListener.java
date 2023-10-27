@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.services.implementations.TgBotServiceImpl;
-import zhy.votniye.Shelter.services.interfaces.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,6 +49,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     /**
      * processes updates
+     *
      * @see #processMessage(Message)
      * @see #processCallback(CallbackQuery)
      */
@@ -81,6 +84,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     /**
      * Receives message of update, checks its body for matching with patterns of command with or without arguments
      * and calls for corresponding method of {@link TgBotService}
+     *
      * @param message
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
@@ -113,6 +117,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     /**
      * Receives {@link CallbackQuery} and calls for method of {@link TgBotService} corresponding to {@link CallbackQuery#data()}
+     *
      * @param callback
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -126,14 +131,11 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     private static class Commands {
         //all commands in lower case!
-        //todo automate the process maybe?
         private static Map<String, Method> getSingleArgCommandsMap() {
-            Map<String, Method> result;
-            //add commands here
-            try {
-                result = Map.of("/start", TgBotServiceImpl.class.getMethod("sayHello", long.class));
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
+            Map<String, Method> result = new HashMap<>();
+            var methods = TgCommandService.class.getDeclaredMethods();
+            for (var method : methods) {
+                result.put(method.getName().toLowerCase(), method);
             }
             return result;
         }
@@ -143,18 +145,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         }
 
         private static Map<String, Method> getCallbacks() {
-            Map<String, Method> result;
-            try {
-                result = Map.of("about_shelter", TgBotService.class.getMethod("about", Message.class),
-                        "general_info", TgBotService.class.getMethod("aboutGeneral", Message.class),
-                        "contacts", TgBotService.class.getMethod("aboutContacts", Message.class),
-                        "drive_permit", TgBotService.class.getMethod("aboutEntryPermit", Message.class),
-                        "rules_on_territory", TgBotService.class.getMethod("aboutRulesOnTerritory", Message.class),
-                        "back_to_main", TgBotService.class.getMethod("backToMain", Message.class),
-                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class),
-                        "call_volunteer", TgBotService.class.getMethod("callVolunteer", Message.class));
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
+            Map<String, Method> result = new HashMap<>();
+            var methods = TgCallbackService.class.getDeclaredMethods();
+            for (var method : methods) {
+                result.put(method.getName().toLowerCase(), method);
             }
             return result;
         }

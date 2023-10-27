@@ -11,11 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.config.InfoStrings;
+import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.sessions.tg.TgSession;
 import zhy.votniye.Shelter.sessions.tg.TgSessionTypes;
 import zhy.votniye.Shelter.models.domain.Owner;
-import zhy.votniye.Shelter.services.interfaces.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -111,6 +113,39 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(editButtons);
     }
 
+    @Override
+    public void aboutGettingToPet(Message message) {
+        EditMessageText editMessageText = new EditMessageText(message.chat().id(),
+                message.messageId(),
+                InfoStrings.getInformationAboutTheAnimalDatingRule(Status.OwnerPreference.CAT));
+
+    }
+
+    @Override
+    public void aboutTheDocumentsToReceive(Message message) {
+    }
+
+    @Override
+    public void aboutPetTransportation(Message message) {
+    }
+
+    @Override
+    public void aboutHomeImprovementForAPet(Message message) {
+    }
+
+    @Override
+    public void aboutHomeImprovementForAYoungPet(Message message) {
+    }
+
+    @Override
+    public void aboutHomeImprovementForADisabledPet(Message message) {
+    }
+
+    @Override
+    public void aboutTheReasonsForRefusingToReceiveAPet(Message message) {
+
+    }
+
     /**
      * Edits bot's message from which callback was received into contacts info form.
      *
@@ -141,8 +176,9 @@ public class TgBotServiceImpl implements TgBotService {
     public void aboutEntryPermit(Message message) {
         EditMessageText editText = new EditMessageText(message.chat().id(),
                 message.messageId(),
-                ResponseMessages.getAboutEntryPermitMessage());
-
+                InfoStrings.getEntryPermitInfo(Status.OwnerPreference.CAT)
+        );
+//todo не забыть поменять заглушку на реальную проверку preference пользователя
         EnumSet<Button> buttons = EnumSet.of(Button.ABOUT_GENERAL_BUTTON, Button.ABOUT_CONTACTS_BUTTON,
                 Button.ABOUT_RULES_ON_TERRITORY, Button.BACK_MAIN_BUTTON);
         var newKeyboard = assembleKeyboard(buttons);

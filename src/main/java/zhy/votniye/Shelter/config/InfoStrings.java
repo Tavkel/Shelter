@@ -31,6 +31,14 @@ public class InfoStrings {
         };
     }
 
+    public static String getInformationAboutTheAnimalDatingRule(Status.OwnerPreference ownerPreference) {
+        return switch (ownerPreference) {
+            case CAT -> CatShelterInfoProvider.getInformationAboutTheAnimalDatingRule();
+            case DOG -> DogShelterInfoProvider.getInformationAboutTheAnimalDatingRule();
+        };
+    }
+
+
     public static class DogShelterInfoProvider {
 
         public static String getGeneralInfo() {
@@ -48,6 +56,9 @@ public class InfoStrings {
 
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
+        }
+        public static String getInformationAboutTheAnimalDatingRule(){
+            return "";
         }
     }
 
@@ -68,6 +79,9 @@ public class InfoStrings {
 
         public static String getRulesOnTerritoryInfo() {
             return "Keep quiet, no running, no smoking, etc, etc";
+        }
+        public static String getInformationAboutTheAnimalDatingRule(){
+            return "";
         }
     }
 
@@ -108,6 +122,38 @@ public class InfoStrings {
             return "Rules for visitors";
         }
 
+        public static String getAboutAdoptionButtonLabel() {
+            return "About adoption";
+        }
+
+        public static String getAboutGettingFamiliarWithAPetButtonLabel() {
+            return "Meeting pet";
+        }
+
+        public static String getAboutRequiredDocumentsButtonLabel() {
+            return "Documents";
+        }
+
+        public static String getAboutPetTransportationButtonLabel() {
+            return "Transportation";
+        }
+
+        public static String getAboutLivingSpaceForYoungPetButtonLabel() {
+            return "Accommodating youngling";
+        }
+
+        public static String getAboutLivingSpaceForAdultPetButtonLabel() {
+            return "Accommodating adult";
+        }
+
+        public static String getAboutLivingSpaceForDisabledPetButtonLabel() {
+            return "Accommodating disabled";
+        }
+
+        public static String getAboutRefusalButtonLabel() {
+            return "Rejections";
+        }
+
         public static String getCallVolunteerButtonLabel() {
             return "Call volunteer";
         }
@@ -129,8 +175,20 @@ public class InfoStrings {
                     "I can call one of the leather bags.";
         }
 
+        public static String getCallVolunteerMessage() {
+            return "Called volunteer. Please await response, someone will reach out to you soon!";
+        }
+
         public static String getAboutShelterMenuMessage() {
             return "What exactly I should tell you about our shelter?";
+        }
+
+        public static String getBackToMainMenuMessage() {
+            return "Want something else?";
+        }
+
+        public static String getAboutAdoptionMenuMessage() {
+            return "Please take time to familiarize yourself with following information:";
         }
     }
 }
