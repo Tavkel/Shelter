@@ -12,8 +12,10 @@ public class ReportDTO {
     private Long reportId;
     private Long ownerId;
     private Long petId;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private String mediaType;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private byte[] reportPhoto;
-    private String pathToFileReportPhoto;
     private String feedingReport;
     private String generalReport;
     private String behaviorReport;
@@ -67,12 +69,12 @@ public class ReportDTO {
         this.reportPhoto = reportPhoto;
     }
 
-    public String getPathToFileReportPhoto() {
-        return pathToFileReportPhoto;
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public void setPathToFileReportPhoto(String pathToFileReportPhoto) {
-        this.pathToFileReportPhoto = pathToFileReportPhoto;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
     public String getFeedingReport() {
@@ -121,9 +123,7 @@ public class ReportDTO {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(
-                feedingReport, generalReport, behaviorReport, reportDate);
-        return result;
+        return Objects.hash(feedingReport, generalReport, behaviorReport, reportDate);
     }
 
     @Override

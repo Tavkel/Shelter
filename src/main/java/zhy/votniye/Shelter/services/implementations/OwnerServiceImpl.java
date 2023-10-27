@@ -96,6 +96,7 @@ public class OwnerServiceImpl implements OwnerService {
         if (owner.isEmpty()) {
             throw new NoSuchElementException("Owner not found");
         }
+        ownerRepository.delete(owner.get());
         return owner.get();
     }
 

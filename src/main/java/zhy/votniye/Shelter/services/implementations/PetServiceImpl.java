@@ -1,6 +1,5 @@
 package zhy.votniye.Shelter.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,14 +62,14 @@ public class PetServiceImpl implements PetService {
      *
      * @param id cannot be null
      * @return the founds pet
-     * @throws EntityNotFoundException There is no pet with this id in the database
+     * @throws NoSuchElementException There is no pet with this id in the database
      */
     @Override
     public Pet read(Long id) {
         logger.debug("The read method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new EntityNotFoundException("There is no pet with this id in the database");
+            throw new NoSuchElementException("There is no pet with this id in the database");
         }
         return pet.get();
     }
@@ -82,15 +81,16 @@ public class PetServiceImpl implements PetService {
      *
      * @param pet rewritable pet
      * @return new pet
-     * @throws EntityNotFoundException There is no pet with this id in the database
+     * @throws NoSuchElementException There is no pet with this id in the database
      */
     @Override
     public Pet update(Pet pet) {
         logger.debug("The update method was called with the data " + pet);
-        if (petRepository.findById(pet.getId()).isEmpty()) {
-            throw new EntityNotFoundException("There is no pet with this id in the database");
-        }
-
+        var existingPet = petRepository.findById(pet.getId()).orElseThrow(() -> new NoSuchElementException("There is no pet with this id in the database"));
+        pet.setMediaType(existingPet.getMediaType());
+        pet.setFileSize(existingPet.getFileSize());
+        pet.setPathToFile(existingPet.getPathToFile());
+        pet.setPhoto(existingPet.getPhoto());
         return petRepository.save(pet);
     }
 
@@ -101,15 +101,16 @@ public class PetServiceImpl implements PetService {
      *
      * @param id - cannot be null
      * @return delete pet
-     * @throws EntityNotFoundException There is no pet with this id in the database
+     * @throws NoSuchElementException There is no pet with this id in the database
      */
     @Override
     public Pet delete(Long id) {
         logger.debug("The delete method was called with the data " + id);
         Optional<Pet> pet = petRepository.findById(id);
         if (pet.isEmpty()) {
-            throw new EntityNotFoundException("There is no pet with this id in the database");
+            throw new NoSuchElementException("There is no pet with this id in the database");
         }
+        petRepository.delete(pet.get());
         return pet.get();
     }
 

@@ -18,7 +18,6 @@ public class PetMapper {
         pet.setSex(petDTO.getSex());
         pet.setWeight(petDTO.getWeight());
         pet.setDateOfBirth(petDTO.getDateOfBirth());
-        pet.setPathToFile(petDTO.getFilePathPetPhoto());
         pet.setDescription(petDTO.getDescription());
         pet.setSpecialNeeds(petDTO.getSpecialNeeds());
         pet.setStatus(petDTO.getStatus());
@@ -40,7 +39,8 @@ public class PetMapper {
         petDTO.setWeight(pet.getWeight());
         petDTO.setAge(pet.getAge());
         petDTO.setDateOfBirth(pet.getDateOfBirth());
-        petDTO.setFilePathPetPhoto(pet.getPathToFile());
+        petDTO.setPhoto(pet.getPhoto());
+        petDTO.setMediaType(pet.getMediaType());
         petDTO.setDescription(pet.getDescription());
         petDTO.setSpecialNeeds(pet.getSpecialNeeds());
         petDTO.setStatus(pet.getStatus());

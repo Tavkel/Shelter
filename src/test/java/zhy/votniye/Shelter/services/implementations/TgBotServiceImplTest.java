@@ -41,14 +41,11 @@ class TgBotServiceImplTest {
         SendMessage sendMessage = new SendMessage(chatId, "Hello! This is SHELTER-NAME bot-assistant! " +
                 "Please tell what i can do for you, or if you don't want to interact with me " +
                 "I can call one of the leather bags.");
-        Keyboard keyboard = new InlineKeyboardMarkup(new InlineKeyboardButton("About shelter")
-                .callbackData("about_shelter"))
-                .addRow(new InlineKeyboardButton("Leave contact")
-                        .callbackData("leave_contact"))
-                .addRow(new InlineKeyboardButton("Submit report")
-                        .callbackData("submit_report"))
-                .addRow(new InlineKeyboardButton("Call volunteer")
-                        .callbackData("call_volunteer"));
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        keyboard.addRow(TgBotServiceImpl.Button.ABOUT_SHELTER_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.LEAVE_CONTACT_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.SUBMIT_REPORT_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.CALL_VOLUNTEER_BUTTON.getButton());
         sendMessage.replyMarkup(keyboard);
 
         when(telegramBot.execute(any())).thenReturn(response);
@@ -60,6 +57,28 @@ class TgBotServiceImplTest {
         var args = argument.getAllValues();
         var expectedMessageParams = sendMessage.getParameters();
         var actualMessageParams = args.get(0).getParameters();
+        assertEquals(expectedMessageParams, actualMessageParams);
+    }
+
+    @Test
+    void callVolunteer_shouldSendMessage() {
+        int messageId = 1;
+        long chatId = 1L;
+        when(message.chat()).thenReturn(chat);
+        when(chat.id()).thenReturn(chatId);
+        when(message.messageId()).thenReturn(messageId);
+
+        SendMessage expectedMessage = new SendMessage(message.chat().id(),
+                "Called volunteer. Please await response, someone will reach out to you soon!");
+
+        ArgumentCaptor<SendMessage> argumentCaptorText = ArgumentCaptor.forClass(SendMessage.class);
+        ArgumentCaptor<EditMessageReplyMarkup> argumentCaptorMarkup = ArgumentCaptor.forClass(EditMessageReplyMarkup.class);
+
+        sut.callVolunteer(message);
+        verify(telegramBot, times(1)).execute(argumentCaptorText.capture());
+        verify(telegramBot, times(1)).execute(argumentCaptorMarkup.capture());
+        var expectedMessageParams = expectedMessage.getParameters();
+        var actualMessageParams = argumentCaptorText.getAllValues().get(0).getParameters();
         assertEquals(expectedMessageParams, actualMessageParams);
     }
 
@@ -266,7 +285,6 @@ class TgBotServiceImplTest {
         when(chat.id()).thenReturn(1L);
         sut.leaveContact(message);
         verify(telegramBot, times(2)).execute(any());
-
     }
 
     @Test
@@ -279,7 +297,13 @@ class TgBotServiceImplTest {
         sut.leaveContact(message);
         sut.leaveContactStep(chatId, step);
 
-        SendMessage expectedMessage = new SendMessage(chatId, "Alright! All data written!");
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        keyboard.addRow(TgBotServiceImpl.Button.ABOUT_SHELTER_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.LEAVE_CONTACT_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.SUBMIT_REPORT_BUTTON.getButton())
+                .addRow(TgBotServiceImpl.Button.CALL_VOLUNTEER_BUTTON.getButton());
+
+        SendMessage expectedMessage = new SendMessage(chatId, "Alright! All data written!").replyMarkup(keyboard);
         ArgumentCaptor<SendMessage> sendMessageArgumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         verify(telegramBot, times(2)).execute(sendMessageArgumentCaptor.capture());
         var expectedParams = expectedMessage.getParameters();

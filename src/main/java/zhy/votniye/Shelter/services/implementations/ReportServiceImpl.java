@@ -63,9 +63,11 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Report update(Report report) {
         logger.debug("The update method was called with the data " + report);
-        if (reportRepository.findById(report.getId()).isEmpty()) {
-            throw new NoSuchElementException("Report not found");
-        }
+        var existingReport = reportRepository.findById(report.getId()).orElseThrow(() -> new NoSuchElementException("Report not found"));
+        report.setMediaType(existingReport.getMediaType());
+        report.setFileSize(existingReport.getFileSize());
+        report.setPathToFile(existingReport.getPathToFile());
+        report.setPhoto(existingReport.getPhoto());
         return reportRepository.save(report);
     }
 
@@ -85,6 +87,7 @@ public class ReportServiceImpl implements ReportService {
         if (report.isEmpty()) {
             throw new NoSuchElementException("Report not found");
         }
+        reportRepository.delete(report.get());
         return report.get();
     }
 

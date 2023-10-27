@@ -71,6 +71,22 @@ public class Report {
         this.petId = petId;
     }
 
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
     public byte[] getPhoto() {
         return photo;
     }
@@ -131,9 +147,9 @@ public class Report {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(ownerId, petId, pathToFile, feedingReport, generalReport, behaviorReport, dateOfReport);
-        result = 31 * result + Arrays.hashCode(photo);
-        return result;
+        return Objects.hash(ownerId, petId,
+                feedingReport, generalReport,
+                behaviorReport, dateOfReport);
     }
 }
 
