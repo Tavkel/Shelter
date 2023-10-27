@@ -11,20 +11,23 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import zhy.votniye.Shelter.utils.mappers.PetMapper;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
+import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.services.interfaces.PetService;
+import zhy.votniye.Shelter.utils.mappers.PetMapper;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
-@RestController
-@RequestMapping("/pet")
-public class PetController {
-    public final PetService petService;
+public abstract class PetController<T extends PetDTO> {
 
-    public PetController(PetService petService) {
+    private final PetService petService;
+    private final PetMapper petMapper;
+
+    public PetController(PetService petService, PetMapper petMapper) {
         this.petService = petService;
+        this.petMapper = petMapper;
     }
 
 
@@ -45,10 +48,10 @@ public class PetController {
             )
     })
     @PostMapping
-    public PetDTO create(@Parameter(description = "object PetDTO", example = "test") @RequestBody PetDTO petDTO) {
-        var pet = PetMapper.toPet(petDTO);
+    public T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody T petDTO) {
+        var pet = petMapper.toPet(petDTO);
 
-        return PetMapper.fromPet(petService.create(pet));
+        return (T) petMapper.fromPet(petService.create(pet));
     }
 
     @Operation(summary = "found pet", tags = "Pets")
@@ -68,8 +71,8 @@ public class PetController {
             )
     })
     @GetMapping("/{petId}")
-    public PetDTO read(@PathVariable long petId) {
-        return PetMapper.fromPet(petService.read(petId));
+    public T read(@PathVariable long petId) {
+        return (T) petMapper.fromPet(petService.read(petId));
     }
 
     @Operation(summary = "update pet", tags = "Pets")
@@ -89,10 +92,10 @@ public class PetController {
             )
     })
     @PutMapping
-    public PetDTO update(@RequestBody PetDTO petDTO) {
-        var pet = PetMapper.toPet(petDTO);
+    public T update(@RequestBody T petDTO) {
+        var pet = petMapper.toPet(petDTO);
 
-        return PetMapper.fromPet(petService.update(pet));
+        return (T) petMapper.fromPet(petService.update(pet));
     }
 
     @Operation(summary = "delete pet", tags = "Pets")
@@ -112,8 +115,8 @@ public class PetController {
             )
     })
     @DeleteMapping("/{petId}")
-    public PetDTO delete(@PathVariable long petId) {
-        return PetMapper.fromPet(petService.delete(petId));
+    public T delete(@PathVariable long petId) {
+        return (T) petMapper.fromPet(petService.delete(petId));
     }
 
     @Operation(summary = "find all pets", tags = "Pets")
@@ -134,7 +137,8 @@ public class PetController {
     })
     @GetMapping
     public Collection<PetDTO> readAll() {
-        return petService.readAll().stream().map(PetMapper::fromPet).toList();
+        List<Pet> tmp = petService.readAll();
+        return tmp.stream().map(p -> petMapper.fromPet(p)).toList();
     }
 
     @Operation(summary = "view five pets", tags = "Pets")
@@ -155,8 +159,8 @@ public class PetController {
         if (pageNum < 1) {
             pageNum = 1;
         }
-
-        return petService.readAllPagination(pageNum).stream().map(PetMapper::fromPet).toList();
+        List<Pet> tmp = petService.readAllPagination(pageNum);
+        return tmp.stream().map(p -> petMapper.fromPet(p)).toList();
     }
 
     @Operation(summary = "upload pet photo", tags = "Pets")
@@ -164,10 +168,7 @@ public class PetController {
             @ApiResponse(
                     responseCode = "200",
                     description = "pet photo uploaded",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
-                    )
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             ),
             @ApiResponse(
                     responseCode = "404",
