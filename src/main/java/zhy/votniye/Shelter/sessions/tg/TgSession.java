@@ -1,12 +1,15 @@
 package zhy.votniye.Shelter.sessions.tg;
 
+import com.pengrad.telegrambot.model.Message;
 import zhy.votniye.Shelter.services.interfaces.ContactService;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.services.interfaces.TgBotService;
 
 import java.time.LocalDateTime;
 
 public class TgSession {
     private final long chatId;
+    private final String telegramHandle;
 
     private LocalDateTime lastUpdate;
 
@@ -19,18 +22,19 @@ public class TgSession {
     private TgSessionModelAssembler observer;
 
     private final TgBotService botService;
-    private ContactService contactService;
+    private OwnerService ownerService;
 
-    public TgSession(long chatId, TgSessionTypes type, TgBotService botService) {
-        this.chatId = chatId;
+    public TgSession(Message message, TgSessionTypes type, TgBotService botService) {
+        this.chatId = message.chat().id();
+        this.telegramHandle = message.from().username();
         this.botService = botService;
         this.lastUpdate = LocalDateTime.now();
         this.type = type;
         this.setObserver(new TgSessionModelAssembler());
     }
 
-    public void setContactService(ContactService contactService) {
-        this.contactService = contactService;
+    public void setContactService(OwnerService ownerService) {
+        this.ownerService = ownerService;
     }
 
     public long getChatId() {
@@ -58,11 +62,12 @@ public class TgSession {
             botService.leaveContactStep(chatId, step);
         } else if (updResult == 0) { //success last step
             step++;
-            var contact = observer.getContact();
-            contact.setTelegramChatId(chatId);
+            var owner = observer.getOwner();
+            owner.setTelegramChatId(chatId);
+            owner.setTelegramHandle(telegramHandle);
             //move to TgService?
             try {
-                contactService.create(contact);
+                ownerService.create(owner);
             } catch (Exception e) {
                 botService.sendErrorReport(chatId, e.getMessage());
             }

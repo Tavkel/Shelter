@@ -14,6 +14,12 @@ public interface TgBotService {
 
     void sayHello(long chatId);
 
+    //endregion
+    //region double arg commands
+    //endregion
+    //region callbacks
+    void callVolunteer(Message message);
+
     void about(Message message);
 
     void aboutGeneral(Message message);

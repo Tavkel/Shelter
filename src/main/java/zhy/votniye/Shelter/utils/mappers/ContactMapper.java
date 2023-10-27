@@ -3,6 +3,7 @@ package zhy.votniye.Shelter.utils.mappers;
 import zhy.votniye.Shelter.models.domain.Contact;
 import zhy.votniye.Shelter.models.DTO.ContactDTO;
 
+@Deprecated
 public class ContactMapper {
 
     public static Contact toContact(ContactDTO contactDTO) {

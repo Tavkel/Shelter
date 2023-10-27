@@ -9,9 +9,8 @@ import java.time.Period;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Entity
-@Table(name = "pet")
-public class Pet {
+@MappedSuperclass
+public abstract class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

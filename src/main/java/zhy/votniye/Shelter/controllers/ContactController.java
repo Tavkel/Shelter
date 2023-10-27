@@ -13,6 +13,7 @@ import zhy.votniye.Shelter.services.interfaces.ContactService;
 
 @RestController
 @RequestMapping("/contact")
+@Deprecated
 public class ContactController {
 
     public final ContactService contactService;

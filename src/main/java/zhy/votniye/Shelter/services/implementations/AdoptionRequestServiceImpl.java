@@ -85,6 +85,7 @@ public class AdoptionRequestServiceImpl implements AdoptionRequestService {
         if (adoption.isEmpty()) {
             throw new NoSuchElementException("Adoption request not found");
         }
+        adoptionRequestRepository.delete(adoption.get());
         return adoption.get();
     }
 

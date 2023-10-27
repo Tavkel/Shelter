@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Deprecated
 public class ContactServiceImpl implements ContactService {
     private final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     private final ContactRepository contactRepository;
@@ -96,6 +97,7 @@ public class ContactServiceImpl implements ContactService {
         if (contact.isEmpty()) {
             throw new NoSuchElementException("Contact not found");
         }
+        contactRepository.delete(contact.get());
         return contact.get();
     }
 
