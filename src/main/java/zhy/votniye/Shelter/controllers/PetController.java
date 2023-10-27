@@ -168,10 +168,7 @@ public abstract class PetController<T extends PetDTO> {
             @ApiResponse(
                     responseCode = "200",
                     description = "pet photo uploaded",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = PetDTO.class)
-                    )
+                    content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             ),
             @ApiResponse(
                     responseCode = "404",
