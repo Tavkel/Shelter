@@ -61,15 +61,16 @@ public class TgBotServiceImpl implements TgBotService {
      */
     @Override
     public void startFresh(long chatId) {
-        SendMessage response = ResponseMessages.getHelloMessage(chatId);
+       SendMessage response = new SendMessage(chatId,"lupa");
 
-        var result = telegramBot.execute(response);
+        EnumSet<Button> buttons = EnumSet.of(Button.CAT_SHELTER_BUTTON,Button.DOG_SHELTER_BUTTON);
 
-        if (result.isOk()) {
-            logger.debug("Response startFresh sent");
-        }else {
-            logger.warn("startFresh(). Failed to send response");
-        }
+        var newKeyboard = assembleKeyboard(buttons);
+
+        response.replyMarkup(newKeyboard);
+
+        telegramBot.execute(response);
+
 
     }
 
@@ -79,29 +80,13 @@ public class TgBotServiceImpl implements TgBotService {
     //region callbacks
     @Override
     public void catShelter(Message message) {
-        EditMessageText editText = new EditMessageText(message.chat().id(),
-                message.messageId(),
-                ResponseMessages.getAboutMessage());
-
-        EnumSet<Button> buttons = EnumSet.of(Button.CAT_SHELTER_BUTTON);
-        var newKeyboard = assembleKeyboard(buttons);
-        EditMessageReplyMarkup editButtons = new EditMessageReplyMarkup(message.chat().id(),
-                message.messageId()).replyMarkup(newKeyboard);
-        telegramBot.execute(editText);
-        telegramBot.execute(editButtons);
+       cleanUpButtons(message);
+       sayHello(message.chat().id());
     }
     @Override
     public void dogShelter(Message message) {
-        EditMessageText editText = new EditMessageText(message.chat().id(),
-                message.messageId(),
-                ResponseMessages.getAboutMessage());
-
-        EnumSet<Button> buttons = EnumSet.of(Button.DOG_SHELTER_BUTTON);
-        var newKeyboard = assembleKeyboard(buttons);
-        EditMessageReplyMarkup editButtons = new EditMessageReplyMarkup(message.chat().id(),
-                message.messageId()).replyMarkup(newKeyboard);
-        telegramBot.execute(editText);
-        telegramBot.execute(editButtons);
+        cleanUpButtons(message);
+        sayHello(message.chat().id());
     }
 
 

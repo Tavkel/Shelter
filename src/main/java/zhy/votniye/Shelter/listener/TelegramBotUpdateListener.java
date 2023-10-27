@@ -131,7 +131,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             //add commands here
             try {
                 result = Map.of("/start", TgBotServiceImpl.class.getMethod("sayHello", long.class)
-                        ,"/startFresh", TgBotServiceImpl.class.getMethod("startFresh",long.class));
+                        ,"/freshstart", TgBotServiceImpl.class.getMethod("startFresh",long.class));
 
 
             } catch (NoSuchMethodException e) {
