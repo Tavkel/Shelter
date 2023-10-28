@@ -1,8 +1,12 @@
 package zhy.votniye.Shelter.models.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import zhy.votniye.Shelter.models.enums.Status;
 
+@Entity
 public class UnregisteredOwner {
+    @Id
     private long chatId;
     private Status.OwnerPreference preference;
 

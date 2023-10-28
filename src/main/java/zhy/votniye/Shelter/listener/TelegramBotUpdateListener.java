@@ -9,7 +9,6 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.services.implementations.TgBotServiceImpl;
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
@@ -26,13 +25,17 @@ import java.util.regex.Pattern;
 public class TelegramBotUpdateListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
     private final TelegramBot telegramBot;
+    private final TgCommandService commandService;
+    private final TgCallbackService callbackService;
     private final TgBotService botService;
     private Map<String, Method> singleArgCommands;
     private Map<String, Method> doubleArgCommands;
     private Map<String, Method> callbacks;
 
-    public TelegramBotUpdateListener(TelegramBot telegramBot, TgBotService botService) {
+    public TelegramBotUpdateListener(TelegramBot telegramBot, TgCommandService commandService, TgCallbackService callbackService, TgBotService botService) {
         this.telegramBot = telegramBot;
+        this.commandService = commandService;
+        this.callbackService = callbackService;
         this.botService = botService;
     }
 
@@ -99,7 +102,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             var args = matcher.group(3);
             if (doubleArgCommands.containsKey(command)) {
                 var method = doubleArgCommands.get(command);
-                method.invoke(botService, message.chat().id(), args);
+                method.invoke(commandService, message.chat().id(), args);
                 return;
             }
         }
@@ -110,7 +113,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             var command = matcher.group(1);
             if (singleArgCommands.containsKey(command)) {
                 var method = singleArgCommands.get(command);
-                method.invoke(botService, message.chat().id());
+                method.invoke(commandService, message.chat().id());
             }
         }
     }
@@ -125,7 +128,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     private void processCallback(CallbackQuery callback) throws InvocationTargetException, IllegalAccessException {
         if (callbacks.containsKey(callback.data())) {
             var method = callbacks.get(callback.data());
-            method.invoke(botService, callback.message());
+            method.invoke(callbackService, callback.message());
         }
     }
 
@@ -135,7 +138,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             Map<String, Method> result = new HashMap<>();
             var methods = TgCommandService.class.getDeclaredMethods();
             for (var method : methods) {
-                result.put(method.getName().toLowerCase(), method);
+                result.put("/" + method.getName(), method);
             }
             return result;
         }
@@ -148,7 +151,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             Map<String, Method> result = new HashMap<>();
             var methods = TgCallbackService.class.getDeclaredMethods();
             for (var method : methods) {
-                result.put(method.getName().toLowerCase(), method);
+                result.put(method.getName(), method);
             }
             return result;
         }

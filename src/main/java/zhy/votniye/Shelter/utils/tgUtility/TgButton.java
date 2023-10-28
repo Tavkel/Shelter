@@ -26,9 +26,9 @@ public enum TgButton {
     BACK_MAIN_BUTTON(new InlineKeyboardButton(getBackToMainButtonLabel())
             .callbackData("backToMain")),
     //todo change text placeholders,
-    CAT_SHELTER_BUTTON(new InlineKeyboardButton("Cat shelter")
+    CAT_SHELTER_BUTTON(new InlineKeyboardButton(getCatShelterButtonLabel())
             .callbackData("PLACEHOLDER")),
-    DOG_SHELTER_BUTTON(new InlineKeyboardButton("Dog shelter")
+    DOG_SHELTER_BUTTON(new InlineKeyboardButton(getDogShelterButtonLabel())
             .callbackData("PLACEHOLDER")),
     ABOUT_GETTING_FAMILIAR_WITH_A_PET_BUTTON(new InlineKeyboardButton(getAboutGettingFamiliarWithAPetButtonLabel())
             .callbackData("aboutGettingFamiliarWithAPet")),

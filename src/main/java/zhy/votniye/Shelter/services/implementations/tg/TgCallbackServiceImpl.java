@@ -6,18 +6,19 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
 import com.pengrad.telegrambot.request.EditMessageText;
-import zhy.votniye.Shelter.models.enums.Status;
+import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
-import zhy.votniye.Shelter.utils.tgUtility.TgButton;
 import zhy.votniye.Shelter.utils.tgUtility.TgMessageBuilder;
 
-import java.util.EnumSet;
-
+@Service
 public class TgCallbackServiceImpl implements TgCallbackService {
     private final TelegramBot telegramBot;
+    private final TgBotService botService;
 
-    public TgCallbackServiceImpl(TelegramBot telegramBot) {
+    public TgCallbackServiceImpl(TelegramBot telegramBot, TgBotService botService) {
         this.telegramBot = telegramBot;
+        this.botService = botService;
     }
 
     @Override
@@ -30,60 +31,48 @@ public class TgCallbackServiceImpl implements TgCallbackService {
     @Override
     public void about(Message message) {
         EditMessageText editText = TgMessageBuilder.getAboutMessageTextEdit(message);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutGeneral(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.getAboutGeneralMessageTextEdit(message, Status.OwnerPreference.CAT);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutGeneralMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutGeneralMessageTextEdit(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutContacts(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.getAboutContactsMessageTextEdit(message, Status.OwnerPreference.CAT);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutContactsMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutContactsMessageTextEdit(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutEntryPermit(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.getAboutEntryPermitMessageTextEdit(message, Status.OwnerPreference.CAT);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutEntryPermitMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutEntryPermitMessageTextEdit(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutRulesOnTerritory(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.getAboutRulesMessageTextEdit(message, Status.OwnerPreference.CAT);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutRulesMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutRulesMessageTextEdit(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutAdoption(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.
+
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutAdoptionMenuTextEdit(message);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void backToMain(Message message) {
-        EnumSet<TgButton> buttons = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON);
-        //todo
-        // -button set logic
-        // -if user has pet on prob period - add submit report
-        // -if user not registered - add leave contact
+        var buttons = botService.getAppropriateButtons(message.chat().id());
         EditMessageText editText = TgMessageBuilder.getBackToMainTextEdit(message);
         EditMessageReplyMarkup editButtons = TgMessageBuilder.getBackToMainMenuMarkupEdit(message, buttons);
         executeAll(editText, editButtons);
@@ -91,7 +80,7 @@ public class TgCallbackServiceImpl implements TgCallbackService {
 
     @Override
     public void leaveContact(Message message) {
-//todo implement leave contacts
+        botService.leaveContact(message);
     }
 
     @Override
@@ -101,41 +90,51 @@ public class TgCallbackServiceImpl implements TgCallbackService {
 
     @Override
     public void aboutGettingFamiliarWithAPet(Message message) {
-        //owner preference logic
-        //todo remove placeholder
-        EditMessageText editText = TgMessageBuilder.getAboutRulesMessageTextEdit(message, Status.OwnerPreference.CAT);
-        EditMessageReplyMarkup editButtons = TgMessageBuilder.getAboutRulesMessageMarkupEdit(message);
-        executeAll(editText, editButtons);
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getMeetingPetMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutRequiredDocuments(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutRequiredDocumentsMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutPetTransportation(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutPetTransportationMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutLivingSpaceForYoungPet(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutAccommodatingYoungPetMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutLivingSpaceForPet(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutAccommodatingPetMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutLivingSpaceForDisabledPet(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutAccommodatingDisabledPetMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     @Override
     public void aboutWhyAdoptionRequestMightBeRefused(Message message) {
-
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editText = TgMessageBuilder.getAboutAdoptionRejectMessage(message, preference);
+        telegramBot.execute(editText);
     }
 
     private void executeAll(BaseRequest... requests) {
@@ -145,8 +144,7 @@ public class TgCallbackServiceImpl implements TgCallbackService {
     }
 
     private void cleanUpButtons(Message message) {
-        EditMessageReplyMarkup edit = new EditMessageReplyMarkup(
-                message.chat().id(), message.messageId()).replyMarkup(new InlineKeyboardMarkup());
+        EditMessageReplyMarkup edit = new EditMessageReplyMarkup(message.chat().id(), message.messageId()).replyMarkup(new InlineKeyboardMarkup());
         telegramBot.execute(edit);
     }
 }
