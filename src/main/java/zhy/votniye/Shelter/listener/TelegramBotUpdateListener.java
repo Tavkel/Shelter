@@ -9,11 +9,13 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.services.implementations.TgBotServiceImpl;
-import zhy.votniye.Shelter.services.interfaces.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
+import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -23,13 +25,17 @@ import java.util.regex.Pattern;
 public class TelegramBotUpdateListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
     private final TelegramBot telegramBot;
+    private final TgCommandService commandService;
+    private final TgCallbackService callbackService;
     private final TgBotService botService;
     private Map<String, Method> singleArgCommands;
     private Map<String, Method> doubleArgCommands;
     private Map<String, Method> callbacks;
 
-    public TelegramBotUpdateListener(TelegramBot telegramBot, TgBotService botService) {
+    public TelegramBotUpdateListener(TelegramBot telegramBot, TgCommandService commandService, TgCallbackService callbackService, TgBotService botService) {
         this.telegramBot = telegramBot;
+        this.commandService = commandService;
+        this.callbackService = callbackService;
         this.botService = botService;
     }
 
@@ -94,7 +100,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             var args = matcher.group(3);
             if (doubleArgCommands.containsKey(command)) {
                 var method = doubleArgCommands.get(command);
-                method.invoke(botService, message.chat().id(), args);
+                method.invoke(commandService, message.chat().id(), args);
                 return;
             }
         }
@@ -105,7 +111,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             var command = matcher.group(1);
             if (singleArgCommands.containsKey(command)) {
                 var method = singleArgCommands.get(command);
-                method.invoke(botService, message.chat().id());
+                method.invoke(commandService, message.chat().id());
             }
         }
     }
@@ -119,23 +125,17 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     private void processCallback(CallbackQuery callback) throws InvocationTargetException, IllegalAccessException {
         if (callbacks.containsKey(callback.data())) {
             var method = callbacks.get(callback.data());
-            method.invoke(botService, callback.message());
+            method.invoke(callbackService, callback.message());
         }
     }
 
     private static class Commands {
         //all commands in lower case!
-        //todo automate the process maybe?
         private static Map<String, Method> getSingleArgCommandsMap() {
-            Map<String, Method> result;
-            //add commands here
-            try {
-                result = Map.of("/start", TgBotServiceImpl.class.getMethod("sayHello", long.class),
-                        "/freshstart", TgBotServiceImpl.class.getMethod("startFresh",long.class));
-
-
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
+            Map<String, Method> result = new HashMap<>();
+            var methods = TgCommandService.class.getDeclaredMethods();
+            for (var method : methods) {
+                result.put("/" + method.getName(), method);
             }
             return result;
         }
@@ -145,20 +145,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         }
 
         private static Map<String, Method> getCallbacks() {
-            Map<String, Method> result;
-            try {
-                result = Map.of("about_shelter", TgBotService.class.getMethod("about", Message.class),
-                        "general_info", TgBotService.class.getMethod("aboutGeneral", Message.class),
-                        "contacts", TgBotService.class.getMethod("aboutContacts", Message.class),
-                        "drive_permit", TgBotService.class.getMethod("aboutEntryPermit", Message.class),
-                        "rules_on_territory", TgBotService.class.getMethod("aboutRulesOnTerritory", Message.class),
-                        "back_to_main", TgBotService.class.getMethod("backToMain", Message.class),
-                        "leave_contact", TgBotService.class.getMethod("leaveContact", Message.class),
-                        "cat_shelter",TgBotService.class.getMethod("catShelter", Message.class),
-                        "dog_shelter",TgBotService.class.getMethod("dogShelter", Message.class),
-                        "call_volunteer", TgBotService.class.getMethod("callVolunteer", Message.class));
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
+            Map<String, Method> result = new HashMap<>();
+            var methods = TgCallbackService.class.getDeclaredMethods();
+            for (var method : methods) {
+                result.put(method.getName(), method);
             }
             return result;
         }

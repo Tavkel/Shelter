@@ -2,13 +2,15 @@ package zhy.votniye.Shelter.services.interfaces;
 
 import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 
+import java.util.Optional;
+
 public interface UnregisteredOwnerService {
 
-     UnregisteredOwner create(UnregisteredOwner unregisteredOwner);
+    void create(UnregisteredOwner unregisteredOwner);
 
-     UnregisteredOwner read(long chatId);
+    Optional<UnregisteredOwner> read(long chatId);
 
-     UnregisteredOwner update(UnregisteredOwner unregisteredOwner);
+    void update(UnregisteredOwner unregisteredOwner);
 
-     UnregisteredOwner delete(long chatId);
+    void delete(long chatId);
 }

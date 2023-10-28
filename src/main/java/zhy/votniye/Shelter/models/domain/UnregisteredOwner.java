@@ -2,10 +2,9 @@ package zhy.votniye.Shelter.models.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import zhy.votniye.Shelter.models.enums.Status;
+
 @Entity
-@Table(name = "unregistered_owner")
 public class UnregisteredOwner {
     @Id
     private long chatId;
