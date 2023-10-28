@@ -4,11 +4,11 @@ import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 
 public interface UnregisteredOwnerService {
 
-    void create(UnregisteredOwner unregisteredOwner);
+     UnregisteredOwner create(UnregisteredOwner unregisteredOwner);
 
-    void read(long chatId);
+     UnregisteredOwner read(long chatId);
 
-    void update(UnregisteredOwner unregisteredOwner);
+     UnregisteredOwner update(UnregisteredOwner unregisteredOwner);
 
-    void delete(long chatId);
+     UnregisteredOwner delete(long chatId);
 }
