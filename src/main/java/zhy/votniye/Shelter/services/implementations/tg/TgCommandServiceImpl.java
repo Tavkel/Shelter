@@ -2,6 +2,7 @@ package zhy.votniye.Shelter.services.implementations.tg;
 
 import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
 import zhy.votniye.Shelter.utils.tgUtility.TgMessageBuilder;
@@ -20,9 +21,15 @@ public class TgCommandServiceImpl implements TgCommandService {
 
     @Override
     public void start(long chatId) {
-        var buttons = botService.getAppropriateButtons(chatId);
-        var message = TgMessageBuilder.getStartMessage(chatId, buttons);
-        telegramBot.execute(message);
+        try {
+            botService.getOwnerPreference(chatId);
+            var buttons = botService.getAppropriateButtons(chatId);
+            var message = TgMessageBuilder.getStartMessage(chatId, buttons);
+            telegramBot.execute(message);
+        } catch (GetOwnerPreferenceException e) {
+            startFresh(chatId);
+        }
+
     }
 
     @Override
@@ -30,4 +37,6 @@ public class TgCommandServiceImpl implements TgCommandService {
         var message = TgMessageBuilder.getStartFreshMessage(chatId);
         telegramBot.execute(message);
     }
+
+
 }

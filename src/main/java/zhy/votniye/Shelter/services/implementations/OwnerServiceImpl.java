@@ -111,4 +111,10 @@ public class OwnerServiceImpl implements OwnerService {
         logger.debug("The ReadAll method is called");
         return ownerRepository.findAll();
     }
+
+    @Override
+    public Optional<Owner> getByChatId(long chatId) {
+        logger.debug("The getByChatId method is called");
+        return ownerRepository.findByTelegramChatId(chatId);
+    }
 }

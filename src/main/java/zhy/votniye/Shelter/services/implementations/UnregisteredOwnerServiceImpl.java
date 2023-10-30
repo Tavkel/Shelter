@@ -26,30 +26,25 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
 
     @Override
     @Cacheable("create")
-    public UnregisteredOwner create(UnregisteredOwner unregisteredOwner) {
+    public void  create(UnregisteredOwner unregisteredOwner) {
 
         logger.debug("The create method was called with the data " + unregisteredOwner);
 
-        return unregisteredOwnerRepository.save(unregisteredOwner);
+         unregisteredOwnerRepository.save(unregisteredOwner);
     }
 
     @Override
     @Cacheable("read")
-    public UnregisteredOwner read(long chatId) {
+    public Optional<UnregisteredOwner> read(long chatId) {
 
         logger.debug("The read method was called with the data " + chatId);
 
-        Optional<UnregisteredOwner> unregisteredOwner = unregisteredOwnerRepository.findById(chatId);
-
-        if(unregisteredOwner.isEmpty()) {
-            throw new NoSuchElementException("UnregisteredOwner not found");
-        }
-        return unregisteredOwner.get();
+        return unregisteredOwnerRepository.findById(chatId);
     }
 
     @Override
     @Cacheable("update")
-    public UnregisteredOwner update(UnregisteredOwner unregisteredOwner) {
+    public void  update(UnregisteredOwner unregisteredOwner) {
 
         logger.debug("The read method was called with the data " + unregisteredOwner);
 
@@ -57,12 +52,12 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
             throw new NoSuchElementException("UnregisteredOwner not found");
         }
 
-        return unregisteredOwnerRepository.save(unregisteredOwner);
+         unregisteredOwnerRepository.save(unregisteredOwner);
     }
 
     @Override
     @Cacheable("delete")
-    public UnregisteredOwner delete(long chatId) {
+    public void delete(long chatId) {
 
         logger.debug("The delete method was called with the data " + chatId);
 
@@ -73,7 +68,8 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
             throw new NoSuchElementException("UnregisteredOwner not found");
         }
 
-        return unregisteredOwner.get();
+        unregisteredOwnerRepository.delete(unregisteredOwner.get());
+
     }
 
 }

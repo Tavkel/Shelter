@@ -2,11 +2,17 @@ package zhy.votniye.Shelter.services.implementations.tg;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.MessageAutoDeleteTimerChanged;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
 import com.pengrad.telegrambot.request.EditMessageText;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
+import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
+import zhy.votniye.Shelter.models.enums.Status;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.UnregisteredOwnerService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
 import zhy.votniye.Shelter.utils.tgUtility.TgMessageBuilder;
@@ -16,9 +22,16 @@ public class TgCallbackServiceImpl implements TgCallbackService {
     private final TelegramBot telegramBot;
     private final TgBotService botService;
 
-    public TgCallbackServiceImpl(TelegramBot telegramBot, TgBotService botService) {
+    private final OwnerService ownerService;
+
+    private final UnregisteredOwnerService unregisteredOwnerService;
+
+
+    public TgCallbackServiceImpl(TelegramBot telegramBot, TgBotService botService, OwnerService ownerService, UnregisteredOwnerService unregisteredOwnerService) {
         this.telegramBot = telegramBot;
         this.botService = botService;
+        this.ownerService = ownerService;
+        this.unregisteredOwnerService = unregisteredOwnerService;
     }
 
     @Override
@@ -26,6 +39,46 @@ public class TgCallbackServiceImpl implements TgCallbackService {
         var response = TgMessageBuilder.getCallVolunteerMessage(message.chat().id());
         telegramBot.execute(response);
         cleanUpButtons(message);
+    }
+
+    @Override
+    public void chooseCat(Message message) {
+
+        makeChoice(message, Status.OwnerPreference.CAT);
+    }
+
+    @Override
+    public void chooseDog(Message message) {
+        makeChoice(message, Status.OwnerPreference.DOG);
+    }
+
+    private void makeChoice(Message message, Status.OwnerPreference preference) {
+        long chatId = message.chat().id();
+
+        try {
+            botService.getOwnerPreference(chatId);
+
+            var owner = ownerService.getByChatId(chatId);
+
+            if (owner.isPresent()) {
+                owner.get().setPreference(preference);
+                ownerService.update(owner.get());
+            } else {
+                var unregOwner = unregisteredOwnerService.read(chatId);
+                unregOwner.get().setPreference(preference);
+                unregisteredOwnerService.update(unregOwner.get());
+            }
+        } catch (GetOwnerPreferenceException e) {
+            var unregOwner = new UnregisteredOwner(chatId, preference);
+            unregisteredOwnerService.create(unregOwner);
+        } finally {
+            var buttons = botService.getAppropriateButtons(chatId);
+            var res = TgMessageBuilder.getStartMessage(chatId, buttons);
+
+            cleanUpButtons(message);
+
+            telegramBot.execute(res);
+        }
     }
 
     @Override

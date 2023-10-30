@@ -36,4 +36,8 @@ public interface TgCallbackService {
     void aboutLivingSpaceForDisabledPet(Message message);
 
     void aboutWhyAdoptionRequestMightBeRefused(Message message);
+
+    void chooseCat(Message message);
+
+    void chooseDog(Message message);
 }

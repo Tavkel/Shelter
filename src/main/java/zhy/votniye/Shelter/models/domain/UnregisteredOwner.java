@@ -10,6 +10,15 @@ public class UnregisteredOwner {
     private long chatId;
     private Status.OwnerPreference preference;
 
+    public UnregisteredOwner(long chatId, Status.OwnerPreference preference) {
+        this.chatId = chatId;
+        this.preference = preference;
+    }
+
+    public UnregisteredOwner(){
+
+    }
+
     public long getChatId() {
         return chatId;
     }
