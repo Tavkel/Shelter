@@ -52,7 +52,6 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     /**
      * processes updates
-     *
      * @see #processMessage(Message)
      * @see #processCallback(CallbackQuery)
      */
@@ -87,7 +86,6 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     /**
      * Receives message of update, checks its body for matching with patterns of command with or without arguments
      * and calls for corresponding method of {@link TgBotService}
-     *
      * @param message
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
@@ -120,7 +118,6 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     /**
      * Receives {@link CallbackQuery} and calls for method of {@link TgBotService} corresponding to {@link CallbackQuery#data()}
-     *
      * @param callback
      * @throws InvocationTargetException
      * @throws IllegalAccessException

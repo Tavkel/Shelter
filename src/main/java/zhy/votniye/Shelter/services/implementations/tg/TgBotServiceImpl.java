@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
 import zhy.votniye.Shelter.models.domain.Owner;
+import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.services.interfaces.UnregisteredOwnerService;
@@ -121,19 +123,31 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public EnumSet<TgButton> getAppropriateButtons(long chatId) {
         EnumSet<TgButton> result = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON);
-        Optional<Owner> oOwner = ownerService.getByChatId(chatId);
-        if (oOwner.isEmpty()) {
-            result.add(TgButton.LEAVE_CONTACT_BUTTON);
-        } else if (!oOwner.get().getCats().isEmpty() || !oOwner.get().getDogs().isEmpty()) {
-            result.add(TgButton.SUBMIT_REPORT_BUTTON);
-        }
+//        Optional<Owner> oOwner = ownerService.getByChatId(chatId);
+//        if (oOwner.isEmpty()) {
+//            result.add(TgButton.LEAVE_CONTACT_BUTTON);
+//        } else if (!oOwner.get().getCats().isEmpty() || !oOwner.get().getDogs().isEmpty()) {
+//            result.add(TgButton.SUBMIT_REPORT_BUTTON);
+//        }
         return result;
     }
 
-    //todo implement!
+
     @Override
     public Status.OwnerPreference getOwnerPreference(long chatId) {
-        return Status.OwnerPreference.CAT;
+
+        Optional<Owner> owner = ownerService.getByChatId(chatId);
+
+        Optional<UnregisteredOwner> unregOwner = unregisteredOwnerService.read(chatId);
+
+        if(owner.isPresent()){
+            return owner.get().getPreference();
+        }else if(unregOwner.isPresent()){
+            return unregOwner.get().getPreference();
+        }else {
+            throw new GetOwnerPreferenceException("owner was not found in any database");
+        }
+
     }
 
     /**
