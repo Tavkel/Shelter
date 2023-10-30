@@ -270,7 +270,7 @@ public class InfoStrings {
         }
 
         public static String getHelloMessageForReturningUser() {
-            return "Hello! This is SHELTER-NAME bot-assistant!\n" +
+            return "To return to shelter choice type /startFresh\n" +
                     "Please tell what i can do for you, or if you don't want to interact with me " +
                     "I can call one of the leather bags.";
         }
