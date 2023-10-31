@@ -137,6 +137,8 @@ public class ReportServiceImpl implements ReportService {
         monitor.setActive(true);
         monitor.setOwner(owner);
         monitorRepository.save(monitor);
+        owner.setStatus(Status.OwnerStatus.ON_PROBATION_PERIOD);
+        ownerService.update(owner);
         return monitor;
     }
 
