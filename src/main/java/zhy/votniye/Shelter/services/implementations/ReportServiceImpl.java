@@ -3,12 +3,16 @@ package zhy.votniye.Shelter.services.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import zhy.votniye.Shelter.exceptions.MultiplePetsOnProbationNotAllowed;
+import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 import zhy.votniye.Shelter.models.domain.Report;
+import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.AdoptionProcessMonitorRepository;
 import zhy.votniye.Shelter.repository.ReportRepository;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,7 +40,7 @@ public class ReportServiceImpl implements ReportService {
      * @return a saved report
      */
     @Override
-    public Report create(Report report, long ownerId) {
+    public Report createReport(Report report, long ownerId) {
         logger.debug("The create method was called with the data " + report);
         var owner = ownerService.read(ownerId);
         var apm = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId()).orElseThrow(() -> new NoSuchElementException("Report monitor not found"));
@@ -109,15 +113,44 @@ public class ReportServiceImpl implements ReportService {
      * * The repository method {@link AdoptionProcessMonitorRepository#findByOwnerTelegramChatId(long)}
      * is used to search for owner reports
      *
-     * @param ownerChatId
+     * @param ownerId
      * @return all owner reports
      */
     @Override
-    public List<Report> readAllReportsByOwnerChatId(long ownerChatId) {
+    public List<Report> readAllReportsByOwnerId(long ownerId) {
         logger.debug("The ReadAll method is called");
-
-        var monitor = monitorRepository.findByOwnerTelegramChatId(ownerChatId)
+        var owner = ownerService.read(ownerId);
+        var monitor = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
                 .orElseThrow(() -> new NoSuchElementException("Owner with provided chat id has no reports"));
         return monitor.getReports();
+    }
+
+    @Override
+    public AdoptionProcessMonitor createMonitor(long ownerId) {
+        var owner = ownerService.read(ownerId);
+        if (owner.getStatus() == Status.OwnerStatus.ON_PROBATION_PERIOD) {
+            throw new MultiplePetsOnProbationNotAllowed("Owner already has a pet on probation period");
+        }
+        var monitor = new AdoptionProcessMonitor();
+        monitor.setStartDate(LocalDate.now());
+        monitor.setEndDate(LocalDate.now().plusDays(30));
+        monitor.setActive(true);
+        monitor.setOwner(owner);
+        monitorRepository.save(monitor);
+        return monitor;
+    }
+
+    @Override
+    public AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor) {
+        if (monitorRepository.findById(monitor.getId()).isPresent()) {
+            return monitorRepository.save(monitor);
+        } else {
+            throw new NoSuchElementException("Monitor not found");
+        }
+    }
+
+    @Override
+    public List<AdoptionProcessMonitor> getActiveMonitors() {
+        return monitorRepository.findAllActive();
     }
 }

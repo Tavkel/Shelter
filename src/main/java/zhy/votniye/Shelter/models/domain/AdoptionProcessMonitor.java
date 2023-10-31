@@ -33,7 +33,7 @@ public class AdoptionProcessMonitor {
         return owner;
     }
 
-    public void setChatId(Owner owner) {
+    public void setOwner(Owner owner) {
         this.owner = owner;
     }
 

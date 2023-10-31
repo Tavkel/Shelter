@@ -2,10 +2,12 @@ package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.controllers.interfaces.IReportController;
+import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 import zhy.votniye.Shelter.utils.mappers.ReportMapper;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/report")
@@ -17,12 +19,12 @@ public class ReportController implements IReportController {
         this.reportService = reportService;
     }
 
-    @PostMapping("{ownerId}")
+    @PostMapping("/{ownerId}")
     @Override
     public ReportDTO create(@RequestBody ReportDTO reportDTO, @PathVariable long ownerId) {
         var report = ReportMapper.toReport(reportDTO);
 
-        return ReportMapper.fromReport(reportService.create(report, ownerId));
+        return ReportMapper.fromReport(reportService.createReport(report, ownerId));
     }
 
     @GetMapping("/{reportId}")
@@ -45,11 +47,30 @@ public class ReportController implements IReportController {
         return ReportMapper.fromReport(reportService.delete(reportId));
     }
 
-    //todo implement!
+    @PostMapping("/monitor/{ownerId}")
+    @Override
+    public String createAdoptionProcessMonitor(@PathVariable long ownerId) {
+        reportService.createMonitor(ownerId);
+        return "OK";
+    }
+
+    @Override
+    @PutMapping("/monitor")
+    public AdoptionProcessMonitor updateAdoptionProcessMonitor(@RequestBody AdoptionProcessMonitor monitor) {
+        return reportService.updateMonitor(monitor);
+    }
+
+    @Override
+    @GetMapping("/monitor/active")
+    public List<AdoptionProcessMonitor> getActiveMonitors() {
+        return reportService.getActiveMonitors();
+    }
+
+
     @GetMapping("/owner")
     @Override
     public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
 
-        return reportService.readAllReportsByOwnerChatId(ownerId).stream().map(ReportMapper::fromReport).toList();
+        return reportService.readAllReportsByOwnerId(ownerId).stream().map(ReportMapper::fromReport).toList();
     }
 }
