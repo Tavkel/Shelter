@@ -122,7 +122,7 @@ public class TgBotServiceImpl implements TgBotService {
     //todo ОБРАТИТЬ ВНИМАНИЕ НА МЕТОД getByChatId
     @Override
     public EnumSet<TgButton> getAppropriateButtons(long chatId) {
-        EnumSet<TgButton> result = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON);
+        EnumSet<TgButton> result = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON, TgButton.LEAVE_CONTACT_BUTTON);
 //        Optional<Owner> oOwner = ownerService.getByChatId(chatId);
 //        if (oOwner.isEmpty()) {
 //            result.add(TgButton.LEAVE_CONTACT_BUTTON);

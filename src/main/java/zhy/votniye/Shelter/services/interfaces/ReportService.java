@@ -5,7 +5,7 @@ import zhy.votniye.Shelter.models.domain.Report;
 import java.util.List;
 
 public interface ReportService {
-    Report create(Report report);
+    Report create(Report report, long ownerId);
 
     Report read(Long id);
 
@@ -13,5 +13,5 @@ public interface ReportService {
 
     Report delete(Long id);
 
-    List<Report> readAllReportsByOwner(long ownerId);
+    List<Report> readAllReportsByOwnerChatId(long ownerId);
 }

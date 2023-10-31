@@ -29,8 +29,8 @@ public interface IReportController {
                     content = @Content(mediaType = MediaType.TEXT_EVENT_STREAM_VALUE)
             )
     })
-    @PostMapping
-    ReportDTO create(@RequestBody ReportDTO reportDTO);
+    @PostMapping("{chatId}")
+    ReportDTO create(@RequestBody ReportDTO reportDTO, @PathVariable long ownerId);
 
     @Operation(summary = "find report", tags = "Reports")
     @ApiResponses(value = {

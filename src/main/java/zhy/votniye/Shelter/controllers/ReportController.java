@@ -17,12 +17,12 @@ public class ReportController implements IReportController {
         this.reportService = reportService;
     }
 
-    @PostMapping
+    @PostMapping("{ownerId}")
     @Override
-    public ReportDTO create(@RequestBody ReportDTO reportDTO) {
+    public ReportDTO create(@RequestBody ReportDTO reportDTO, @PathVariable long ownerId) {
         var report = ReportMapper.toReport(reportDTO);
 
-        return ReportMapper.fromReport(reportService.create(report));
+        return ReportMapper.fromReport(reportService.create(report, ownerId));
     }
 
     @GetMapping("/{reportId}")
@@ -50,6 +50,6 @@ public class ReportController implements IReportController {
     @Override
     public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {
 
-        return reportService.readAllReportsByOwner(ownerId).stream().map(ReportMapper::fromReport).toList();
+        return reportService.readAllReportsByOwnerChatId(ownerId).stream().map(ReportMapper::fromReport).toList();
     }
 }

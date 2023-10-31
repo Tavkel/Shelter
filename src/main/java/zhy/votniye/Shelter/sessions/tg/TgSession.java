@@ -25,7 +25,7 @@ public class TgSession {
 
     public TgSession(Message message, TgSessionTypes type, TgBotService botService) {
         this.chatId = message.chat().id();
-        this.telegramHandle = message.from().username();
+        this.telegramHandle = message.chat().username();
         this.botService = botService;
         this.lastUpdate = LocalDateTime.now();
         this.type = type;

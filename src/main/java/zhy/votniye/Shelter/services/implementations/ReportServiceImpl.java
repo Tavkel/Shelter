@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.models.domain.Report;
+import zhy.votniye.Shelter.repository.AdoptionProcessMonitorRepository;
 import zhy.votniye.Shelter.repository.ReportRepository;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 
 import java.util.List;
@@ -15,9 +17,15 @@ import java.util.Optional;
 public class ReportServiceImpl implements ReportService {
     private final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
     private final ReportRepository reportRepository;
+    private final AdoptionProcessMonitorRepository monitorRepository;
+    private final OwnerService ownerService;
 
-    public ReportServiceImpl(ReportRepository reportRepository) {
+    public ReportServiceImpl(ReportRepository reportRepository,
+                             AdoptionProcessMonitorRepository monitorRepository,
+                             OwnerService ownerService) {
         this.reportRepository = reportRepository;
+        this.monitorRepository = monitorRepository;
+        this.ownerService = ownerService;
     }
 
     /**
@@ -28,8 +36,13 @@ public class ReportServiceImpl implements ReportService {
      * @return a saved report
      */
     @Override
-    public Report create(Report report) {
+    public Report create(Report report, long ownerId) {
         logger.debug("The create method was called with the data " + report);
+        var owner = ownerService.read(ownerId);
+        var apm = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId()).orElseThrow(() -> new NoSuchElementException("Report monitor not found"));
+        apm.setLatestReport(report.getDateOfReport());
+        report.setApm(apm);
+        monitorRepository.save(apm);
         return reportRepository.save(report);
     }
 
@@ -93,15 +106,18 @@ public class ReportServiceImpl implements ReportService {
 
     /**
      * The method shows all the owners reports
-     * * The repository method {@link ReportRepository#findByOwnerId(long)}
+     * * The repository method {@link AdoptionProcessMonitorRepository#findByOwnerTelegramChatId(long)}
      * is used to search for owner reports
      *
-     * @param ownerId
+     * @param ownerChatId
      * @return all owner reports
      */
     @Override
-    public List<Report> readAllReportsByOwner(long ownerId) {
+    public List<Report> readAllReportsByOwnerChatId(long ownerChatId) {
         logger.debug("The ReadAll method is called");
-        return reportRepository.findByOwnerId(ownerId);
+
+        var monitor = monitorRepository.findByOwnerTelegramChatId(ownerChatId)
+                .orElseThrow(() -> new NoSuchElementException("Owner with provided chat id has no reports"));
+        return monitor.getReports();
     }
 }
