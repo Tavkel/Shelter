@@ -17,7 +17,6 @@ public class OwnerDTO {
     private String address;
     private String comment;
     private Status.OwnerStatus status;
-
     private Status.OwnerPreference preference;
 
     public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName) {

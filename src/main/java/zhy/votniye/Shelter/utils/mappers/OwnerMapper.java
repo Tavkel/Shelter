@@ -47,7 +47,7 @@ public class OwnerMapper {
         ownerDTO.setAddress(owner.getAddress());
         ownerDTO.setComment(owner.getComment());
         ownerDTO.setStatus(owner.getStatus());
-        ownerDTO.setPreference(ownerDTO.getPreference());
+        ownerDTO.setPreference(owner.getPreference());
 
         return ownerDTO;
     }
