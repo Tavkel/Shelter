@@ -123,7 +123,8 @@ public class ReportDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedingReport, generalReport, behaviorReport, reportDate);
+        return Objects.hash(feedingReport, generalReport,
+                behaviorReport, reportDate);
     }
 
     @Override

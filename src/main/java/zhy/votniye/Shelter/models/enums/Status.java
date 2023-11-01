@@ -6,15 +6,22 @@ public class Status {
         REGISTERED,
         ON_PROBATION_PERIOD
     }
-    public enum  PetStatus{
+
+    public enum PetStatus {
         AVAILABLE,
         ON_PROBATION,
         IN_FAMILY
     }
-    public enum AdoptionRequestStatus{
+
+    public enum AdoptionRequestStatus {
         OPEN,
         TRIAL_PERIOD,
         FINISHED,
         CLOSED
+    }
+    public enum OwnerPreference{
+        DOG,
+        CAT,
+        NOT_FOUND
     }
 }
