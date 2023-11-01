@@ -123,12 +123,10 @@ public class TgBotServiceImpl implements TgBotService {
     @Override
     public EnumSet<TgButton> getAppropriateButtons(long chatId) {
         EnumSet<TgButton> result = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON);
-//        Optional<Owner> oOwner = ownerService.getByChatId(chatId);
-//        if (oOwner.isEmpty()) {
-//            result.add(TgButton.LEAVE_CONTACT_BUTTON);
-//        } else if (!oOwner.get().getCats().isEmpty() || !oOwner.get().getDogs().isEmpty()) {
-//            result.add(TgButton.SUBMIT_REPORT_BUTTON);
-//        }
+        Optional<Owner> oOwner = ownerService.getByChatId(chatId);
+        if (oOwner.isEmpty()) {
+            result.add(TgButton.LEAVE_CONTACT_BUTTON);
+        }
         return result;
     }
 

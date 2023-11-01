@@ -40,4 +40,8 @@ public interface TgCallbackService {
     void chooseCat(Message message);
 
     void chooseDog(Message message);
+
+    void aboutCynologistAdvice(Message message);
+
+    void aboutCynologistContacts(Message message);
 }
