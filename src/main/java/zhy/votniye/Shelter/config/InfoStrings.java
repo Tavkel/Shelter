@@ -132,6 +132,14 @@ public class InfoStrings {
         public static String getAboutRequiredDocumentsMessage() {
             return "To adopt a pet you need passport";
         }
+
+        public static String getAboutCynologistAdviceMessage() {
+            return "Cynologist recommends ...";
+        }
+
+        public static String getAboutCynologistContactsMessage() {
+            return "Cynologist number: +7-***-***-****";
+        }
     }
 
     public static class CatShelterInfoProvider {
@@ -260,6 +268,14 @@ public class InfoStrings {
 
         public static String getBackToMainButtonLabel() {
             return "<- Back <-";
+        }
+
+        public static String getAboutCynologistAdviceButtonLabel() {
+            return "Cynologist advices";
+        }
+
+        public static String getAboutCynologistContactsButtonLabel() {
+            return "Cynologist contacts";
         }
     }
 

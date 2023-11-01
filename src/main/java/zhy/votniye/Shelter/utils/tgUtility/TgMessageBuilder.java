@@ -57,44 +57,44 @@ public class TgMessageBuilder {
                 .replyMarkup(getAboutShelterMenuKeyboard());
     }
 
-    public static EditMessageText getAboutAdoptionMenuTextEdit(Message message) {
+    public static EditMessageText getAboutAdoptionMenuTextEdit(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), getAboutAdoptionMenuMessage())
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getMeetingPetMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutMeetingPetMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutRequiredDocumentsMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutRequiredDocumentsMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutPetTransportationMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutPetTransportationMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutAccommodatingPetMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutAccommodatingPetMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutAccommodatingYoungPetMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutAccommodatingYoungPetMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutAccommodatingDisabledPetMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutAccommodatingDisabledPetMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getAboutAdoptionRejectMessage(Message message, Status.OwnerPreference preference) {
         return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.getAboutAdoptionRejectMessage(preference))
-                .replyMarkup(getAboutAdoptionMenuKeyboard());
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
     }
 
     public static EditMessageText getBackToMainTextEdit(Message message) {
@@ -107,13 +107,29 @@ public class TgMessageBuilder {
         return result.replyMarkup(keyboard);
     }
 
-    private static InlineKeyboardMarkup getAboutAdoptionMenuKeyboard() {
-        return new InlineKeyboardMarkup(
+    public static EditMessageText getAboutCynologistAdviceMessage(Message message, Status.OwnerPreference preference) {
+        return new EditMessageText(message.chat().id(), message.messageId(),InfoStrings.DogShelterInfoProvider.getAboutCynologistAdviceMessage() )
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
+    }
+
+    public static EditMessageText getAboutCynologistContactsMessage(Message message, Status.OwnerPreference preference) {
+        return new EditMessageText(message.chat().id(), message.messageId(), InfoStrings.DogShelterInfoProvider.getAboutCynologistContactsMessage())
+                .replyMarkup(getAboutAdoptionMenuKeyboard(preference));
+    }
+
+    private static InlineKeyboardMarkup getAboutAdoptionMenuKeyboard(Status.OwnerPreference preference) {
+        var keyboard = new InlineKeyboardMarkup(
                 TgButton.ABOUT_GETTING_FAMILIAR_WITH_A_PET_BUTTON.getButton(), TgButton.ABOUT_REQUIRED_DOCUMENTS_BUTTON.getButton())
                 .addRow(TgButton.ABOUT_PET_TRANSPORTATION_BUTTON.getButton(), TgButton.ABOUT_LIVING_SPACE_FOR_YOUNG_PET_BUTTON.getButton())
-                .addRow(TgButton.ABOUT_LIVING_SPACE_FOR_PET_BUTTON.getButton(), TgButton.ABOUT_LIVING_SPACE_FOR_DISABLED_PET_BUTTON.getButton())
-                .addRow(TgButton.ABOUT_WHY_ADOPTION_REQUEST_MIGHT_BE_REFUSED_BUTTON.getButton())
+                .addRow(TgButton.ABOUT_LIVING_SPACE_FOR_PET_BUTTON.getButton(), TgButton.ABOUT_LIVING_SPACE_FOR_DISABLED_PET_BUTTON.getButton());
+        if (preference == Status.OwnerPreference.DOG) {
+            keyboard.addRow(TgButton.ABOUT_CYNOLOGIST_CONTACTS_BUTTON.getButton(), TgButton.ABOUT_CYNOLOGIST_ADVICES_BUTTON.getButton());
+        }
+
+
+        keyboard.addRow(TgButton.ABOUT_WHY_ADOPTION_REQUEST_MIGHT_BE_REFUSED_BUTTON.getButton())
                 .addRow(TgButton.BACK_MAIN_BUTTON.getButton());
+        return keyboard;
     }
 
     private static InlineKeyboardMarkup getAboutShelterMenuKeyboard() {

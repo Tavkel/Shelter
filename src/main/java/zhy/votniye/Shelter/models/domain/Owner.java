@@ -195,8 +195,6 @@ public class Owner {
                 ", address='" + address + '\'' +
                 ", comment='" + comment + '\'' +
                 ", status=" + status +
-                ", cats=" + cats +
-                ", dogs=" + dogs +
                 '}';
     }
 }

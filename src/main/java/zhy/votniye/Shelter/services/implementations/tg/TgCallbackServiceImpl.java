@@ -2,7 +2,6 @@ package zhy.votniye.Shelter.services.implementations.tg;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.MessageAutoDeleteTimerChanged;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
@@ -119,7 +118,7 @@ public class TgCallbackServiceImpl implements TgCallbackService {
     public void aboutAdoption(Message message) {
 
         var preference = botService.getOwnerPreference(message.chat().id());
-        EditMessageText editText = TgMessageBuilder.getAboutAdoptionMenuTextEdit(message);
+        EditMessageText editText = TgMessageBuilder.getAboutAdoptionMenuTextEdit(message, preference);
         telegramBot.execute(editText);
     }
 
@@ -190,6 +189,19 @@ public class TgCallbackServiceImpl implements TgCallbackService {
         telegramBot.execute(editText);
     }
 
+    @Override
+    public void aboutCynologistAdvice(Message message) {
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editMessageText = TgMessageBuilder.getAboutCynologistAdviceMessage(message, preference);
+        telegramBot.execute(editMessageText);
+    }
+
+    @Override
+    public void aboutCynologistContacts(Message message) {
+        var preference = botService.getOwnerPreference(message.chat().id());
+        EditMessageText editMessageText = TgMessageBuilder.getAboutCynologistContactsMessage(message, preference);
+        telegramBot.execute(editMessageText);
+    }
     private void executeAll(BaseRequest... requests) {
         for (var req : requests) {
             telegramBot.execute(req);
