@@ -143,7 +143,7 @@ public class TgBotServiceImpl implements TgBotService {
         }else if(unregOwner.isPresent()){
             return unregOwner.get().getPreference();
         }else {
-            throw new GetOwnerPreferenceException("owner was not found in any database");
+            return Status.OwnerPreference.NOT_FOUND;
         }
 
     }

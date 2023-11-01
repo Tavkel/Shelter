@@ -7,6 +7,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getGeneralInfo();
             case DOG -> DogShelterInfoProvider.getGeneralInfo();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -14,6 +15,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getContacts();
             case DOG -> DogShelterInfoProvider.getContactsInfo();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -21,6 +23,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getEntryPermitInfo();
             case DOG -> DogShelterInfoProvider.getEntryPermitInfo();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -28,6 +31,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getRulesOnTerritoryInfo();
             case DOG -> DogShelterInfoProvider.getRulesOnTerritoryInfo();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -35,6 +39,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutMeetingCatMessage();
             case DOG -> DogShelterInfoProvider.getAboutMeetingDogMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -42,6 +47,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutRequiredDocumentsMessage();
             case DOG -> DogShelterInfoProvider.getAboutRequiredDocumentsMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -49,6 +55,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutCatTransportationMessage();
             case DOG -> DogShelterInfoProvider.getAboutDogTransportationMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -56,6 +63,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutAccommodatingCatMessage();
             case DOG -> DogShelterInfoProvider.getAboutAccommodatingDogMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -63,6 +71,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutAccommodatingKittenMessage();
             case DOG -> DogShelterInfoProvider.getAboutAccommodatingPuppyMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -70,6 +79,7 @@ public class InfoStrings {
         return switch (ownerPreference) {
             case CAT -> CatShelterInfoProvider.getAboutAccommodatingDisabledCatMessage();
             case DOG -> DogShelterInfoProvider.getAboutAccommodatingDisabledDogMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 
@@ -77,6 +87,7 @@ public class InfoStrings {
         return switch (ownerPreference){
             case DOG -> DogShelterInfoProvider.getAboutCatAdoptionRejectMessage();
             case CAT -> CatShelterInfoProvider.getAboutDogAdoptionRejectMessage();
+            case NOT_FOUND -> throw new RuntimeException();
         };
     }
 

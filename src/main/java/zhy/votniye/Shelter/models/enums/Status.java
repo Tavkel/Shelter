@@ -21,6 +21,7 @@ public class Status {
     }
     public enum OwnerPreference{
         DOG,
-        CAT
+        CAT,
+        NOT_FOUND
     }
 }

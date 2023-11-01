@@ -54,11 +54,9 @@ public class TgCallbackServiceImpl implements TgCallbackService {
     private void makeChoice(Message message, Status.OwnerPreference preference) {
         long chatId = message.chat().id();
 
-        try {
-            botService.getOwnerPreference(chatId);
-
+        var result = botService.getOwnerPreference(chatId);
+        if (result != Status.OwnerPreference.NOT_FOUND) {
             var owner = ownerService.getByChatId(chatId);
-
             if (owner.isPresent()) {
                 owner.get().setPreference(preference);
                 ownerService.update(owner.get());
@@ -67,18 +65,17 @@ public class TgCallbackServiceImpl implements TgCallbackService {
                 unregOwner.get().setPreference(preference);
                 unregisteredOwnerService.update(unregOwner.get());
             }
-        } catch (GetOwnerPreferenceException e) {
+        } else {
             var unregOwner = new UnregisteredOwner(chatId, preference);
             unregisteredOwnerService.create(unregOwner);
-        } finally {
-            var buttons = botService.getAppropriateButtons(chatId);
-            var res = TgMessageBuilder.getStartMessage(chatId, buttons);
-
-            cleanUpButtons(message);
-
-            telegramBot.execute(res);
         }
+
+        var buttons = botService.getAppropriateButtons(chatId);
+        var res = TgMessageBuilder.getStartMessage(chatId, buttons);
+        cleanUpButtons(message);
+        telegramBot.execute(res);
     }
+
 
     @Override
     public void about(Message message) {
@@ -202,6 +199,7 @@ public class TgCallbackServiceImpl implements TgCallbackService {
         EditMessageText editMessageText = TgMessageBuilder.getAboutCynologistContactsMessage(message, preference);
         telegramBot.execute(editMessageText);
     }
+
     private void executeAll(BaseRequest... requests) {
         for (var req : requests) {
             telegramBot.execute(req);

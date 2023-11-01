@@ -2,7 +2,7 @@ package zhy.votniye.Shelter.services.implementations.tg;
 
 import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
+import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
 import zhy.votniye.Shelter.utils.tgUtility.TgMessageBuilder;
@@ -21,15 +21,14 @@ public class TgCommandServiceImpl implements TgCommandService {
 
     @Override
     public void start(long chatId) {
-        try {
-            botService.getOwnerPreference(chatId);
+        var result = botService.getOwnerPreference(chatId);
+        if (result != Status.OwnerPreference.NOT_FOUND) {
             var buttons = botService.getAppropriateButtons(chatId);
             var message = TgMessageBuilder.getStartMessage(chatId, buttons);
             telegramBot.execute(message);
-        } catch (GetOwnerPreferenceException e) {
+        } else {
             startFresh(chatId);
         }
-
     }
 
     @Override
