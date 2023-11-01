@@ -43,9 +43,11 @@ public enum TgButton {
     ABOUT_LIVING_SPACE_FOR_DISABLED_PET_BUTTON(new InlineKeyboardButton(getAboutLivingSpaceForDisabledPetButtonLabel())
             .callbackData("aboutLivingSpaceForDisabledPet")),
     ABOUT_WHY_ADOPTION_REQUEST_MIGHT_BE_REFUSED_BUTTON(new InlineKeyboardButton(getAboutRefusalButtonLabel())
-            .callbackData("aboutWhyAdoptionRequestMightBeRefused"));
-
-
+            .callbackData("aboutWhyAdoptionRequestMightBeRefused")),
+    ABOUT_CYNOLOGIST_CONTACTS_BUTTON(new InlineKeyboardButton(getAboutCynologistContactsButtonLabel())
+            .callbackData("aboutCynologistContacts")),
+    ABOUT_CYNOLOGIST_ADVICES_BUTTON(new InlineKeyboardButton(getAboutCynologistAdviceButtonLabel())
+            .callbackData("aboutCynologistAdvice"));
     private final InlineKeyboardButton button;
 
     TgButton(InlineKeyboardButton button) {
@@ -55,4 +57,4 @@ public enum TgButton {
     public InlineKeyboardButton getButton() {
         return this.button;
     }
-}
+    }

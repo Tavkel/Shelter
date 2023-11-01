@@ -212,9 +212,6 @@ public class Owner {
                 ", comment='" + comment + '\'' +
                 ", status=" + status +
                 ", preference=" + preference +
-                ", cats=" + cats +
-                ", dogs=" + dogs +
-                ", reportMonitors=" + reportMonitors +
                 '}';
     }
 }
