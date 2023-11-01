@@ -6,12 +6,14 @@ databaseChangeLog:
   - include:
       file: liquibase/changeSets/contacts.sql
   - include:
-      file: liquibase/changeSets/reports.sql
-  - include:
       file: liquibase/changeSets/adoptionRequest.sql
   - include:
       file: liquibase/changeSets/dogs.sql
   - include:
       file: liquibase/changeSets/cats.sql
+  - include:
+      file: liquibase/changesets/apm.sql
+  - include:
+      file: liquibase/changeSets/reports.sql
   - include:
       file: liquibase/changeSets/unregisteredOwner.sql

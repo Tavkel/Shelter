@@ -18,6 +18,7 @@ public class Owner {
     private String lastName;
     @Column(name = "middle_name")
     private String middleName;
+    @Column(name = "telegram_chat_id")
     private Long telegramChatId;
     private String telegramHandle;
     private Long phoneNumber;
@@ -32,6 +33,9 @@ public class Owner {
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Dog> dogs;
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<AdoptionProcessMonitor> reportMonitors;
 
     public Owner(long id, String firstName,
                  String lastName, String middleName,
@@ -41,6 +45,10 @@ public class Owner {
         this.lastName = lastName;
         this.middleName = middleName;
         this.status = status;
+    }
+
+    public Owner(long id){
+        this.id = id;
     }
 
     public Owner() {
@@ -151,6 +159,14 @@ public class Owner {
         this.dogs = dogs;
     }
 
+    public List<AdoptionProcessMonitor> getReportMonitors() {
+        return reportMonitors;
+    }
+
+    public void setReportMonitors(List<AdoptionProcessMonitor> reportMonitors) {
+        this.reportMonitors = reportMonitors;
+    }
+
     public Status.OwnerPreference getPreference(){
         return preference;
     }
@@ -195,6 +211,7 @@ public class Owner {
                 ", address='" + address + '\'' +
                 ", comment='" + comment + '\'' +
                 ", status=" + status +
+                ", preference=" + preference +
                 '}';
     }
 }

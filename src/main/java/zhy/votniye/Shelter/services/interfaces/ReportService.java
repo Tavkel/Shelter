@@ -1,11 +1,12 @@
 package zhy.votniye.Shelter.services.interfaces;
 
+import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 import zhy.votniye.Shelter.models.domain.Report;
 
 import java.util.List;
 
 public interface ReportService {
-    Report create(Report report);
+    Report createReport(Report report, long ownerId);
 
     Report read(Long id);
 
@@ -13,5 +14,10 @@ public interface ReportService {
 
     Report delete(Long id);
 
-    List<Report> readAllReportsByOwner(long ownerId);
+    List<Report> readAllReportsByOwnerId(long ownerId);
+    AdoptionProcessMonitor createMonitor(long ownerId);
+
+    AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor);
+
+    List<AdoptionProcessMonitor> getActiveMonitors();
 }

@@ -7,17 +7,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "reports")
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "owner_id")
-    private long ownerId;
-    @Column(name = "pet_id")
-    private long petId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+    @ManyToOne
+    @JoinColumn(name = "cat_id")
+    private Cat cat;
+    @ManyToOne
+    @JoinColumn(name = "dog_id")
+    private Dog dog;
     private Long fileSize;
     private String mediaType;
     private byte[] photo;
@@ -30,18 +34,9 @@ public class Report {
     @Column(name = "behavior_report")
     private String behaviorReport;
     private final LocalDateTime dateOfReport;
-
-    public Report(long id, long ownerId, long petId, byte[] photo, String pathToFile, String feedingReport, String generalReport, String behaviorReport, LocalDateTime dateOfReport) {
-        this.id = id;
-        this.ownerId = ownerId;
-        this.petId = petId;
-        this.photo = photo;
-        this.pathToFile = pathToFile;
-        this.feedingReport = feedingReport;
-        this.generalReport = generalReport;
-        this.behaviorReport = behaviorReport;
-        this.dateOfReport = dateOfReport;
-    }
+    @ManyToOne()
+    @JoinColumn(name = "apm")
+    private AdoptionProcessMonitor apm;
 
     public Report() {
         this.dateOfReport = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -55,20 +50,28 @@ public class Report {
         this.id = id;
     }
 
-    public long getOwnerId() {
-        return ownerId;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
-    public long getPetId() {
-        return petId;
+    public Cat getCat() {
+        return cat;
     }
 
-    public void setPetId(long petId) {
-        this.petId = petId;
+    public void setCat(Cat cat) {
+        this.cat = cat;
+    }
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public void setDog(Dog dog) {
+        this.dog = dog;
     }
 
     public Long getFileSize() {
@@ -131,14 +134,22 @@ public class Report {
         return dateOfReport;
     }
 
+    public AdoptionProcessMonitor getApm() {
+        return apm;
+    }
+
+    public void setApm(AdoptionProcessMonitor apm) {
+        this.apm = apm;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Report report = (Report) o;
-        return ownerId == report.ownerId && petId == report.petId
-                && Arrays.equals(photo, report.photo)
-                && Objects.equals(pathToFile, report.pathToFile)
+        return Objects.equals(owner, report.owner)
+                && Objects.equals(fileSize, report.fileSize) && Objects.equals(mediaType, report.mediaType)
+                && Arrays.equals(photo, report.photo) && Objects.equals(pathToFile, report.pathToFile)
                 && Objects.equals(feedingReport, report.feedingReport)
                 && Objects.equals(generalReport, report.generalReport)
                 && Objects.equals(behaviorReport, report.behaviorReport)
@@ -147,9 +158,10 @@ public class Report {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, petId,
-                feedingReport, generalReport,
+        int result = Objects.hash(owner, fileSize, mediaType, pathToFile, feedingReport, generalReport,
                 behaviorReport, dateOfReport);
+        result = 31 * result + Arrays.hashCode(photo);
+        return result;
     }
 }
 

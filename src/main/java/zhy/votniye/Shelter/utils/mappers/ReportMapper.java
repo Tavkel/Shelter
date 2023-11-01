@@ -1,9 +1,11 @@
 package zhy.votniye.Shelter.utils.mappers;
 
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
+import zhy.votniye.Shelter.models.domain.Owner;
+import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.models.domain.Report;
 
-public class ReportMapper {
+public class ReportMapper<T extends Pet> {
     public static Report toReport(ReportDTO reportDTO) {
         if (reportDTO == null) {
             throw new NullPointerException("Tried to map null to Report");
@@ -13,8 +15,6 @@ public class ReportMapper {
 
 
         report.setId(reportDTO.getReportId());
-        report.setOwnerId(reportDTO.getOwnerId());
-        report.setPetId(reportDTO.getPetId());
         report.setFeedingReport(reportDTO.getFeedingReport());
         report.setGeneralReport(reportDTO.getGeneralReport());
         report.setBehaviorReport(reportDTO.getBehaviorReport());
@@ -30,8 +30,7 @@ public class ReportMapper {
         ReportDTO reportDTO = new ReportDTO();
 
         reportDTO.setReportId(report.getId());
-        reportDTO.setOwnerId(report.getOwnerId());
-        reportDTO.setPetId(report.getPetId());
+        reportDTO.setOwnerId(report.getOwner().getId());
         reportDTO.setMediaType(report.getMediaType());
         reportDTO.setReportPhoto(reportDTO.getReportPhoto());
         reportDTO.setFeedingReport(report.getFeedingReport());
