@@ -190,8 +190,5 @@ public class ReportServiceImpl implements ReportService {
         }
         ownerService.update(owner);
         monitorRepository.save(monitor);
-        pets.forEach(p -> {
-            petService.update(p);
-        });
     }
 }
