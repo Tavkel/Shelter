@@ -20,4 +20,9 @@ public interface ReportService {
     AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor);
 
     List<AdoptionProcessMonitor> getActiveMonitors();
+
+
+    AdoptionProcessMonitor extendMonitoringPeriod(int period, long ownerId);
+
+    void endTrialPeriod(long ownerId, boolean success);
 }

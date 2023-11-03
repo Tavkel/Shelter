@@ -73,4 +73,20 @@ public class ReportController implements IReportController {
 
         return reportService.readAllReportsByOwnerId(ownerId).stream().map(ReportMapper::fromReport).toList();
     }
+
+    @PutMapping("/monitor/{ownerId}")
+    @Override
+    public AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId) {
+        if (period > 1) {
+            return reportService.extendMonitoringPeriod(period, ownerId);
+        }else {
+            throw new IllegalArgumentException("Period must be 1 or less.");
+        }
+    }
+    @PutMapping("/monitor/{ownerId}/finalize")
+    @Override
+    public String endTrialPeriod(@PathVariable long ownerId, @RequestParam boolean success) {
+        reportService.endTrialPeriod(ownerId, success);
+        return "ok";
+    }
 }

@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.exceptions.MultiplePetsOnProbationNotAllowed;
 import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
+import zhy.votniye.Shelter.models.domain.Dog;
 import zhy.votniye.Shelter.models.domain.Report;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.AdoptionProcessMonitorRepository;
 import zhy.votniye.Shelter.repository.ReportRepository;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.PetService;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 
 import java.time.LocalDate;
@@ -23,13 +25,16 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
     private final AdoptionProcessMonitorRepository monitorRepository;
     private final OwnerService ownerService;
+    private final PetService petService;
 
     public ReportServiceImpl(ReportRepository reportRepository,
                              AdoptionProcessMonitorRepository monitorRepository,
-                             OwnerService ownerService) {
+                             OwnerService ownerService, PetService<Dog> petService) {
         this.reportRepository = reportRepository;
         this.monitorRepository = monitorRepository;
         this.ownerService = ownerService;
+        this.petService = petService;
+
     }
 
     /**
@@ -154,5 +159,39 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<AdoptionProcessMonitor> getActiveMonitors() {
         return monitorRepository.findAllActive();
+    }
+
+    @Override
+    public AdoptionProcessMonitor extendMonitoringPeriod(int period, long ownerId) {
+        var owner = ownerService.read(ownerId);
+        var monitor = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("This owner has not taken a pet yet"));
+        monitor.setEndDate(monitor.getEndDate().plusDays(period));
+        return monitorRepository.save(monitor);
+    }
+
+    @Override
+    public void endTrialPeriod(long ownerId, boolean success) {
+        var owner = ownerService.read(ownerId);
+        var monitor = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("This owner has not taken a pet yet"));
+        var pets = owner.getPets().stream();
+        monitor.setActive(false);
+        owner.setStatus(Status.OwnerStatus.REGISTERED);
+        if (success) {
+            pets.filter(p -> p.getStatus() == Status.PetStatus.ON_PROBATION)
+                    .forEach(p -> p.setStatus(Status.PetStatus.IN_FAMILY));
+        } else {
+            pets.filter(p -> p.getStatus() == Status.PetStatus.ON_PROBATION)
+                    .forEach(p -> {
+                        p.setStatus(Status.PetStatus.AVAILABLE);
+                        p.setOwner(null);
+                    });
+        }
+        ownerService.update(owner);
+        monitorRepository.save(monitor);
+        pets.forEach(p -> {
+            petService.update(p);
+        });
     }
 }
