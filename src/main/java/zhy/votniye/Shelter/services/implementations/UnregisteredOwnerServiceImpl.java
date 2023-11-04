@@ -3,7 +3,6 @@ package zhy.votniye.Shelter.services.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
@@ -31,6 +30,7 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
      * @param unregisteredOwner
      */
     @Override
+    @CacheEvict(value = "qwe", allEntries = true)
     public void create(UnregisteredOwner unregisteredOwner) {
 
         logger.debug("The create method was called with the data " + unregisteredOwner);
@@ -45,6 +45,7 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
      * @return unreg owner
      */
     @Override
+    @Cacheable("qwe")
     public Optional<UnregisteredOwner> read(long chatId) {
 
         logger.debug("The read method was called with the data " + chatId);

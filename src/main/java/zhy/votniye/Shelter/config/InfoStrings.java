@@ -303,6 +303,11 @@ public class InfoStrings {
                     "I can call one of the leather bags.";
         }
 
+        public static String getSendReportInfoMessage() {
+            return "To submit report send a photo of the pet, and add caption following this pattern: \n" +
+                    "/submitReport [general report] * [feeding report] * [behaviour report]";
+        }
+
         public static String getCallVolunteerMessage() {
             return "Called volunteer. Please await response, someone will reach out to you soon!";
         }

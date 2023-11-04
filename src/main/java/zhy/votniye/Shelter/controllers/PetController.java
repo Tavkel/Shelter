@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class PetController<T extends PetDTO> {
+public abstract class PetController<T extends PetDTO> implements IPetController<T> {
 
     private final PetService petService;
     private final PetMapper petMapper;
@@ -25,7 +25,7 @@ public abstract class PetController<T extends PetDTO> {
     }
 
     @PostMapping
-    //@Override
+    @Override
     public T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody T petDTO) {
         var pet = petMapper.toPet(petDTO);
 
@@ -33,27 +33,27 @@ public abstract class PetController<T extends PetDTO> {
     }
 
     @GetMapping("/{petId}")
-    //@Override
+    @Override
     public T read(@PathVariable long petId) {
         return (T) petMapper.fromPet(petService.read(petId));
     }
 
     @PutMapping
-    //@Override
-    public T update(@RequestBody T petDTO) {
+    @Override
+    public T update(@RequestBody PetDTO petDTO) {
         var pet = petMapper.toPet(petDTO);
 
         return (T) petMapper.fromPet(petService.update(pet));
     }
 
     @DeleteMapping("/{petId}")
-    //@Override
+    @Override
     public T delete(@PathVariable long petId) {
         return (T) petMapper.fromPet(petService.delete(petId));
     }
 
     @GetMapping
-    //@Override
+    @Override
     public Collection<PetDTO> readAll() {
         List<Pet> tmp = petService.readAll();
         return tmp.stream().map(p -> petMapper.fromPet(p)).toList();
@@ -61,7 +61,7 @@ public abstract class PetController<T extends PetDTO> {
 
     //todo implement!
     @GetMapping(value = "/all")
-    //@Override
+    @Override
     public Collection<PetDTO> getPetPage(@RequestParam int pageNum) {
         if (pageNum < 1) {
             pageNum = 1;
@@ -71,7 +71,7 @@ public abstract class PetController<T extends PetDTO> {
     }
 
     @PostMapping(value = "/{petId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    //@Override
+    @Override
     public String uploadPetPhoto(@PathVariable long petId, @RequestParam MultipartFile file)
             throws IOException {
         petService.savePetPhoto(petId, file);

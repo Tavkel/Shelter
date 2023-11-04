@@ -12,9 +12,10 @@ public class ReportMapper<T extends Pet> {
         }
 
         Report report = new Report();
-
+        Owner owner = new Owner(reportDTO.getOwnerId());
 
         report.setId(reportDTO.getReportId());
+        report.setOwner(owner);
         report.setFeedingReport(reportDTO.getFeedingReport());
         report.setGeneralReport(reportDTO.getGeneralReport());
         report.setBehaviorReport(reportDTO.getBehaviorReport());

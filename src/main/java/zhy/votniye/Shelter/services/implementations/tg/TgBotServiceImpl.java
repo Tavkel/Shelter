@@ -41,7 +41,6 @@ public class TgBotServiceImpl implements TgBotService {
     private final TelegramBot telegramBot;
     private final ArrayList<TgSession> sessions = new ArrayList<>();
 
-
     public TgBotServiceImpl(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
     }
@@ -178,6 +177,8 @@ public class TgBotServiceImpl implements TgBotService {
         Optional<Owner> oOwner = ownerService.getByChatId(chatId);
         if (oOwner.isEmpty()) {
             result.add(TgButton.LEAVE_CONTACT_BUTTON);
+        } else if (oOwner.get().getReportMonitors().stream().anyMatch(m -> m.isActive()))  {
+            result.add(TgButton.SUBMIT_REPORT_BUTTON);
         }
         return result;
     }
