@@ -19,8 +19,6 @@ public class OwnerDTO {
     private Status.OwnerStatus status;
     private Status.OwnerPreference preference;
 
-    private Status.OwnerPreference preference;
-
     public OwnerDTO(Long ownerId, String firstName, String lastName, String middleName) {
         this.ownerId = ownerId;
         this.firstName = firstName;
