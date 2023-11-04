@@ -25,7 +25,11 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
         this.unregisteredOwnerRepository = unregisteredOwnerRepository;
     }
 
-
+    /**
+     * The method create unreg owner and save him to data base.
+     *
+     * @param unregisteredOwner
+     */
     @Override
     public void create(UnregisteredOwner unregisteredOwner) {
 
@@ -34,6 +38,12 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
         unregisteredOwnerRepository.save(unregisteredOwner);
     }
 
+    /**
+     * The method find unreg owner by chatId.
+     *
+     * @param chatId
+     * @return unreg owner
+     */
     @Override
     public Optional<UnregisteredOwner> read(long chatId) {
 
@@ -42,6 +52,11 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
         return unregisteredOwnerRepository.findById(chatId);
     }
 
+    /**
+     * The method update unreg owner and save to data base.
+     *
+     * @param unregisteredOwner
+     */
     @Override
     public void update(UnregisteredOwner unregisteredOwner) {
 
@@ -53,6 +68,11 @@ public class UnregisteredOwnerServiceImpl implements UnregisteredOwnerService {
         unregisteredOwnerRepository.save(unregisteredOwner);
     }
 
+    /**
+     * The method find unreg owner by chatId and delete him.
+     *
+     * @param chatId
+     */
     @Override
     public void delete(long chatId) {
 

@@ -20,4 +20,6 @@ public interface ReportService {
     AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor);
 
     List<AdoptionProcessMonitor> getActiveMonitors();
+
+    void endDateTomorrow();
 }

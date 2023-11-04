@@ -112,6 +112,12 @@ public class OwnerServiceImpl implements OwnerService {
         return ownerRepository.findAll();
     }
 
+    /**
+     * The method find tg chatId in ownerRepository.
+     *
+     * @param chatId
+     * @return tg chatId
+     */
     @Override
     public Optional<Owner> getByChatId(long chatId) {
         logger.debug("The getByChatId method is called");
