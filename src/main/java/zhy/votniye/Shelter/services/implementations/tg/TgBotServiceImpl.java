@@ -99,6 +99,13 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(sendMessage);
     }
 
+    @Override
+    public boolean sendWarning(long ownerId, String text) {
+        var owner=ownerService.read(ownerId);
+        SendMessage sendMessage = new SendMessage(owner.getTelegramChatId(), text);
+        return telegramBot.execute(sendMessage).isOk();
+    }
+
     //endregion
 
     /**

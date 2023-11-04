@@ -35,4 +35,6 @@ public interface TgBotService {
     void leaveContactStep(long chatId, int step);
 
     void dataIngestSessionFailure(long chatId, int step);
+
+    boolean sendWarning(long ownerId, String text);
 }
