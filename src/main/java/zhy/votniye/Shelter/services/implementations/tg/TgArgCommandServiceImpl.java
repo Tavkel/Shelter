@@ -92,7 +92,7 @@ public class TgArgCommandServiceImpl implements TgArgCommandService {
             report.setFeedingReport(matcher.group(5));
             report.setBehaviorReport(matcher.group(7));
 
-            GetFile getFile = new GetFile(message.photo()[3].fileId());
+            GetFile getFile = new GetFile(message.photo()[message.photo().length - 1].fileId());
             var response = telegramBot.execute(getFile);
             var url = telegramBot.getFullFilePath(response.file());
             Path filePath = Path.of("./reports/" + owner.getId() + "/" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).toString().replace(':','_') + ".jpg");

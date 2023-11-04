@@ -33,7 +33,7 @@ public interface IPetController<T extends PetDTO> {
             )
     })
     @PostMapping
-    T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody PetDTO petDTO);
+    T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody T petDTO);
 
     @Operation(summary = "found pet", tags = "Pets")
     @ApiResponses(value = {

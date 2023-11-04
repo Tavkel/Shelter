@@ -8,5 +8,6 @@ public class CatDTO extends PetDTO {
     }
 
     public CatDTO() {
+        super();
     }
 }
