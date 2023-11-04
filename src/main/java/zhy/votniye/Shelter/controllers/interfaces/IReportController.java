@@ -119,4 +119,10 @@ public interface IReportController {
     //not implemented!
     @GetMapping("/owner")
     Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId);
+
+    @PutMapping("/monitor/{ownerId}")
+    AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId);
+
+    @PutMapping("/monitor/{ownerId}/finalize")
+    String endTrialPeriod(@PathVariable long ownerId, @RequestParam boolean success);
 }

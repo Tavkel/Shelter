@@ -10,11 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
+import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.ReportService;
 import zhy.votniye.Shelter.services.interfaces.UnregisteredOwnerService;
 import zhy.votniye.Shelter.sessions.tg.TgSession;
 import zhy.votniye.Shelter.sessions.tg.TgSessionTypes;
@@ -22,7 +23,9 @@ import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.utils.tgUtility.TgButton;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.*;
 
 
@@ -30,6 +33,8 @@ import java.util.*;
 public class TgBotServiceImpl implements TgBotService {
     @Autowired
     private OwnerService ownerService;
+    @Autowired
+    private ReportService reportService;
     @Autowired
     private UnregisteredOwnerService unregisteredOwnerService;
     private final Logger logger = LoggerFactory.getLogger(TgBotServiceImpl.class);
@@ -93,6 +98,13 @@ public class TgBotServiceImpl implements TgBotService {
         telegramBot.execute(sendMessage);
     }
 
+    @Override
+    public boolean sendWarning(long ownerId, String text) {
+        var owner=ownerService.read(ownerId);
+        SendMessage sendMessage = new SendMessage(owner.getTelegramChatId(), text);
+        return telegramBot.execute(sendMessage).isOk();
+    }
+
     //endregion
 
     /**
@@ -118,6 +130,46 @@ public class TgBotServiceImpl implements TgBotService {
         var sendMessage = new SendMessage(chatId, "Encountered error while processing your message:\n" + eMessage);
         telegramBot.execute(sendMessage);
     }
+
+    @Override
+    @Scheduled( cron = "0 20 * * * *")
+    public void sendReportNotification(){
+        var activeMonitors = reportService.getActiveMonitors();
+        var today = LocalDate.now();
+
+        for(var monitor : activeMonitors){
+            var lastReport = monitor.getLatestReport();
+
+
+
+            if(!lastReport.toLocalDate().equals(today)){
+                var chatId = monitor.getChatId();
+                var sendMessage = new SendMessage(chatId, "REPORT MNE ZAPILI!!!");
+                telegramBot.execute(sendMessage);
+            }
+
+        }
+    }
+
+    @Override
+    @Scheduled( cron = "0 21 * * * *")
+    public void sendReportScheduleWarning(){
+        var activeMonitors = reportService.getActiveMonitors();
+        var today = LocalDate.now();
+
+        for(var monitor : activeMonitors){
+            var latestReport = monitor.getLatestReport();
+
+            if(Period.between(latestReport.toLocalDate(), today).getDays()>2) {
+                        var chatId = monitor.getChatId();
+                        var sendMessage = new SendMessage(chatId, "you violated the reporting schedule," +
+                                " avolunteer will contact you soon");
+                        telegramBot.execute(sendMessage);
+            }
+        }
+
+    }
+
 
     @Override
     public EnumSet<TgButton> getAppropriateButtons(long chatId) {

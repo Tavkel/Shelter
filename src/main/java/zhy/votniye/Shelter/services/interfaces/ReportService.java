@@ -15,9 +15,16 @@ public interface ReportService {
     Report delete(Long id);
 
     List<Report> readAllReportsByOwnerId(long ownerId);
+
     AdoptionProcessMonitor createMonitor(long ownerId);
 
     AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor);
 
     List<AdoptionProcessMonitor> getActiveMonitors();
+
+    AdoptionProcessMonitor extendMonitoringPeriod(int period, long ownerId);
+
+    void endTrialPeriod(long ownerId, boolean success);
+
+    void endDateTomorrow();
 }

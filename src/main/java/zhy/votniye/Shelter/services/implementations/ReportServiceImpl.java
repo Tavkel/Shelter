@@ -2,17 +2,23 @@ package zhy.votniye.Shelter.services.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.exceptions.MultiplePetsOnProbationNotAllowed;
 import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
+import zhy.votniye.Shelter.models.domain.Dog;
 import zhy.votniye.Shelter.models.domain.Report;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.repository.AdoptionProcessMonitorRepository;
 import zhy.votniye.Shelter.repository.ReportRepository;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.PetService;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -23,13 +29,17 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
     private final AdoptionProcessMonitorRepository monitorRepository;
     private final OwnerService ownerService;
+    private final PetService petService;
+
 
     public ReportServiceImpl(ReportRepository reportRepository,
                              AdoptionProcessMonitorRepository monitorRepository,
-                             OwnerService ownerService) {
+                             OwnerService ownerService, PetService<Dog> petService) {
         this.reportRepository = reportRepository;
         this.monitorRepository = monitorRepository;
         this.ownerService = ownerService;
+        this.petService = petService;
+
     }
 
     /**
@@ -126,6 +136,13 @@ public class ReportServiceImpl implements ReportService {
         return monitor.getReports();
     }
 
+    /**
+     * The method search ownerId to check owner status,
+     * then create new monitor, save in to base, set status and update owner.
+     *
+     * @param ownerId
+     * @return monitor
+     */
     @Override
     public AdoptionProcessMonitor createMonitor(long ownerId) {
         var owner = ownerService.read(ownerId);
@@ -143,6 +160,12 @@ public class ReportServiceImpl implements ReportService {
         return monitor;
     }
 
+    /**
+     * The method find monitor by id, update him and save in to base.
+     *
+     * @param monitor
+     * @return update monitor
+     */
     @Override
     public AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor) {
         if (monitorRepository.findById(monitor.getId()).isPresent()) {
@@ -152,8 +175,63 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    /**
+     * The method get all active monitors in repository.
+     *
+     * @return all active Monitors
+     */
     @Override
     public List<AdoptionProcessMonitor> getActiveMonitors() {
         return monitorRepository.findAllActive();
+    }
+
+    @Override
+    public AdoptionProcessMonitor extendMonitoringPeriod(int period, long ownerId) {
+        var owner = ownerService.read(ownerId);
+        var monitor = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("This owner has not taken a pet yet"));
+        monitor.setEndDate(monitor.getEndDate().plusDays(period));
+        return monitorRepository.save(monitor);
+    }
+
+    @Override
+    public void endTrialPeriod(long ownerId, boolean success) {
+        var owner = ownerService.read(ownerId);
+        var monitor = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("This owner has not taken a pet yet"));
+        var pets = owner.getPets().stream();
+        monitor.setActive(false);
+        owner.setStatus(Status.OwnerStatus.REGISTERED);
+        if (success) {
+            pets.filter(p -> p.getStatus() == Status.PetStatus.ON_PROBATION)
+                    .forEach(p -> p.setStatus(Status.PetStatus.IN_FAMILY));
+        } else {
+            pets.filter(p -> p.getStatus() == Status.PetStatus.ON_PROBATION)
+                    .forEach(p -> {
+                        p.setStatus(Status.PetStatus.AVAILABLE);
+                        p.setOwner(null);
+                    });
+        }
+        ownerService.update(owner);
+        monitorRepository.save(monitor);
+    }
+
+    /**
+     * This method get all active monitors and catch they end date,
+     * if end date equals tomorrow date, send to volunteer then probation period is over soon.
+     */
+    @Override
+    @Scheduled(cron = "0 21 * * * *")
+    public void endDateTomorrow(){
+        var activeMonitors = monitorRepository.findAllActive();
+        var today = LocalDate.now();
+
+        for(var monitor : activeMonitors){
+            var endDate = monitor.getEndDate();
+
+            if(today.plusDays(1L).equals(endDate)){
+                //ДЛЯ НИНЫ(ТУТ ТИПО УВЕДОМЛЕНИЕ ВОЛОНТЕРА О СКОРОМ ЗАВЕРШЕНИИ ПРОБНОГО ПЕРИОДА)
+            }
+        }
     }
 }

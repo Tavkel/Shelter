@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import zhy.votniye.Shelter.models.enums.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -174,6 +175,11 @@ public class Owner {
         this.preference = preference;
     }
 
+    public List<Pet> getPets() {
+        ArrayList<Pet> pets = new ArrayList<>(this.dogs);
+        pets.addAll(cats);
+        return pets;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
