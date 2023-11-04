@@ -25,4 +25,9 @@ public class Cat extends Pet {
     public Cat(long id) {
         super(id);
     }
+
+    @Override
+    public String toString() {
+        return "Cat{}";
+    }
 }
