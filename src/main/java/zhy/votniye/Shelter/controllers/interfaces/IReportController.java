@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import zhy.votniye.Shelter.models.DTO.AdoptionProcessMonitorDto;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
-import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 
 import java.util.Collection;
 import java.util.List;
@@ -91,15 +91,33 @@ public interface IReportController {
     @DeleteMapping("/{reportId}")
     ReportDTO delete(@PathVariable long reportId);
 
+    @Operation(summary = "create monitor for owner", tags = "APM")
+    @ApiResponse(responseCode = "200",
+            description = "created monitor",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = AdoptionProcessMonitorDto.class)))
     @PostMapping("/monitor/{ownerId}")
-    String createAdoptionProcessMonitor(@PathVariable long ownerId);
+    AdoptionProcessMonitorDto createAdoptionProcessMonitorDto(@PathVariable long ownerId);
 
+    @Operation(summary = "edit monitor for owner", tags = "APM")
+    @ApiResponse(responseCode = "200",
+            description = "created monitor",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = AdoptionProcessMonitorDto.class)))
     @PutMapping("/monitor")
-    AdoptionProcessMonitor updateAdoptionProcessMonitor(@RequestBody AdoptionProcessMonitor monitor);
+    AdoptionProcessMonitorDto updateAdoptionProcessMonitorDto(@RequestBody AdoptionProcessMonitorDto monitor);
 
-    @GetMapping("/monitor/active")
-    List<AdoptionProcessMonitor> getActiveMonitors();
-  
+    @Operation(summary = "get all active monitors", tags = "APM")
+    @ApiResponse(
+            responseCode = "200",
+            description = "All active monitors",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    array = @ArraySchema(schema = @Schema(implementation = AdoptionProcessMonitorDto.class))))
+    List<AdoptionProcessMonitorDto> getActiveMonitors();
+
     @Operation(summary = "read all reports by owner", tags = "Reports")
     @ApiResponses(value = {
             @ApiResponse(
@@ -116,13 +134,24 @@ public interface IReportController {
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)
             )
     })
-    //not implemented!
     @GetMapping("/owner")
     Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId);
-  
-    @PutMapping("/monitor/{ownerId}")
-    AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId);
 
+    @Operation(summary = "Prolong monitoring period", tags = "APM")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
+    @PutMapping("/monitor/{ownerId}")
+    AdoptionProcessMonitorDto extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId);
+
+    @Operation(summary = "Finalize owners monitor", tags = "APM")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
     @PutMapping("/monitor/{ownerId}/finalize")
     String endTrialPeriod(@PathVariable long ownerId, @RequestParam boolean success);
+
+    @Operation(summary = "Send warning to user", tags = "APM")
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
+    @GetMapping("/monitor/{ownerId}/warn")
+    String warnOwner(@PathVariable long ownerId, @RequestParam String text);
 }

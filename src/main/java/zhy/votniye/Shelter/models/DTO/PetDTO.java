@@ -15,6 +15,7 @@ public abstract class PetDTO {
     private Boolean isMale;
     private String breed;
     private Float weight;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private int age;
     private LocalDateTime dateOfBirth;
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
@@ -23,6 +24,7 @@ public abstract class PetDTO {
     private byte[] photo;
     private String description;
     private String specialNeeds;
+    private Long ownerId;
     private Status.PetStatus status;
 
     public PetDTO(Long petId, String name, Boolean isMale, String breed, Float weight,
@@ -177,5 +179,13 @@ public abstract class PetDTO {
                 ", specialNeeds='" + specialNeeds + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

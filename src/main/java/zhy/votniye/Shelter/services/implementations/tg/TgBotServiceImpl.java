@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 import zhy.votniye.Shelter.models.enums.Status;
@@ -132,7 +131,7 @@ public class TgBotServiceImpl implements TgBotService {
     }
 
     @Override
-    @Scheduled( cron = "0 20 * * * *")
+    @Scheduled( cron = "0 0 20 * * *")
     public void sendReportNotification(){
         var activeMonitors = reportService.getActiveMonitors();
         var today = LocalDate.now();
@@ -152,7 +151,7 @@ public class TgBotServiceImpl implements TgBotService {
     }
 
     @Override
-    @Scheduled( cron = "0 21 * * * *")
+    @Scheduled( cron = "0 0 21  * * *")
     public void sendReportScheduleWarning(){
         var activeMonitors = reportService.getActiveMonitors();
         var today = LocalDate.now();

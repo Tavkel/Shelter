@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 import zhy.votniye.Shelter.exceptions.PetAlreadyExistsException;
+import zhy.votniye.Shelter.models.domain.Owner;
+import zhy.votniye.Shelter.services.interfaces.OwnerService;
 import zhy.votniye.Shelter.utils.PhotoCompression;
 import zhy.votniye.Shelter.models.domain.Pet;
 import zhy.votniye.Shelter.repository.PetRepository;
@@ -25,13 +27,15 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
     private final Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
     protected final PetRepository petRepository;
     private final PhotoCompression photoCompression;
+    private final OwnerService ownerService;
     private final String petPhotoNotFoundMessage = "Pet does not have an photo.";
     @Value("path-to-photo-folder")
     private String petPhotoDirectory;
 
-    public PetServiceImpl(PetRepository petRepository, PhotoCompression photoCompression) {
+    public PetServiceImpl(PetRepository petRepository, PhotoCompression photoCompression, OwnerService ownerService) {
         this.petRepository = petRepository;
         this.photoCompression = photoCompression;
+        this.ownerService = ownerService;
     }
 
     /**
@@ -92,6 +96,12 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
         }
         var existingPet = check.get();
 
+        Owner owner = null;
+        if (pet.getOwner() != null) {
+            owner = ownerService.read(pet.getOwner().getId());
+        }
+
+        pet.setOwner(owner);
         pet.setMediaType(existingPet.getMediaType());
         pet.setFileSize(existingPet.getFileSize());
         pet.setPathToFile(existingPet.getPathToFile());
@@ -148,6 +158,7 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
     /**
      * Gets pet from db by id, calls for methods to write received image to drive, compress image for storing it in db,
      * setting photo related fields in pet object. Saves resulting pet to db
+     *
      * @param id
      * @param file
      * @throws IOException
@@ -159,7 +170,7 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
         logger.info(String.format("Attempting to create a record for photo for pet %d", id));
         Optional<T> pet;
         pet = petRepository.findById(id);//.orElseThrow(() -> new NoSuchElementException("pet not found"));
-        if(pet.isEmpty()) throw new NoSuchElementException("pet not found");
+        if (pet.isEmpty()) throw new NoSuchElementException("pet not found");
 
         logger.debug("Attempting to write original image to file");
         var pathToFile = writePetPhotoToFile(id, file);
@@ -171,6 +182,7 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
 
     /**
      * Sets all photo related fields of pet object
+     *
      * @param file
      * @param pet
      * @param filePath
@@ -187,15 +199,16 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
 
     /**
      * Writes photo to drive and returns path to it
+     *
      * @param id
      * @param file
      * @return path to the written file
      * @throws IOException
      */
     private Path writePetPhotoToFile(long id, MultipartFile file) throws IOException {
-        Path filePath = Path.of(petPhotoDirectory == null?
-                "./photo":
-                petPhotoDirectory + "/" + this.getClass().getSimpleName().substring(0,3),
+        Path filePath = Path.of(petPhotoDirectory == null ?
+                        "./photo" :
+                        petPhotoDirectory + "/" + this.getClass().getSimpleName().substring(0, 3),
                 id + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -212,7 +225,6 @@ public abstract class PetServiceImpl<T extends Pet> implements PetService {
     }
 
     /**
-     *
      * @param fileName
      * @return file's extension
      */

@@ -169,6 +169,8 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public AdoptionProcessMonitor updateMonitor(AdoptionProcessMonitor monitor) {
         if (monitorRepository.findById(monitor.getId()).isPresent()) {
+            var owner = ownerService.read(monitor.getOwner().getId());
+            monitor.setOwner(owner);
             return monitorRepository.save(monitor);
         } else {
             throw new NoSuchElementException("Monitor not found");
