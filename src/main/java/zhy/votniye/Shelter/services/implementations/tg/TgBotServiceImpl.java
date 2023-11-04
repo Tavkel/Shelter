@@ -170,7 +170,6 @@ public class TgBotServiceImpl implements TgBotService {
 
     }
 
-
     @Override
     public EnumSet<TgButton> getAppropriateButtons(long chatId) {
         EnumSet<TgButton> result = EnumSet.of(TgButton.ABOUT_SHELTER_BUTTON, TgButton.CALL_VOLUNTEER_BUTTON);
@@ -179,6 +178,7 @@ public class TgBotServiceImpl implements TgBotService {
             result.add(TgButton.LEAVE_CONTACT_BUTTON);
         } else if (oOwner.get().getReportMonitors().stream().anyMatch(m -> m.isActive()))  {
             result.add(TgButton.SUBMIT_REPORT_BUTTON);
+
         }
         return result;
     }

@@ -31,6 +31,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<String> handleException(Exception ex) {
 
         logger.warn(ex.getMessage());
+
         for (var st : ex.getStackTrace()) {
             logger.warn(st.toString());
         }

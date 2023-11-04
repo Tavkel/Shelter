@@ -99,7 +99,7 @@ public interface IReportController {
 
     @GetMapping("/monitor/active")
     List<AdoptionProcessMonitor> getActiveMonitors();
-
+  
     @Operation(summary = "read all reports by owner", tags = "Reports")
     @ApiResponses(value = {
             @ApiResponse(
@@ -119,7 +119,7 @@ public interface IReportController {
     //not implemented!
     @GetMapping("/owner")
     Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId);
-
+  
     @PutMapping("/monitor/{ownerId}")
     AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId);
 

@@ -69,8 +69,7 @@ public class ReportController implements IReportController {
     public List<AdoptionProcessMonitor> getActiveMonitors() {
         return reportService.getActiveMonitors();
     }
-
-
+  
     @GetMapping("/owner")
     @Override
     public Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId) {

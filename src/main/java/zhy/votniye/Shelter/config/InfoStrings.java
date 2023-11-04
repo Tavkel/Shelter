@@ -127,10 +127,9 @@ public class InfoStrings {
         }
 
         public static String getAboutAccommodatingPuppyMessage() {
-            return """
-                    To keep a puppy at home, you just need to feed the puppy with puppy food and go out for a walk.
-                    Buy a couch or your bed will do.
-                    You can buy toys if you don't want the dog to start playing with your shoes.""";
+            return "To keep a puppy at home, you just need to feed the puppy with puppy food and go out for a walk.\n" +
+                    "Buy a couch or your bed will do.\n" +
+                    "You can buy toys if you don't want the dog to start playing with your shoes.";
         }
 
         public static String getAboutAccommodatingDisabledDogMessage() {

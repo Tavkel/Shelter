@@ -167,7 +167,6 @@ public class Owner {
     public void setReportMonitors(List<AdoptionProcessMonitor> reportMonitors) {
         this.reportMonitors = reportMonitors;
     }
-
     public Status.OwnerPreference getPreference(){
         return preference;
     }

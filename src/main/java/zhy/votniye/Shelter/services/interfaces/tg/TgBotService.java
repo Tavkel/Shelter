@@ -20,7 +20,6 @@ public interface TgBotService {
 
     @Scheduled( cron = "0 21 * * * ")
     void sendReportScheduleWarning();
-
     EnumSet<TgButton> getAppropriateButtons(long chatId);
 
     //todo implement!

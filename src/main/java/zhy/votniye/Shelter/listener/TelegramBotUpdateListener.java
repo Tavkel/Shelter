@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import zhy.votniye.Shelter.services.interfaces.tg.TgArgCommandService;
+
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCallbackService;
 import zhy.votniye.Shelter.services.interfaces.tg.TgCommandService;
@@ -111,6 +112,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             var command = matcher.group(1);
             if (doubleArgCommands.containsKey(command)) {
                 var method = doubleArgCommands.get(command);
+
                 method.invoke(argCommandService, message);
                 return;
             }
