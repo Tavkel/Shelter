@@ -4,50 +4,59 @@ import org.springframework.stereotype.Component;
 import zhy.votniye.Shelter.models.DTO.CatDTO;
 import zhy.votniye.Shelter.models.DTO.PetDTO;
 import zhy.votniye.Shelter.models.domain.Cat;
+import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.models.domain.Pet;
 
 @Component
 public class CatMapper implements PetMapper<Cat, CatDTO> {
 
-    public Cat toPet(CatDTO petDTO) {
-        if (petDTO == null) {
+    public Cat toPet(CatDTO catDTO) {
+        if (catDTO == null) {
             throw new NullPointerException("Tried to map null to Pet");
         }
 
         Cat cat = new Cat();
 
-        cat.setId(petDTO.getPetId());
-        cat.setName(petDTO.getName());
-        cat.setBreed(petDTO.getBreed());
-        cat.setSex(petDTO.getSex());
-        cat.setWeight(petDTO.getWeight());
-        cat.setDateOfBirth(petDTO.getDateOfBirth());
-        cat.setDescription(petDTO.getDescription());
-        cat.setSpecialNeeds(petDTO.getSpecialNeeds());
-        cat.setStatus(petDTO.getStatus());
+        cat.setId(catDTO.getPetId());
+        cat.setName(catDTO.getName());
+        cat.setBreed(catDTO.getBreed());
+        cat.setSex(catDTO.getSex());
+        cat.setWeight(catDTO.getWeight());
+        cat.setDateOfBirth(catDTO.getDateOfBirth());
+        cat.setDescription(catDTO.getDescription());
+        cat.setSpecialNeeds(catDTO.getSpecialNeeds());
+        if (catDTO.getOwnerId() > 0) {
+            cat.setOwner(new Owner(catDTO.getOwnerId()));
+        } else {
+            cat.setOwner(null);
+        }
+        cat.setStatus(catDTO.getStatus());
 
         return cat;
     }
 
-    public CatDTO fromPet(Cat pet) {
-        if (pet == null) {
+    public CatDTO fromPet(Cat cat) {
+        if (cat == null) {
             throw new NullPointerException("Tried to map null to PetDTO");
         }
 
         CatDTO catDTO = new CatDTO();
 
-        catDTO.setPetId(pet.getId());
-        catDTO.setName(pet.getName());
-        catDTO.setBreed(pet.getBreed());
-        catDTO.setSex(pet.getSex());
-        catDTO.setWeight(pet.getWeight());
-        catDTO.setAge(pet.getAge());
-        catDTO.setDateOfBirth(pet.getDateOfBirth());
-        catDTO.setPhoto(pet.getPhoto());
-        catDTO.setMediaType(pet.getMediaType());
-        catDTO.setDescription(pet.getDescription());
-        catDTO.setSpecialNeeds(pet.getSpecialNeeds());
-        catDTO.setStatus(pet.getStatus());
+        catDTO.setPetId(cat.getId());
+        catDTO.setName(cat.getName());
+        catDTO.setBreed(cat.getBreed());
+        catDTO.setSex(cat.getSex());
+        catDTO.setWeight(cat.getWeight());
+        catDTO.setAge(cat.getAge());
+        catDTO.setDateOfBirth(cat.getDateOfBirth());
+        catDTO.setPhoto(cat.getPhoto());
+        catDTO.setMediaType(cat.getMediaType());
+        catDTO.setDescription(cat.getDescription());
+        catDTO.setSpecialNeeds(cat.getSpecialNeeds());
+        if(cat.getOwner() != null){
+            catDTO.setOwnerId(cat.getOwner().getId());
+        }
+        catDTO.setStatus(cat.getStatus());
 
         return catDTO;
     }

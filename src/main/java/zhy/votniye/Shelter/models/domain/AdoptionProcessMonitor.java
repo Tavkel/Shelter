@@ -1,5 +1,7 @@
 package zhy.votniye.Shelter.models.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -7,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class   AdoptionProcessMonitor {
+public class AdoptionProcessMonitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +20,7 @@ public class   AdoptionProcessMonitor {
     private LocalDate endDate;
     private LocalDateTime latestReport;
     @OneToMany(mappedBy = "apm")
+    @JsonIgnore
     private List<Report> reports;
     private boolean isActive;
 
@@ -75,5 +78,9 @@ public class   AdoptionProcessMonitor {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Owner getOwner() {
+        return owner;
     }
 }

@@ -2,13 +2,15 @@ package zhy.votniye.Shelter.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.controllers.interfaces.IReportController;
-import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
+import zhy.votniye.Shelter.models.DTO.AdoptionProcessMonitorDto;
 import zhy.votniye.Shelter.services.interfaces.tg.TgBotService;
+import zhy.votniye.Shelter.utils.mappers.APMMapper;
 import zhy.votniye.Shelter.utils.mappers.ReportMapper;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
 import zhy.votniye.Shelter.services.interfaces.ReportService;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/report")
@@ -53,21 +55,20 @@ public class ReportController implements IReportController {
 
     @PostMapping("/monitor/{ownerId}")
     @Override
-    public String createAdoptionProcessMonitor(@PathVariable long ownerId) {
-        reportService.createMonitor(ownerId);
-        return "OK";
+    public AdoptionProcessMonitorDto createAdoptionProcessMonitorDto(@PathVariable long ownerId) {
+        return APMMapper.fromApm(reportService.createMonitor(ownerId));
     }
 
     @Override
     @PutMapping("/monitor")
-    public AdoptionProcessMonitor updateAdoptionProcessMonitor(@RequestBody AdoptionProcessMonitor monitor) {
-        return reportService.updateMonitor(monitor);
+    public AdoptionProcessMonitorDto updateAdoptionProcessMonitorDto(@RequestBody AdoptionProcessMonitorDto monitor) {
+        return APMMapper.fromApm(reportService.updateMonitor(APMMapper.toApm(monitor)));
     }
 
     @Override
     @GetMapping("/monitor/active")
-    public List<AdoptionProcessMonitor> getActiveMonitors() {
-        return reportService.getActiveMonitors();
+    public List<AdoptionProcessMonitorDto> getActiveMonitors() {
+        return reportService.getActiveMonitors().stream().map(APMMapper::fromApm).collect(Collectors.toList());
     }
   
     @GetMapping("/owner")
@@ -79,9 +80,9 @@ public class ReportController implements IReportController {
 
     @PutMapping("/monitor/{ownerId}")
     @Override
-    public AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId) {
+    public AdoptionProcessMonitorDto extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId) {
         if (period > 1) {
-            return reportService.extendMonitoringPeriod(period, ownerId);
+            return APMMapper.fromApm(reportService.extendMonitoringPeriod(period, ownerId));
         } else {
             throw new IllegalArgumentException("Period must be 1 or less.");
         }
@@ -94,6 +95,7 @@ public class ReportController implements IReportController {
         return "ok";
     }
 
+    @Override
     @GetMapping("/monitor/{ownerId}/warn")
     public String warnOwner(@PathVariable long ownerId, @RequestParam String text) {
         if (tgBotService.sendWarning(ownerId, text)) {
