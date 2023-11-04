@@ -37,6 +37,10 @@ public abstract class Pet {
         status = Status.PetStatus.AVAILABLE;
     }
 
+    public Pet(long id) {
+        this.id = id;
+    }
+
     public Pet(Long id, String name, Boolean isMale,
                String breed, Float weight,
                LocalDateTime dateOfBirth,
@@ -202,12 +206,10 @@ public abstract class Pet {
                 ", dateOfBirth=" + dateOfBirth +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
-                ", photo=" + Arrays.toString(photo) +
                 ", status=" + status +
                 ", pathToFile='" + pathToFile + '\'' +
                 ", description='" + description + '\'' +
                 ", specialNeeds='" + specialNeeds + '\'' +
-                ", owner=" + owner +
                 '}';
     }
 }

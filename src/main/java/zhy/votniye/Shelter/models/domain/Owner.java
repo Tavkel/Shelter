@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import zhy.votniye.Shelter.models.enums.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class Owner {
     private String lastName;
     @Column(name = "middle_name")
     private String middleName;
+    @Column(name = "telegram_chat_id")
     private Long telegramChatId;
     private String telegramHandle;
     private Long phoneNumber;
@@ -26,12 +28,15 @@ public class Owner {
     private String comment;
     private Status.OwnerStatus status;
     private Status.OwnerPreference preference;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Cat> cats;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Dog> dogs;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<AdoptionProcessMonitor> reportMonitors;
 
     public Owner(long id, String firstName,
                  String lastName, String middleName,
@@ -41,6 +46,10 @@ public class Owner {
         this.lastName = lastName;
         this.middleName = middleName;
         this.status = status;
+    }
+
+    public Owner(long id){
+        this.id = id;
     }
 
     public Owner() {
@@ -151,6 +160,13 @@ public class Owner {
         this.dogs = dogs;
     }
 
+    public List<AdoptionProcessMonitor> getReportMonitors() {
+        return reportMonitors;
+    }
+
+    public void setReportMonitors(List<AdoptionProcessMonitor> reportMonitors) {
+        this.reportMonitors = reportMonitors;
+    }
     public Status.OwnerPreference getPreference(){
         return preference;
     }
@@ -158,6 +174,11 @@ public class Owner {
         this.preference = preference;
     }
 
+    public List<Pet> getPets() {
+        ArrayList<Pet> pets = new ArrayList<>(this.dogs);
+        pets.addAll(cats);
+        return pets;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -195,6 +216,7 @@ public class Owner {
                 ", address='" + address + '\'' +
                 ", comment='" + comment + '\'' +
                 ", status=" + status +
+                ", preference=" + preference +
                 '}';
     }
 }

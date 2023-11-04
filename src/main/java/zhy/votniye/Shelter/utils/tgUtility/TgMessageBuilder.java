@@ -32,6 +32,10 @@ public class TgMessageBuilder {
         return new SendMessage(chatId, InfoStrings.BotMessageTextProvider.getCallVolunteerMessage());
     }
 
+    public static EditMessageText getSendReportInfoTextEdit(Message message) {
+        return new EditMessageText(message.chat().id(), message.messageId(), getSendReportInfoMessage());
+    }
+
     public static EditMessageText getAboutMessageTextEdit(Message message) {
         return new EditMessageText(message.chat().id(), message.messageId(), getAboutShelterMenuMessage())
                 .replyMarkup(getAboutShelterMenuKeyboard());

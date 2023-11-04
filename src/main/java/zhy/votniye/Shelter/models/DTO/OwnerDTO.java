@@ -17,6 +17,7 @@ public class OwnerDTO {
     private String address;
     private String comment;
     private Status.OwnerStatus status;
+    private Status.OwnerPreference preference;
 
     private Status.OwnerPreference preference;
 

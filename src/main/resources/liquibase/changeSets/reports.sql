@@ -19,3 +19,13 @@ CONSTRAINT "FK_reports_owner" FOREIGN KEY (owner_id) REFERENCES owner(id),
 CONSTRAINT "FK_reports_pet" FOREIGN KEY (pet_id) REFERENCES pet(id)
 );
 
+ -- changeset tav:51
+ ALTER TABLE reports
+ DROP CONSTRAINT "FK_reports_pet",
+ DROP COLUMN pet_id,
+ ADD COLUMN cat_id BIGINT,
+ ADD COLUMN dog_id BIGINT,
+ ADD COLUMN apm BIGINT NOT NULL,
+ ADD CONSTRAINT "FK_reports_apm" FOREIGN KEY (apm) REFERENCES adoption_process_monitor(id),
+ ADD CONSTRAINT "FK_reports_cat" FOREIGN KEY (cat_id) REFERENCES cat(id),
+ ADD CONSTRAINT "FK_reports_dog" FOREIGN KEY (dog_id) REFERENCES dog(id)

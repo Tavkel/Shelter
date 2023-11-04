@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import zhy.votniye.Shelter.models.DTO.ReportDTO;
+import zhy.votniye.Shelter.models.domain.AdoptionProcessMonitor;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface IReportController {
     @Operation(summary = "create report", tags = "Reports")
@@ -29,8 +31,8 @@ public interface IReportController {
                     content = @Content(mediaType = MediaType.TEXT_EVENT_STREAM_VALUE)
             )
     })
-    @PostMapping
-    ReportDTO create(@RequestBody ReportDTO reportDTO);
+    @PostMapping("/{ownerId}")
+    ReportDTO create(@RequestBody ReportDTO reportDTO, @PathVariable long ownerId);
 
     @Operation(summary = "find report", tags = "Reports")
     @ApiResponses(value = {
@@ -89,6 +91,15 @@ public interface IReportController {
     @DeleteMapping("/{reportId}")
     ReportDTO delete(@PathVariable long reportId);
 
+    @PostMapping("/monitor/{ownerId}")
+    String createAdoptionProcessMonitor(@PathVariable long ownerId);
+
+    @PutMapping("/monitor")
+    AdoptionProcessMonitor updateAdoptionProcessMonitor(@RequestBody AdoptionProcessMonitor monitor);
+
+    @GetMapping("/monitor/active")
+    List<AdoptionProcessMonitor> getActiveMonitors();
+  
     @Operation(summary = "read all reports by owner", tags = "Reports")
     @ApiResponses(value = {
             @ApiResponse(
@@ -108,4 +119,10 @@ public interface IReportController {
     //not implemented!
     @GetMapping("/owner")
     Collection<ReportDTO> readAllReportsByOwner(@RequestParam long ownerId);
+  
+    @PutMapping("/monitor/{ownerId}")
+    AdoptionProcessMonitor extendMonitoringPeriod(@RequestParam int period, @PathVariable long ownerId);
+
+    @PutMapping("/monitor/{ownerId}/finalize")
+    String endTrialPeriod(@PathVariable long ownerId, @RequestParam boolean success);
 }

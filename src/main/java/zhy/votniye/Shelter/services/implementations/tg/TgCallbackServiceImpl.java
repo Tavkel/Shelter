@@ -7,7 +7,6 @@ import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.EditMessageReplyMarkup;
 import com.pengrad.telegrambot.request.EditMessageText;
 import org.springframework.stereotype.Service;
-import zhy.votniye.Shelter.exceptions.GetOwnerPreferenceException;
 import zhy.votniye.Shelter.models.domain.UnregisteredOwner;
 import zhy.votniye.Shelter.models.enums.Status;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
@@ -134,7 +133,8 @@ public class TgCallbackServiceImpl implements TgCallbackService {
 
     @Override
     public void submitReport(Message message) {
-//todo implement submit report?
+        EditMessageText editText = TgMessageBuilder.getSendReportInfoTextEdit(message);
+        telegramBot.execute(editText);
     }
 
     @Override

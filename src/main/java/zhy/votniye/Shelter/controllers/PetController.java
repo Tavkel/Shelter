@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class PetController<T extends PetDTO> implements IPetController {
+public abstract class PetController<T extends PetDTO> implements IPetController<T> {
+
 
     private final PetService petService;
     private final PetMapper petMapper;
@@ -26,7 +27,7 @@ public abstract class PetController<T extends PetDTO> implements IPetController 
 
     @PostMapping
     @Override
-    public T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody PetDTO petDTO) {
+    public T create(@Parameter(description = "object PetDTO", example = "test") @RequestBody T petDTO) {
         var pet = petMapper.toPet(petDTO);
 
         return (T) petMapper.fromPet(petService.create(pet));
