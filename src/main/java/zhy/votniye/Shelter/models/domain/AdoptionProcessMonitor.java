@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class AdoptionProcessMonitor {
+public class   AdoptionProcessMonitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
