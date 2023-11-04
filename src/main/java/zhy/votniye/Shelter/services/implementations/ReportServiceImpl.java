@@ -40,10 +40,11 @@ public class ReportServiceImpl implements ReportService {
      * @return a saved report
      */
     @Override
-    public Report createReport(Report report, long ownerId) {
+    public Report createReport(Report report) {
         logger.debug("The create method was called with the data " + report);
-        var owner = ownerService.read(ownerId);
-        var apm = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId()).orElseThrow(() -> new NoSuchElementException("Report monitor not found"));
+        var owner = ownerService.read(report.getOwner().getId());
+        var apm = monitorRepository.findByOwnerTelegramChatId(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("Report monitor not found"));
         apm.setLatestReport(report.getDateOfReport());
         report.setApm(apm);
         monitorRepository.save(apm);

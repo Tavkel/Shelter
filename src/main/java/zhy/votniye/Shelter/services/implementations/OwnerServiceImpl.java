@@ -7,6 +7,7 @@ import zhy.votniye.Shelter.exceptions.OwnerAlreadyExistsException;
 import zhy.votniye.Shelter.models.domain.Owner;
 import zhy.votniye.Shelter.repository.OwnerRepository;
 import zhy.votniye.Shelter.services.interfaces.OwnerService;
+import zhy.votniye.Shelter.services.interfaces.UnregisteredOwnerService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class OwnerServiceImpl implements OwnerService {
     private final Logger logger = LoggerFactory.getLogger(OwnerServiceImpl.class);
     private final OwnerRepository ownerRepository;
+    private final UnregisteredOwnerService unregisteredOwnerService;
 
-    public OwnerServiceImpl(OwnerRepository ownerRepository) {
+    public OwnerServiceImpl(OwnerRepository ownerRepository, UnregisteredOwnerService unregisteredOwnerService) {
         this.ownerRepository = ownerRepository;
+        this.unregisteredOwnerService = unregisteredOwnerService;
     }
 
     /**
@@ -40,7 +43,9 @@ public class OwnerServiceImpl implements OwnerService {
                 .isPresent()) {
             throw new OwnerAlreadyExistsException("The database already has this owner");
         }
-
+        var preference = unregisteredOwnerService.read(owner.getTelegramChatId())
+                .orElseThrow(() -> new NoSuchElementException("how did you get here?")).getPreference();
+        owner.setPreference(preference);
         return ownerRepository.save(owner);
     }
 

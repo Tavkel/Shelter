@@ -27,13 +27,13 @@ public class Owner {
     private String comment;
     private Status.OwnerStatus status;
     private Status.OwnerPreference preference;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Cat> cats;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Dog> dogs;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<AdoptionProcessMonitor> reportMonitors;
 

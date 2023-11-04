@@ -6,7 +6,7 @@ import zhy.votniye.Shelter.models.domain.Report;
 import java.util.List;
 
 public interface ReportService {
-    Report createReport(Report report, long ownerId);
+    Report createReport(Report report);
 
     Report read(Long id);
 

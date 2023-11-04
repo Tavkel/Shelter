@@ -24,7 +24,7 @@ public class ReportController implements IReportController {
     public ReportDTO create(@RequestBody ReportDTO reportDTO, @PathVariable long ownerId) {
         var report = ReportMapper.toReport(reportDTO);
 
-        return ReportMapper.fromReport(reportService.createReport(report, ownerId));
+        return ReportMapper.fromReport(reportService.createReport(report));
     }
 
     @GetMapping("/{reportId}")

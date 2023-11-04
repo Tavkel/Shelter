@@ -210,7 +210,6 @@ public abstract class Pet {
                 ", pathToFile='" + pathToFile + '\'' +
                 ", description='" + description + '\'' +
                 ", specialNeeds='" + specialNeeds + '\'' +
-                ", owner=" + owner +
                 '}';
     }
 }
